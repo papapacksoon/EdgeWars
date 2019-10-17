@@ -7,5 +7,6 @@ public class PlayerManager : MonoBehaviour
 {
 
     //-- Social log in here
+    // needed to login in via Firebase autentification service
 
 }

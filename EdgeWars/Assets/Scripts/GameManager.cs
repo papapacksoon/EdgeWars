@@ -8,8 +8,10 @@ using System;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private void Start()
+
+    private void Awake()
     {
-               
+        
+
     }
 }

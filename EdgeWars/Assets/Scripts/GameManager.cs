@@ -12,4 +12,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
                
     }
+
+    private void Awake()
+    {
+        //checking status
+    }
 }

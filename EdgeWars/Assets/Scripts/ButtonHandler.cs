@@ -11,7 +11,7 @@ public class ButtonHandler : MonoBehaviour
     private GameObject EnergyText;
     private EnergyScript energyScript;
     private const int SECONDSTONEWENERGY = 8640;
-
+    private AdManager adManager;
       
     private Vector3 panelScale;
 
@@ -20,7 +20,8 @@ public class ButtonHandler : MonoBehaviour
     {
         EnergyText = GameObject.Find("Energy");
         energyScript = EnergyText.GetComponent<EnergyScript>();
-     
+        adManager = GameObject.Find("AdManager").GetComponent<AdManager>();
+        
         
     }
 
@@ -56,8 +57,8 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()
     {
-    
-        
+        adManager.ShowAd();
+               
     }
 
     public void CloseMessage()

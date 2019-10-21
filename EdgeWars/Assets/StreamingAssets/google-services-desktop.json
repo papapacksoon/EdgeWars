@@ -1,0 +1,37 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 1
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "562291107465-44s9u8cnhvkrjacj0n9v698koopegt4p.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwN_8L1hXrGHFRTnsptBfEE6YG0SfrxE"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:562291107465:ios:916148ecf3c65a41208858", 
+        "android_client_info": {
+          "package_name": "com.Packsoon.EdgeWars.ios"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "edge-wars.appspot.com", 
+    "project_id": "edge-wars", 
+    "firebase_url": "https://edge-wars.firebaseio.com", 
+    "project_number": "562291107465"
+  }
+}

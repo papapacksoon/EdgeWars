@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="firebase_database_url" translatable="false">https://edge-wars.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">562291107465</string>
+  <string name="google_storage_bucket" translatable="false">edge-wars.appspot.com</string>
+  <string name="project_id" translatable="false">edge-wars</string>
+  <string name="google_api_key" translatable="false">AIzaSyDW4DsP7LjG01GSi9iiVKzzcSWH-G-vr2U</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDW4DsP7LjG01GSi9iiVKzzcSWH-G-vr2U</string>
+  <string name="google_app_id" translatable="false">1:562291107465:android:b886c34f6baf0faf208858</string>
+  <string name="default_web_client_id" translatable="false">562291107465-iro3skit76tq1u0vvac4m7gis8daffju.apps.googleusercontent.com</string>
+</resources>

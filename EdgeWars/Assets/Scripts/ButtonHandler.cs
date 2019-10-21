@@ -57,7 +57,7 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()
     {
-        adManager.ShowAd();
+        AdManager.instance.ShowAd();
                
     }
 

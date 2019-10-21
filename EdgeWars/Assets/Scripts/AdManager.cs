@@ -7,6 +7,9 @@ using System;
 
 public class AdManager : MonoBehaviour
 {
+
+    public static AdManager instance;
+
 #if UNITY_EDITOR
     string appId = "unused";
 #elif UNITY_ANDROID
@@ -18,7 +21,18 @@ public class AdManager : MonoBehaviour
 #endif
 
 
+
     private RewardBasedVideoAd rewardBasedVideoAd;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()

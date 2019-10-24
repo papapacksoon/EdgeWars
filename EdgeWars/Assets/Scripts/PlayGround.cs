@@ -25,8 +25,7 @@ public class PlayGround : MonoBehaviour
     const int PLAYERTURNTIME = 30;
     const float ENEMYTURNTIME = 2.0f;
 
-    //
-    private bool vsComputer = false;
+    
 
     public enum FieldOwner { PlayerOne, PlayerTwo, None };
 

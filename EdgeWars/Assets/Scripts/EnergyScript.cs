@@ -9,6 +9,8 @@ using System;
 public class EnergyScript : MonoBehaviour
 {
 
+    public static EnergyScript instance;
+
     public Text EnergyLabel;
     public Text nextEnergyText;
     private const int MAXENERGY = 10;
@@ -18,6 +20,15 @@ public class EnergyScript : MonoBehaviour
     private const int SECONDSTONEWENERGY = 8640;
     private float energyTimer;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
     private void Start()
     {
         SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;

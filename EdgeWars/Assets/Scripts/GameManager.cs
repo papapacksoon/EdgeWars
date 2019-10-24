@@ -12,10 +12,17 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    public enum State {Undefined, OK, EnterEmail, EnterPassword, PasswordDontMatch}
+    public State CurrentState = State.Undefined;
+
+    public bool isSoundsEnabled;
+
 
     private static GameManager instance;
 
-    
+    //private bool isPlayerLoggedIn; ??
+
+
     public UnityEvent OnFirebaseInitialized = new UnityEvent();
 
     private FirebaseAuth _auth;
@@ -48,6 +55,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    private FirebaseApp GetAppSynchronous()
+    {
+     //   Debug.LogWarning("You are getting the FirebaseApp synchronously. You cannot resolve dependencies this way");
+        if (FirebaseApp.CheckDependencies() != DependencyStatus.Available)
+        {
+            throw new Exception($"Firebase not available with {FirebaseApp.CheckDependencies()}");
+        }
+
+        return FirebaseApp.DefaultInstance;
+    }
+
     private async void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -68,9 +86,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log(" Fialed to initalize Firebase with " + dependencyResult);
         }
 
+
     }
-     
-    
+       
     
        
 }

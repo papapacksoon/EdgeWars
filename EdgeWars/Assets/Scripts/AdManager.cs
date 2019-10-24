@@ -20,7 +20,15 @@ public class AdManager : MonoBehaviour
     string appId = "unexpected_platdorm";
 #endif
 
-
+#if UNITY_EDITOR
+    string adUnitId = "unused";
+#elif UNITY_ANDROID
+        string adUnitId = "ca-app-pub-9898645005884031/1634616301";
+#elif UNITY_IPHONE
+            string adUnitId = "ca-app-pub-9898645005884031/7714591886";
+#else
+            string adUnitId = "unexpected_platform";
+#endif
 
     private RewardBasedVideoAd rewardBasedVideoAd;
 
@@ -68,15 +76,7 @@ public class AdManager : MonoBehaviour
     private void LoadRewardBasedAd()
     {
 
-#if UNITY_EDITOR
-        string adUnitId = "unused";
-#elif UNITY_ANDROID
-        string adUnitId = "ca-app-pub-9898645005884031/1634616301";
-#elif UNITY_IPHONE
-            string adUnitId = "ca-app-pub-9898645005884031/7714591886";
-#else
-            string adUnitId = "unexpected_platform";
-#endif
+
         rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
 
     }
@@ -91,7 +91,9 @@ public class AdManager : MonoBehaviour
     {
         //try to reload
         Debug.Log("Failed to load, invoke reload sequnce");
-       // rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
+
+
+        rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
 
     public void HandleOnAdRewarded(object sender, Reward args)

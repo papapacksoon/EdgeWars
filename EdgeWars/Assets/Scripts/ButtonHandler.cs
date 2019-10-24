@@ -6,23 +6,18 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
 
-    private GameObject EnergyText;
-    private EnergyScript energyScript;
-    private const int SECONDSTONEWENERGY = 8640;
-    private AdManager adManager;
-      
-    private Vector3 panelScale;
+    public GameObject registerGamePanel;
+    public GameObject startGamePanel;
+    public Text registerStatusText;
+    public InputField inputRegisterEmail;
+    public InputField inputRegisterPassword;
+    public InputField inputRegisterPasswordVerify;
 
 
     void Start()
     {
-        EnergyText = GameObject.Find("Energy");
-        energyScript = EnergyText.GetComponent<EnergyScript>();
-        adManager = GameObject.Find("AdManager").GetComponent<AdManager>();
-        
-        
+                    
     }
 
     public void MainMenuClick()
@@ -35,8 +30,8 @@ public class ButtonHandler : MonoBehaviour
     {
         if (EnergyScript.currentEnergy > 0)
         {
-       //     EnergyScript.currentEnergy--;               ---------------------------------------------
-            energyScript.DisplayEnergy();
+            //     EnergyScript.currentEnergy--;               ---------------------------------------------
+            EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
@@ -47,8 +42,8 @@ public class ButtonHandler : MonoBehaviour
     {
         if (EnergyScript.currentEnergy > 0)
         {
-           // EnergyScript.currentEnergy--;                         ------------------------------------
-            energyScript.DisplayEnergy();
+            // EnergyScript.currentEnergy--;                         ------------------------------------
+            EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
@@ -58,14 +53,56 @@ public class ButtonHandler : MonoBehaviour
     public void GetEnergy()
     {
         AdManager.instance.ShowAd();
-               
     }
 
-    public void CloseMessage()
+    public void ConfirmRegistration()
     {
-      
+        
+
+        if (string.IsNullOrEmpty(inputRegisterEmail.text))
+        {
+            Debug.Log("Email empty");
+            registerStatusText.text = "Email field is empty";
+            registerStatusText.color = Color.red;
+        }
+        else if (string.IsNullOrEmpty(inputRegisterPassword.text))
+        {
+            registerStatusText.text = "Password field is empty";
+            registerStatusText.color = Color.red;
+        }
+        else if (string.IsNullOrEmpty(inputRegisterPasswordVerify.text))
+        {
+            registerStatusText.text = "Passwords dont match";
+            registerStatusText.color = Color.red;
+        }
+        else
+        {
+            registerStatusText.text = "Try to register";
+            registerStatusText.color = Color.green;
+        }
 
     }
+
+    public void CancelRegistration()
+    {
+        //check if Auth workflow is running then abort Auth workflow
+        registerGamePanel.SetActive(false);
+        startGamePanel.SetActive(true);
+        
+    }
+
+    public void GotoRegisterPanel()
+    {
+        startGamePanel.SetActive(false);
+        registerStatusText.text = "";
+        registerStatusText.color = Color.white;
+        inputRegisterEmail.text = "";
+        inputRegisterPassword.text = "";
+        inputRegisterPasswordVerify.text =  "";
+        registerGamePanel.SetActive(true);
+    }
+
+
    
        
 

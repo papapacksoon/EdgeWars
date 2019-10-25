@@ -30,7 +30,6 @@ public class ButtonHandler : MonoBehaviour
     {
         if (EnergyScript.currentEnergy > 0)
         {
-            //     EnergyScript.currentEnergy--;               ---------------------------------------------
             EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
@@ -42,7 +41,6 @@ public class ButtonHandler : MonoBehaviour
     {
         if (EnergyScript.currentEnergy > 0)
         {
-            // EnergyScript.currentEnergy--;                         ------------------------------------
             EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);

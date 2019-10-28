@@ -12,13 +12,12 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    public enum State {Undefined, OK, EnterEmail, EnterPassword, PasswordDontMatch}
-    public State CurrentState = State.Undefined;
-
+    public bool singlePlayerWithoutLogginIn = true;
+  
     public bool isSoundsEnabled;
 
 
-    private static GameManager instance;
+    public static GameManager instance;
 
     //private bool isPlayerLoggedIn; ??
 

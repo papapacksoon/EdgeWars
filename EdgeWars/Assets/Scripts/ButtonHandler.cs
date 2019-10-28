@@ -14,6 +14,14 @@ public class ButtonHandler : MonoBehaviour
     public InputField inputRegisterPassword;
     public InputField inputRegisterPasswordVerify;
 
+    public GameObject logonPanel;
+    public Text logonStatusText;
+    public InputField inputLogonEmail;
+    public InputField inputLogonPassword;
+
+    public GameObject aboutPanel;
+
+    
 
     void Start()
     {
@@ -28,7 +36,13 @@ public class ButtonHandler : MonoBehaviour
 
     public void RestartClick()
     {
-        if (EnergyScript.currentEnergy > 0)
+        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        {
+            //showadd
+            SceneManager.UnloadSceneAsync("Main");
+            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        }
+        else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Main");
@@ -68,7 +82,7 @@ public class ButtonHandler : MonoBehaviour
             registerStatusText.text = "Password field is empty";
             registerStatusText.color = Color.red;
         }
-        else if (string.IsNullOrEmpty(inputRegisterPasswordVerify.text))
+        else if (inputRegisterPasswordVerify.text != inputRegisterPassword.text)
         {
             registerStatusText.text = "Passwords dont match";
             registerStatusText.color = Color.red;
@@ -77,6 +91,7 @@ public class ButtonHandler : MonoBehaviour
         {
             registerStatusText.text = "Try to register";
             registerStatusText.color = Color.green;
+            //Start Auth registration
         }
 
     }
@@ -86,7 +101,6 @@ public class ButtonHandler : MonoBehaviour
         //check if Auth workflow is running then abort Auth workflow
         registerGamePanel.SetActive(false);
         startGamePanel.SetActive(true);
-        
     }
 
     public void GotoRegisterPanel()
@@ -100,12 +114,59 @@ public class ButtonHandler : MonoBehaviour
         registerGamePanel.SetActive(true);
     }
 
+    public void GotologonPanel()
+    {
+        startGamePanel.SetActive(false);
+        logonStatusText.text = "";
+        logonStatusText.color = Color.white;
+        inputLogonEmail.text = "";
+        inputLogonPassword.text = "";
+        logonPanel.SetActive(true);
+    }
 
-   
-       
+    public void ConfirmLogon()
+    {
+        if (string.IsNullOrEmpty(inputLogonEmail.text))
+        {
+            Debug.Log("Email empty");
+            logonStatusText.text = "Email field is empty";
+            logonStatusText.color = Color.red;
+        }
+        else if (string.IsNullOrEmpty(inputLogonPassword.text))
+        {
+            logonStatusText.text = "Password field is empty";
+            logonStatusText.color = Color.red;
+        }
+        else
+        {
+            logonStatusText.text = "Try to Login";
+            logonStatusText.color = Color.green;
+            //Start Auth logon
+        }
+    }
 
-       
-  
+    public void CancelLogon()
+    {
+        //logonPanel if Auth workflow is running then abort Auth workflow
+        logonPanel.SetActive(false);
+        startGamePanel.SetActive(true);
+    }
+
+    public void GotoAboutPanel()
+    {
+        startGamePanel.SetActive(false);
+        aboutPanel.SetActive(true);
+    }
+
+    public void backFromAbout()
+    {
+        aboutPanel.SetActive(false);
+        //check from we came and back to it
+    }
+
+
+
+
 
 
 }

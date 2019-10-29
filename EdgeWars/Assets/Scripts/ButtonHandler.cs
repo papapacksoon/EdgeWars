@@ -20,8 +20,13 @@ public class ButtonHandler : MonoBehaviour
     public InputField inputLogonPassword;
 
     public GameObject aboutPanel;
+    public GameObject MainPanel;
 
-    
+    public Button settingsLoginOutButton;
+    public Button settingsSoundButton;
+    public GameObject settingsPanel;
+
+    private bool fromMain = false;
 
     void Start()
     {
@@ -32,23 +37,41 @@ public class ButtonHandler : MonoBehaviour
     {
         SceneManager.UnloadSceneAsync("Main");
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+
+        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        {
+            //showadd
+            startGamePanel.SetActive(true);
+        }
+        else
+        {
+            MainPanel.SetActive(true);
+        }
     }
 
     public void RestartClick()
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            //showadd
+            
             SceneManager.UnloadSceneAsync("Main");
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+            //showadd
+            startGamePanel.SetActive(true);
         }
         else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
+                        
         }
-        //message get more energy;
+        else
+        {
+            SceneManager.UnloadSceneAsync("Main");
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+            MainPanel.SetActive(true);
+        }
     }
 
     public void NewGame()
@@ -158,13 +181,80 @@ public class ButtonHandler : MonoBehaviour
         aboutPanel.SetActive(true);
     }
 
-    public void backFromAbout()
+    public void BackFromAbout()
     {
         aboutPanel.SetActive(false);
-        //check from we came and back to it
+
+        if (fromMain)
+        {
+            MainPanel.SetActive(true);
+        }
+        else
+        {
+            startGamePanel.SetActive(true);
+        }
+        
     }
 
+    public void GotoSettingsPanelFromStart()
+    {
+        startGamePanel.SetActive(false);
+        settingsPanel.SetActive(true);
 
+        if (AudioManager.instance.IsSoundOn)
+        {
+            settingsSoundButton.GetComponent<Text>().text = "Sound is on";
+        }
+        else
+        {
+            settingsSoundButton.GetComponent<Text>().text = "Sound is off";
+        }
+
+        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        {
+            settingsLoginOutButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            settingsLoginOutButton.gameObject.SetActive(true);
+        }
+        
+    }
+
+    public void BackFromSettings()
+    {
+        
+        settingsPanel.SetActive(false);
+
+        if (fromMain)
+        {
+            MainPanel.SetActive(true);
+        }
+        else
+        {
+            startGamePanel.SetActive(true);
+        }
+        
+    }
+
+    public void SoundOnOff()
+    {
+        if (AudioManager.instance.IsSoundOn)
+        {
+            AudioManager.instance.IsSoundOn = false;
+            PlayerPrefs.SetInt("Sound", 0);
+            PlayerPrefs.Save();
+            settingsSoundButton.GetComponent<Text>().text = "Sound is off";
+        }
+        else
+        {
+            AudioManager.instance.IsSoundOn = true;
+            PlayerPrefs.SetInt("Sound", 1);
+            PlayerPrefs.Save();
+            settingsSoundButton.GetComponent<Text>().text = "Sound is on";
+        }
+        
+    }
 
 
 

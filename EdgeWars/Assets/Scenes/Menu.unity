@@ -326,6 +326,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &7637463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +475,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &27456400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1339,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: login
+  m_Text: Logout
 --- !u!222 &268687119
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2326,6 +2336,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &656969929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2481,6 +2496,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &714220969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2704,6 +2724,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &833782070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2942,6 +2967,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &880761453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,6 +3127,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &919790530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3566,6 +3601,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1214447686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3710,6 +3750,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1238505436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4101,6 +4146,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1300706451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4959,6 +5009,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 2022423882}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1504952794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5114,6 +5169,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1527377396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5258,6 +5318,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 2022423882}
   inputLogonEmail: {fileID: 527460}
   inputLogonPassword: {fileID: 1378508322}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1530064923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5571,6 +5636,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1744857546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5886,6 +5956,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 2022423882}
   inputLogonEmail: {fileID: 527460}
   inputLogonPassword: {fileID: 1378508322}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &1862147726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6156,7 +6231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1910830325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6704,6 +6779,11 @@ MonoBehaviour:
   logonStatusText: {fileID: 0}
   inputLogonEmail: {fileID: 0}
   inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
 --- !u!114 &2037405281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6814,7 +6894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2104369227
 RectTransform:
   m_ObjectHideFlags: 0

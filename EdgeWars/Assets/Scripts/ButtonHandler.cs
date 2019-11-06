@@ -26,7 +26,8 @@ public class ButtonHandler : MonoBehaviour
     public Button settingsSoundButton;
     public GameObject settingsPanel;
 
-    private bool fromMain = false;
+    private bool _fromMain;
+
 
     void Start()
     {
@@ -82,12 +83,13 @@ public class ButtonHandler : MonoBehaviour
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
-        //message get more energy;
+        //else message get more energy; 
     }
 
     public void GetEnergy()
     {
         AdManager.instance.ShowAd();
+        //show Ad and get new energy 
     }
 
     public void ConfirmRegistration()
@@ -175,8 +177,9 @@ public class ButtonHandler : MonoBehaviour
         startGamePanel.SetActive(true);
     }
 
-    public void GotoAboutPanel()
+    public void GotoAboutPanel(bool fromMain)
     {
+        _fromMain = fromMain;
         startGamePanel.SetActive(false);
         aboutPanel.SetActive(true);
     }
@@ -185,7 +188,7 @@ public class ButtonHandler : MonoBehaviour
     {
         aboutPanel.SetActive(false);
 
-        if (fromMain)
+        if (_fromMain)
         {
             MainPanel.SetActive(true);
         }
@@ -196,18 +199,22 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
-    public void GotoSettingsPanelFromStart()
+    public void GotoSettingsPanel(bool fromMain)
     {
+        _fromMain = fromMain;
         startGamePanel.SetActive(false);
         settingsPanel.SetActive(true);
+        
 
         if (AudioManager.instance.IsSoundOn)
         {
-            settingsSoundButton.GetComponent<Text>().text = "Sound is on";
+         
+            settingsSoundButton.GetComponentInChildren<Text>().text = "Sound is on";
         }
         else
         {
-            settingsSoundButton.GetComponent<Text>().text = "Sound is off";
+         
+            settingsSoundButton.GetComponentInChildren<Text>().text = "Sound is off";
         }
 
         if (GameManager.instance.singlePlayerWithoutLogginIn)
@@ -226,7 +233,7 @@ public class ButtonHandler : MonoBehaviour
         
         settingsPanel.SetActive(false);
 
-        if (fromMain)
+        if (_fromMain)
         {
             MainPanel.SetActive(true);
         }
@@ -242,20 +249,24 @@ public class ButtonHandler : MonoBehaviour
         if (AudioManager.instance.IsSoundOn)
         {
             AudioManager.instance.IsSoundOn = false;
-            PlayerPrefs.SetInt("Sound", 0);
-            PlayerPrefs.Save();
-            settingsSoundButton.GetComponent<Text>().text = "Sound is off";
+            settingsSoundButton.GetComponentInChildren<Text>().text = "Sound is off";
         }
         else
         {
             AudioManager.instance.IsSoundOn = true;
-            PlayerPrefs.SetInt("Sound", 1);
-            PlayerPrefs.Save();
-            settingsSoundButton.GetComponent<Text>().text = "Sound is on";
+            settingsSoundButton.GetComponentInChildren<Text>().text = "Sound is on";
         }
         
     }
 
+    public void SettingsLogout()
+    {
+        //logout here
+        //GameManager.instance.singlePlayerWithoutLogginIn = true;
+        //goto to start panel
+        _fromMain = false;
+        BackFromSettings();
+    }
 
 
 

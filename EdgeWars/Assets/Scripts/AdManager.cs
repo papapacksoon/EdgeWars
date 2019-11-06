@@ -75,23 +75,23 @@ public class AdManager : MonoBehaviour
 
     private void LoadRewardBasedAd()
     {
-
-
         rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
-
     }
 
    public void HandleOnAdStarted(object sender, EventArgs args)
     {
         
-        //mute game sounds
+        if (AudioManager.instance.IsSoundOn)
+        {
+            //mute game sound
+        }
+
     }
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         //try to reload
         Debug.Log("Failed to load, invoke reload sequnce");
-
 
         rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
@@ -104,7 +104,10 @@ public class AdManager : MonoBehaviour
 
     public void HandleOnAdClosed(object sender, EventArgs args)
     {
-        //unmute game sounds
+        if (AudioManager.instance.IsSoundOn)
+        {
+            //volume up sounds
+        }
     }
 
 

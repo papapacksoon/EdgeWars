@@ -9,7 +9,24 @@ public class AudioManager : MonoBehaviour
 
     private bool isSoundOn = true;
 
-    public bool IsSoundOn { get; set; }
+    public bool IsSoundOn
+    {
+        get {
+            return isSoundOn;
+        }
+
+        set {
+
+            if (value) PlayerPrefs.SetInt("Sound", 1);
+            else PlayerPrefs.SetInt("Sound", 0);
+            PlayerPrefs.Save();
+
+            isSoundOn = value;
+            
+
+        }
+
+    }
 
     private void Awake()
     {

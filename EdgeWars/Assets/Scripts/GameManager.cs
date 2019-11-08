@@ -1,30 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using Photon.Pun;
-using Photon.Realtime;
-using UnityEngine.UI;
-using System;
-using Firebase;
-using Firebase.Analytics;
-using Firebase.Auth;
+using UnityEngine;
 using UnityEngine.Events;
+
+using Firebase;
+
+using Firebase.Auth;
+
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public bool singlePlayerWithoutLogginIn = true;
-  
     public bool isSoundsEnabled;
-
-
     public static GameManager instance;
 
-    //private bool isPlayerLoggedIn; ??
+    
 
 
     public UnityEvent OnFirebaseInitialized = new UnityEvent();
 
     private FirebaseAuth _auth;
+    private FirebaseUser _user;
+    public string _displayedUserName;
 
     public FirebaseAuth Auth
     {
@@ -56,7 +53,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private FirebaseApp GetAppSynchronous()
     {
-     //   Debug.LogWarning("You are getting the FirebaseApp synchronously. You cannot resolve dependencies this way");
+    
         if (FirebaseApp.CheckDependencies() != DependencyStatus.Available)
         {
             throw new Exception($"Firebase not available with {FirebaseApp.CheckDependencies()}");
@@ -85,9 +82,78 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log(" Fialed to initalize Firebase with " + dependencyResult);
         }
 
+        _auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        _auth.StateChanged += AuthStateChanged;
 
     }
-       
-    
-       
+
+    void OnDestroy()
+    {
+        if (_auth != null)
+        {
+            _auth.StateChanged -= AuthStateChanged;
+            _auth = null;
+        }
+    }
+
+        private void AuthStateChanged(object sender, EventArgs e)
+    {
+        if (_auth.CurrentUser != _user)
+        {
+            bool signedIn = _user != _auth.CurrentUser && _auth.CurrentUser != null;
+            if (!signedIn && _user != null)
+            {
+                Debug.Log("Signed out " + _user.UserId);
+            }
+            _user = _auth.CurrentUser;
+            if (signedIn)
+            {
+                Debug.Log("Signed in " + _user.UserId);
+            }
+        }
+    }
+
+    public void CreateNewUser(string email, string password)
+    {
+        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.Log("CreateUserWithEmailAndPasswordAsync was canceled.");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                Debug.Log("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                return;
+            }
+
+            // Firebase user has been created.
+            _user = task.Result;
+            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
+                _user.DisplayName, _user.UserId);
+     
+        }
+        );
+    }
+
+    public void UserSingIn(string email, string password)
+    {
+        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                return;
+            }
+
+            _user = task.Result;
+            Debug.LogFormat("User signed in successfully: {0} ({1})",
+                _user.DisplayName, _user.UserId);
+        });
+    }
 }

@@ -94,7 +94,7 @@ public class ButtonHandler : MonoBehaviour
 
     public void ConfirmRegistration()
     {
-        
+
 
         if (string.IsNullOrEmpty(inputRegisterEmail.text))
         {
@@ -112,11 +112,18 @@ public class ButtonHandler : MonoBehaviour
             registerStatusText.text = "Passwords dont match";
             registerStatusText.color = Color.red;
         }
+        else if (inputRegisterPassword.text.Length < 6)
+        {
+            registerStatusText.text = "Password to short";
+            registerStatusText.color = Color.red;
+        }
         else
         {
             registerStatusText.text = "Try to register";
             registerStatusText.color = Color.green;
-            //Start Auth registration
+            GameManager.instance.CreateNewUser(inputRegisterEmail.text, inputRegisterPassword.text);
+            //logging in
+            //go to main panel;
         }
 
     }
@@ -166,7 +173,9 @@ public class ButtonHandler : MonoBehaviour
         {
             logonStatusText.text = "Try to Login";
             logonStatusText.color = Color.green;
-            //Start Auth logon
+
+            GameManager.instance.UserSingIn(inputLogonEmail.text, inputLogonPassword.text);
+            //go to main panel;
         }
     }
 

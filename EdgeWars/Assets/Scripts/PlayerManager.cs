@@ -9,7 +9,6 @@ using Firebase.Auth;
 public class PlayerManager : MonoBehaviour
 {
 
-    private Registr
     public static PlayerManager instance;
     private void Awake()
     {

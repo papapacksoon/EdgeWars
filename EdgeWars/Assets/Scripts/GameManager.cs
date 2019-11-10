@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-        private void AuthStateChanged(object sender, EventArgs e)
+    private void AuthStateChanged(object sender, EventArgs e)
     {
         if (_auth.CurrentUser != _user)
         {
@@ -130,9 +130,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Firebase user has been created.
             _user = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                _user.DisplayName, _user.UserId);
-     
+            Debug.Log("Firebase user created successfully: " + _user.DisplayName + " " + _user.UserId);
+           // UserSingIn(email, password);
         }
         );
     }
@@ -142,18 +141,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled)
             {
-                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
+                Debug.Log("SignInWithEmailAndPasswordAsync was canceled.");
                 return;
             }
             if (task.IsFaulted)
             {
-                Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                Debug.Log("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
 
             _user = task.Result;
-            Debug.LogFormat("User signed in successfully: {0} ({1})",
-                _user.DisplayName, _user.UserId);
+            Debug.Log("User signed in successfully: " + _user.DisplayName + " " + _user.UserId);
+            singlePlayerWithoutLogginIn = false;
         });
     }
 }

@@ -22,7 +22,7 @@ public class EnergyScript : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         if (instance == null)
         {
@@ -134,7 +134,10 @@ public class EnergyScript : MonoBehaviour
         int currentSecondsToNewEnergy = SECONDSTONEWENERGY - (int)energyTimer;
         int hoursToNewEnergy = currentSecondsToNewEnergy / 3600;
         int minutesToNewEnergy = (currentSecondsToNewEnergy % 3600) / 60;
-        nextEnergyText.text = "You get energy in " + hoursToNewEnergy + " hours " + minutesToNewEnergy + " minutes";
+        if (currentEnergy < MAXENERGY)
+            nextEnergyText.text = "You get energy in " + hoursToNewEnergy + " hours " + minutesToNewEnergy + " minutes";
+        else
+            nextEnergyText.text = "";
     }
 }
 

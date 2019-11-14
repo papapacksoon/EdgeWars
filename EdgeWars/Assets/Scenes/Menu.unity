@@ -335,7 +335,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &7637463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +506,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &27456400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,8 +860,8 @@ RectTransform:
   m_Children:
   - {fileID: 1276204072}
   - {fileID: 1951024162}
-  - {fileID: 706086238}
   - {fileID: 1652478427}
+  - {fileID: 706086238}
   m_Father: {fileID: 2028635471}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1363,6 +1375,177 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210070364}
+  m_CullTransparentMesh: 0
+--- !u!1 &241901101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 241901102}
+  - component: {fileID: 241901106}
+  - component: {fileID: 241901105}
+  - component: {fileID: 241901104}
+  - component: {fileID: 241901103}
+  m_Layer: 5
+  m_Name: Button_Quit_Close
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &241901102
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241901101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 477241337}
+  m_Father: {fileID: 1282205092}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0099373, y: -553}
+  m_SizeDelta: {x: 799.96, y: 110.4}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &241901103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241901101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registerGamePanel: {fileID: 0}
+  startGamePanel: {fileID: 1910830324}
+  registerStatusText: {fileID: 0}
+  inputRegisterEmail: {fileID: 0}
+  inputRegisterPassword: {fileID: 0}
+  inputRegisterPasswordVerify: {fileID: 0}
+  inputRegisterNickname: {fileID: 0}
+  logonPanel: {fileID: 0}
+  logonStatusText: {fileID: 0}
+  inputLogonEmail: {fileID: 0}
+  inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 1282205091}
+  mainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
+  errorPanel: {fileID: 0}
+  errorStatusText: {fileID: 0}
+  errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
+  playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
+--- !u!114 &241901104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241901101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 241901105}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 241901103}
+        m_MethodName: QuitPanelCloseButtonHadler
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &241901105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241901101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300010, guid: 3f6a2db8816d26b47ad689baf293a0df, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &241901106
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241901101}
   m_CullTransparentMesh: 0
 --- !u!1 &242595116
 GameObject:
@@ -1892,7 +2075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9647059, g: 0.40784314, b: 0.27058825, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1912,7 +2095,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Cancel
+  m_Text: 'Close
 
 '
 --- !u!222 &420767396
@@ -2145,6 +2328,87 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 437781586}
+  m_CullTransparentMesh: 0
+--- !u!1 &477241336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 477241337}
+  - component: {fileID: 477241339}
+  - component: {fileID: 477241338}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &477241337
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477241336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 241901102}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &477241338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477241336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+    m_FontSize: 100
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 200
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Quit
+
+'
+--- !u!222 &477241339
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477241336}
   m_CullTransparentMesh: 0
 --- !u!1 &492242221
 GameObject:
@@ -2681,7 +2945,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &656969929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,7 +3116,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &677551024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2973,7 +3249,7 @@ RectTransform:
   m_Children:
   - {fileID: 1599511841}
   m_Father: {fileID: 109397668}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3009,9 +3285,15 @@ MonoBehaviour:
   settingsSoundButton: {fileID: 0}
   settingsPanel: {fileID: 0}
   errorPanel: {fileID: 109397667}
-  errorStatusText: {fileID: 0}
+  errorStatusText: {fileID: 1951024163}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &706086240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3176,7 +3458,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &714220969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3420,7 +3708,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &833782070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3679,7 +3973,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &880761453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3844,7 +4144,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &919790530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4170,6 +4476,88 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050518056}
   m_CullTransparentMesh: 0
+--- !u!1 &1075806177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1075806178}
+  - component: {fileID: 1075806180}
+  - component: {fileID: 1075806179}
+  m_Layer: 5
+  m_Name: Quit_Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1075806178
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075806177}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1282205092}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.010009766, y: -785.68}
+  m_SizeDelta: {x: -0.019897, y: 757.77}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1075806179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075806177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+    m_FontSize: 50
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 250
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Game cannot be loaded because you have no internet connection, or Google
+    services are temporary down
+
+'
+--- !u!222 &1075806180
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075806177}
+  m_CullTransparentMesh: 0
 --- !u!1 &1085994155
 GameObject:
   m_ObjectHideFlags: 0
@@ -4402,7 +4790,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1214447686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4567,7 +4961,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1238505436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4740,6 +5140,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241182053}
   m_CullTransparentMesh: 0
+--- !u!1 &1245074892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245074893}
+  - component: {fileID: 1245074895}
+  - component: {fileID: 1245074894}
+  m_Layer: 5
+  m_Name: Title
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1245074893
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245074892}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1282205092}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.020019531, y: -203.4}
+  m_SizeDelta: {x: -0.040039062, y: 406.90002}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1245074894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245074892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+    m_FontSize: 200
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 250
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: EDGE WARS
+--- !u!222 &1245074895
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245074892}
+  m_CullTransparentMesh: 0
 --- !u!1 &1245153962
 GameObject:
   m_ObjectHideFlags: 0
@@ -4855,7 +5334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.030068, y: -555.01}
+  m_AnchoredPosition: {x: 3.0751, y: -392}
   m_SizeDelta: {x: 799.96, y: 110.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1254144817
@@ -4889,7 +5368,13 @@ MonoBehaviour:
   errorPanel: {fileID: 109397667}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1254144818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5141,6 +5626,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280144375}
   m_CullTransparentMesh: 0
+--- !u!1 &1282205091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1282205092}
+  - component: {fileID: 1282205094}
+  - component: {fileID: 1282205093}
+  m_Layer: 5
+  m_Name: QuitPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1282205092
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282205091}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1245074893}
+  - {fileID: 1075806178}
+  - {fileID: 241901102}
+  m_Father: {fileID: 2028635471}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.010009766, y: -0.2199707}
+  m_SizeDelta: {x: -0.02002, y: 0.19995117}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1282205093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282205091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &1282205094
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282205091}
+  m_CullTransparentMesh: 0
 --- !u!1 &1300706448
 GameObject:
   m_ObjectHideFlags: 0
@@ -5212,7 +5774,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1300706451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6128,7 +6696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.0751, y: -392}
+  m_AnchoredPosition: {x: 3.0751, y: -555.01}
   m_SizeDelta: {x: 799.96, y: 110.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504952793
@@ -6162,7 +6730,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1504952794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6327,7 +6901,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1527377396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6492,7 +7072,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1530064923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6858,7 +7444,7 @@ RectTransform:
   m_Children:
   - {fileID: 600618720}
   m_Father: {fileID: 109397668}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6896,7 +7482,13 @@ MonoBehaviour:
   errorPanel: {fileID: 109397667}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1652478429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7140,7 +7732,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1744857546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7465,7 +8063,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 191332532}
+  quitPanel: {fileID: 0}
 --- !u!114 &1862147726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7930,7 +8534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9622642, g: 0.4050989, b: 0.26779994, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7950,7 +8554,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Cancel
+  m_Text: 'Close
 
 '
 --- !u!222 &1976659747
@@ -8298,6 +8902,7 @@ RectTransform:
   - {fileID: 1245153963}
   - {fileID: 2104369227}
   - {fileID: 109397668}
+  - {fileID: 1282205092}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8337,7 +8942,13 @@ MonoBehaviour:
   errorPanel: {fileID: 109397667}
   errorStatusText: {fileID: 1951024163}
   errorResenEmailButton: {fileID: 1652478429}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
   playerRank: {fileID: 191332532}
+  quitPanel: {fileID: 1282205091}
 --- !u!1 &2037405278
 GameObject:
   m_ObjectHideFlags: 0
@@ -8409,7 +9020,13 @@ MonoBehaviour:
   errorPanel: {fileID: 0}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &2037405281
 MonoBehaviour:
   m_ObjectHideFlags: 0

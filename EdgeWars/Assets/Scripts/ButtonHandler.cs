@@ -31,7 +31,16 @@ public class ButtonHandler : MonoBehaviour
     public Text errorStatusText;
     public Button errorResenEmailButton;
 
+    public Button logonConfirmButton;
+    public Button logonCloseButton;
+    public Button logonForgotPasswrodButton;
+
+    public Button registerConfirmButton;
+    public Button registerCloseButton;
+
     public Text playerRank;
+
+    public GameObject quitPanel;
 
     private bool _fromMain;
 
@@ -149,28 +158,50 @@ public class ButtonHandler : MonoBehaviour
             registerStatusText.text = "Trying to register";
             registerStatusText.color = Color.green;
             GameManager.instance.userAutoSignedIn = false;
-            GameManager.instance.CreateNewUser(inputRegisterEmail.text, inputRegisterPassword.text, inputRegisterNickname.text);
+
+            //block inputs
+            registerConfirmButton.gameObject.SetActive(false);
+            registerCloseButton.gameObject.SetActive(false);
+
+            GameManager.instance.CreateNewUser(inputRegisterEmail.text.Trim(), inputRegisterPassword.text.Trim(), inputRegisterNickname.text.Trim());
         }
 
     }
 
     public void ShowErrorPanel(string errorText, Color color, bool showResendEmailButton)
     {
-        startGamePanel.SetActive(false);
-        registerGamePanel.SetActive(false);
-        logonPanel.SetActive(false);
-        errorPanel.SetActive(true);
         if (showResendEmailButton) errorResenEmailButton.gameObject.SetActive(true);
         else errorResenEmailButton.gameObject.SetActive(false);
         errorStatusText.text = errorText;
         errorStatusText.color = color;
-        
+        errorPanel.SetActive(true);
+
+        startGamePanel.SetActive(false);
+        registerGamePanel.SetActive(false);
+        logonPanel.SetActive(false);
+    }
+
+    public IEnumerator ShowErrorPanelIEnumrator(string errorText, Color color, bool showResendEmailButton)
+    {
+        if (showResendEmailButton) errorResenEmailButton.gameObject.SetActive(true);
+        else errorResenEmailButton.gameObject.SetActive(false);
+        errorStatusText.text = errorText;
+        errorStatusText.color = color;
+        errorPanel.SetActive(true);
+
+        startGamePanel.SetActive(false);
+        registerGamePanel.SetActive(false);
+        logonPanel.SetActive(false);
+
+        yield return null;
+
     }
 
     public void CloseErrorPanel()
     {
-        
+        errorStatusText.text = "";
         errorPanel.SetActive(false);
+
         startGamePanel.SetActive(true);
     }
 
@@ -219,15 +250,21 @@ public class ButtonHandler : MonoBehaviour
             logonStatusText.text = "Trying to Login";
             logonStatusText.color = Color.green;
             GameManager.instance.userAutoSignedIn = false;
+
+            //block inputs
+            logonCloseButton.gameObject.SetActive(false);
+            logonConfirmButton.gameObject.SetActive(false);
+            logonForgotPasswrodButton.gameObject.SetActive(false);
+
+
             GameManager.instance.UserSingIn(inputLogonEmail.text, inputLogonPassword.text);
         }
     }
 
     public void CancelLogon()
     {
-        //logonPanel if Auth workflow is running then abort Auth workflow
-        logonPanel.SetActive(false);
-        startGamePanel.SetActive(true);
+            logonPanel.SetActive(false);
+            startGamePanel.SetActive(true);
     }
 
     public void GotoAboutPanel(bool fromMain)
@@ -326,6 +363,9 @@ public class ButtonHandler : MonoBehaviour
 
     public void ResendVerificationMail()
     {
+        errorStatusText.text = "Sending verification e-mail";
+        errorStatusText.color = Color.green;
+        errorResenEmailButton.gameObject.SetActive(false);
         GameManager.instance.ResendVerificationMail();
     }
 
@@ -336,7 +376,73 @@ public class ButtonHandler : MonoBehaviour
             logonStatusText.text = "Email field is empty";
             logonStatusText.color = Color.red;
         }
-        else GameManager.instance.ResetUserPassword();
+        else
+        {
+            logonCloseButton.gameObject.SetActive(false);
+            logonConfirmButton.gameObject.SetActive(false);
+            logonForgotPasswrodButton.gameObject.SetActive(false);
+            logonStatusText.text = "Sending reset password e-mail";
+            logonStatusText.color = Color.green;
+            GameManager.instance.ResetUserPassword();
+        }
     }
 
+    public IEnumerator UpdateLogonStatus(string text, Color color)
+    {
+        logonStatusText.text = text;
+        logonStatusText.color = color;
+        //release imputs
+        logonCloseButton.gameObject.SetActive(true);
+        logonConfirmButton.gameObject.SetActive(true);
+        logonForgotPasswrodButton.gameObject.SetActive(true);
+
+        yield return null;
+    }
+
+    public IEnumerator UserSingInCleanUp()
+    {
+        logonCloseButton.gameObject.SetActive(true);
+        logonConfirmButton.gameObject.SetActive(true);
+        logonForgotPasswrodButton.gameObject.SetActive(true);
+
+        yield return null;
+    }
+
+    public IEnumerator UserRegisterCleanUp()
+    {
+        registerConfirmButton.gameObject.SetActive(true);
+        registerCloseButton.gameObject.SetActive(true);
+
+        yield return null;
+    }
+
+    public IEnumerator UpdateVirificationEmailSendingStatus(string text, Color color, bool showResendBtton)
+    {
+        errorStatusText.text = text;
+        errorStatusText.color = color;
+
+        if (showResendBtton) errorResenEmailButton.gameObject.SetActive(true);
+        else errorResenEmailButton.gameObject.SetActive(false);
+
+        yield return null;
+    }
+
+    public void ShowQuitPanel()
+    {
+        mainPanel.SetActive(false);
+        startGamePanel.SetActive(false);
+        registerGamePanel.SetActive(false);
+        logonPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        aboutPanel.SetActive(false);
+        errorPanel.SetActive(false);
+        quitPanel.SetActive(true);
+    }
+
+    public void QuitPanelCloseButtonHadler()
+    {
+        Application.Quit();
+    }
+
+    
 }

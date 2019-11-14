@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +12,7 @@ public class ButtonHandler : MonoBehaviour
     public InputField inputRegisterEmail;
     public InputField inputRegisterPassword;
     public InputField inputRegisterPasswordVerify;
+    public InputField inputRegisterNickname;
 
     public GameObject logonPanel;
     public Text logonStatusText;
@@ -20,21 +20,40 @@ public class ButtonHandler : MonoBehaviour
     public InputField inputLogonPassword;
 
     public GameObject aboutPanel;
-    public GameObject MainPanel;
+    public GameObject mainPanel;
 
     public Button settingsLoginOutButton;
     public Button settingsSoundButton;
     public GameObject settingsPanel;
+    public GameObject errorPanel;
+    public Text errorStatusText;
+    public Button errorResenEmailButton;
+
+    public Button logonConfirmButton;
+    public Button logonCloseButton;
+    public Button logonForgotPasswrodButton;
+
+    public Button registerConfirmButton;
+    public Button registerCloseButton;
+
+    public Text playerRank;
+
+    public GameObject quitPanel;
 
     private bool _fromMain;
 
-
-    void Start()
+    public static ButtonHandler instance;
+    private void Awake()
     {
-                    
+       if (instance == null)
+        {
+            instance = this;
+        }
     }
 
-    public void MainMenuClick()
+
+
+    public void MainMenuClick()   //------------------------------------------------------------------------------------------------
     {
         SceneManager.UnloadSceneAsync("Main");
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
@@ -46,11 +65,11 @@ public class ButtonHandler : MonoBehaviour
         }
         else
         {
-            MainPanel.SetActive(true);
+            mainPanel.SetActive(true);
         }
     }
 
-    public void RestartClick()
+    public void RestartClick()   //------------------------------------------------------------------------------------------------
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
@@ -71,13 +90,18 @@ public class ButtonHandler : MonoBehaviour
         {
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-            MainPanel.SetActive(true);
+            mainPanel.SetActive(true);
         }
     }
 
-    public void NewGame()
+    public void NewGame()  //------------------------------------------------------------------------------------------------
     {
-        if (EnergyScript.currentEnergy > 0)
+        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        {
+            SceneManager.UnloadSceneAsync("Menu");
+            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        }
+        else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Menu");
@@ -86,17 +110,22 @@ public class ButtonHandler : MonoBehaviour
         //else message get more energy; 
     }
 
-    public void GetEnergy()
+    public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
         AdManager.instance.ShowAd();
         //show Ad and get new energy 
     }
 
-    public void ConfirmRegistration()
+    public void ConfirmRegistration()    //------------------------------------------------------------------------------------------------
     {
 
-
-        if (string.IsNullOrEmpty(inputRegisterEmail.text))
+        if (string.IsNullOrEmpty(inputRegisterNickname.text))
+        { 
+            Debug.Log("Nickname empty");
+            registerStatusText.text = "Nickname field is empty";
+            registerStatusText.color = Color.red;
+        }
+        else if (string.IsNullOrEmpty(inputRegisterEmail.text))
         {
             Debug.Log("Email empty");
             registerStatusText.text = "Email field is empty";
@@ -119,23 +148,41 @@ public class ButtonHandler : MonoBehaviour
         }
         else
         {
-            registerStatusText.text = "Try to register";
+            registerStatusText.text = "Trying to register";
             registerStatusText.color = Color.green;
-            GameManager.instance.CreateNewUser(inputRegisterEmail.text, inputRegisterPassword.text);
-            //logging in
-            //go to main panel;
+            GameManager.instance.userAutoSignedIn = false;
+
+            //block inputs
+            registerConfirmButton.gameObject.SetActive(false);
+            registerCloseButton.gameObject.SetActive(false);
+
+            GameManager.instance.CreateNewUser(inputRegisterEmail.text.Trim(), inputRegisterPassword.text.Trim(), inputRegisterNickname.text.Trim());
         }
 
     }
 
-    public void CancelRegistration()
+    
+
+    public void CloseErrorPanel()   //------------------------------------------------------------------------------------------------
+    {
+        if (GameManager.instance.needToSignOutAfterShowingErrorPanel)
+        {
+            GameManager.instance.needToSignOutAfterShowingErrorPanel = false;
+            GameManager.instance.UserLogout();
+        }
+        errorStatusText.text = "";
+        errorPanel.SetActive(false);
+        startGamePanel.SetActive(true);
+    }
+
+    public void CancelRegistration()   //------------------------------------------------------------------------------------------------
     {
         //check if Auth workflow is running then abort Auth workflow
         registerGamePanel.SetActive(false);
         startGamePanel.SetActive(true);
     }
 
-    public void GotoRegisterPanel()
+    public void GotoRegisterPanel()   //------------------------------------------------------------------------------------------------
     {
         startGamePanel.SetActive(false);
         registerStatusText.text = "";
@@ -146,7 +193,7 @@ public class ButtonHandler : MonoBehaviour
         registerGamePanel.SetActive(true);
     }
 
-    public void GotologonPanel()
+    public void GotologonPanel()   //------------------------------------------------------------------------------------------------
     {
         startGamePanel.SetActive(false);
         logonStatusText.text = "";
@@ -156,11 +203,10 @@ public class ButtonHandler : MonoBehaviour
         logonPanel.SetActive(true);
     }
 
-    public void ConfirmLogon()
+    public void ConfirmLogon()   //------------------------------------------------------------------------------------------------
     {
         if (string.IsNullOrEmpty(inputLogonEmail.text))
         {
-            Debug.Log("Email empty");
             logonStatusText.text = "Email field is empty";
             logonStatusText.color = Color.red;
         }
@@ -171,35 +217,40 @@ public class ButtonHandler : MonoBehaviour
         }
         else
         {
-            logonStatusText.text = "Try to Login";
+            logonStatusText.text = "Trying to Login";
             logonStatusText.color = Color.green;
+            GameManager.instance.userAutoSignedIn = false;
 
-            GameManager.instance.UserSingIn(inputLogonEmail.text, inputLogonPassword.text);
-            //go to main panel;
+            //block inputs
+            logonCloseButton.gameObject.SetActive(false);
+            logonConfirmButton.gameObject.SetActive(false);
+            logonForgotPasswrodButton.gameObject.SetActive(false);
+
+
+            GameManager.instance.UserSingIn(inputLogonEmail.text.Trim(), inputLogonPassword.text.Trim());
         }
     }
 
-    public void CancelLogon()
+    public void CancelLogon()   //------------------------------------------------------------------------------------------------
     {
-        //logonPanel if Auth workflow is running then abort Auth workflow
-        logonPanel.SetActive(false);
-        startGamePanel.SetActive(true);
+            logonPanel.SetActive(false);
+            startGamePanel.SetActive(true);
     }
 
-    public void GotoAboutPanel(bool fromMain)
+    public void GotoAboutPanel(bool fromMain) //  //------------------------------------------------------------------------------------------------
     {
         _fromMain = fromMain;
         startGamePanel.SetActive(false);
         aboutPanel.SetActive(true);
     }
 
-    public void BackFromAbout()
+    public void BackFromAbout()   //------------------------------------------------------------------------------------------------
     {
         aboutPanel.SetActive(false);
 
         if (_fromMain)
         {
-            MainPanel.SetActive(true);
+            mainPanel.SetActive(true);
         }
         else
         {
@@ -208,10 +259,14 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
-    public void GotoSettingsPanel(bool fromMain)
+    public void GotoSettingsPanel(bool fromMain)   //------------------------------------------------------------------------------------------------
     {
         _fromMain = fromMain;
-        startGamePanel.SetActive(false);
+        if (_fromMain)
+            mainPanel.SetActive(false);
+        else
+            startGamePanel.SetActive(false);
+
         settingsPanel.SetActive(true);
         
 
@@ -237,14 +292,14 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
-    public void BackFromSettings()
+    public void BackFromSettings()   //------------------------------------------------------------------------------------------------
     {
         
         settingsPanel.SetActive(false);
 
         if (_fromMain)
         {
-            MainPanel.SetActive(true);
+            mainPanel.SetActive(true);
         }
         else
         {
@@ -253,7 +308,7 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
-    public void SoundOnOff()
+    public void SoundOnOff()   //------------------------------------------------------------------------------------------------
     {
         if (AudioManager.instance.IsSoundOn)
         {
@@ -268,15 +323,44 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
-    public void SettingsLogout()
+    public void SettingsLogout()   //------------------------------------------------------------------------------------------------
     {
-        //logout here
-        //GameManager.instance.singlePlayerWithoutLogginIn = true;
-        //goto to start panel
+        GameManager.instance.UserLogout();
         _fromMain = false;
         BackFromSettings();
+
     }
 
+    public void ResendVerificationMail()   //------------------------------------------------------------------------------------------------
+    {
+        errorStatusText.text = "Sending verification e-mail";
+        errorStatusText.color = Color.green;
+        errorResenEmailButton.gameObject.SetActive(false);
+        GameManager.instance.ResendVerificationMail();
+    }
 
+    public void ResetUserPassword()   //------------------------------------------------------------------------------------------------
+    {
+        if (string.IsNullOrEmpty(inputLogonEmail.text))
+        {
+            logonStatusText.text = "Email field is empty";
+            logonStatusText.color = Color.red;
+        }
+        else
+        {
+            logonCloseButton.gameObject.SetActive(false);
+            logonConfirmButton.gameObject.SetActive(false);
+            logonForgotPasswrodButton.gameObject.SetActive(false);
+            logonStatusText.text = "Sending reset password e-mail";
+            logonStatusText.color = Color.green;
+            GameManager.instance.ResetUserPassword(inputLogonEmail.text.Trim());
+        }
+    }
 
+           public void QuitPanelCloseButtonHadler()   //------------------------------------------------------------------------------------------------
+    {
+        Application.Quit();
+    }
+
+    
 }

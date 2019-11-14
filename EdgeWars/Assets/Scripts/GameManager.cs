@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
     public bool singlePlayerWithoutLogginIn = true;
     public bool userAutoSignedIn = true;
     public bool isSoundsEnabled;
+    public bool needToSignOutAfterShowingErrorPanel = false;
+
     public static GameManager instance;
+    
 
     
 
@@ -19,7 +22,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnFirebaseInitialized = new UnityEvent();
 
     private FirebaseAuth _auth;
-    private FirebaseUser _user;
+    private FirebaseUser _user, _lastSignedInUser;
     public string _displayedUserName;
 
     public FirebaseAuth Auth
@@ -55,7 +58,7 @@ public class GameManager : MonoBehaviour
     
         if (FirebaseApp.CheckDependencies() != DependencyStatus.Available)
         {
-            ButtonHandler.instance.ShowQuitPanel();
+            UIHandler.instance.ShowQuitPanel();
             throw new Exception($"Firebase not available with {FirebaseApp.CheckDependencies()}");
         }
 
@@ -80,7 +83,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log(" Failed to initalize Firebase with " + dependencyResult);
-            ButtonHandler.instance.ShowQuitPanel();
+            UIHandler.instance.ShowQuitPanel();
         }
 
         _auth = FirebaseAuth.DefaultInstance;
@@ -110,19 +113,27 @@ public class GameManager : MonoBehaviour
             if (signedIn)
             {
                 Debug.Log("Listener: Signed in " + _user.UserId);
+                _lastSignedInUser = _user;
+                                
                 if (userAutoSignedIn)
                 {
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        ButtonHandler.instance.UserSignedIn();
-                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " alst signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        if (string.IsNullOrEmpty(_auth.CurrentUser.PhotoUrl.ToString()))
+                        {
+                            UserProfile userProfile = new UserProfile();
+                            userProfile.PhotoUrl = new Uri("1000");
+                            _auth.CurrentUser.UpdateUserProfileAsync(userProfile);
+                        }
+
+                        UIHandler.instance.UserSignedIn();
+                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                     }
                     else
                     {
-                        singlePlayerWithoutLogginIn = true;
-                        _auth.SignOut();
-                        ButtonHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail", Color.red, true);
+                        needToSignOutAfterShowingErrorPanel = true;
+                        UIHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail before loggin in", Color.red, true);
                     }
 
                 }
@@ -131,14 +142,20 @@ public class GameManager : MonoBehaviour
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        ButtonHandler.instance.UserSignedIn();
-                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " alst signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        if (string.IsNullOrEmpty(_auth.CurrentUser.PhotoUrl.ToString()))
+                        {
+                            UserProfile userProfile = new UserProfile();
+                            userProfile.PhotoUrl = new Uri("1000");
+                            _auth.CurrentUser.UpdateUserProfileAsync(userProfile);
+                        }
+
+                        UIHandler.instance.UserSignedIn();
+                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                     }
                     else
                     {
-                        singlePlayerWithoutLogginIn = true;
-                        _auth.SignOut();
-                        ButtonHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail", Color.red, true);
+                        needToSignOutAfterShowingErrorPanel = true;
+                        UIHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail  before loggin in", Color.red, true);
                     }
                 }
                 
@@ -194,8 +211,8 @@ public class GameManager : MonoBehaviour
                 errorText = "Something went wrong, please try again later";
             }
 
-            UnityMainThreadDispatcher.Instance().Enqueue(ButtonHandler.instance.UserRegisterCleanUp());
-            if (!userCreateSuccess) UnityMainThreadDispatcher.Instance().Enqueue(ButtonHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
+            UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserRegisterCleanUp());
+            if (!userCreateSuccess) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
             
         });
 
@@ -228,6 +245,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("SignInWithEmailAndPasswordAsync task Completed");
                 userSingInstatus = true;
+                
             }
             else
             {
@@ -235,7 +253,8 @@ public class GameManager : MonoBehaviour
                 errorText = "Something went wrong, please try again later";
             }
 
-            if (!userSingInstatus) UnityMainThreadDispatcher.Instance().Enqueue(ButtonHandler.instance.UpdateLogonStatus(errorText, Color.red));
+            UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserSingInCleanUp());
+            if (!userSingInstatus) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateLogonStatus(errorText, Color.red));
         });
     }
 
@@ -254,6 +273,7 @@ public class GameManager : MonoBehaviour
 
         _user.SendEmailVerificationAsync().ContinueWith(task =>
         {
+
             if (task.IsCanceled)
             {
                 Debug.Log("SendEmailVerificationAsync was canceled.");
@@ -286,7 +306,7 @@ public class GameManager : MonoBehaviour
                 showResendEmailButton = true;
             }
 
-            UnityMainThreadDispatcher.Instance().Enqueue(ButtonHandler.instance.UpdateVirificationEmailSendingStatus(errorText, errorTextColor, showResendEmailButton));
+           UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateVirificationEmailSendingStatus(errorText, errorTextColor, showResendEmailButton));
 
         });
 
@@ -294,11 +314,13 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void ResetUserPassword()
+    public void ResetUserPassword(string email)
     {
-        _auth.SendPasswordResetEmailAsync(_auth.CurrentUser.Email).ContinueWith(task => {
-            string errorText = "";
-            Color errorTextColor = Color.red;
+        bool taskSuccess = false;
+        string errorText = "?";
+        
+        _auth.SendPasswordResetEmailAsync(email).ContinueWith(task => {
+            
             
             if (task.IsCanceled)
             {
@@ -308,23 +330,29 @@ public class GameManager : MonoBehaviour
             else if (task.IsFaulted)
             {
                 Debug.Log("SendPasswordResetEmailAsync encountered an error: " + task.Exception);
-                foreach (var e in task.Exception.InnerExceptions)
-                {
-                    errorText = e.InnerException.Message;
-                }
+
+                Debug.Log(task.Exception.InnerExceptions.Count);
+                errorText = task.Exception.InnerExceptions[0].Message;
+
             }
             else if (task.IsCompleted)
             {
                 Debug.Log("Reset email sent successfully.");
                 errorText = "We send you a reset password link on e-mail";
-                errorTextColor = Color.white;
+                taskSuccess = true;
             }
             else
             {
                 errorText = "Something went wrong, please try again later";
             }
 
-            UnityMainThreadDispatcher.Instance().Enqueue(ButtonHandler.instance.UpdateLogonStatus(errorText, errorTextColor));
+            Debug.Log("showing password reset result");
+            if (taskSuccess)
+            {
+                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserSingInCleanUp());
+                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.white, false));
+            }
+            else UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateLogonStatus(errorText, Color.red));
 
         });
     }

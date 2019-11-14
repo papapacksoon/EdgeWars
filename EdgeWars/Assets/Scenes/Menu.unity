@@ -3268,32 +3268,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerGamePanel: {fileID: 0}
+  registerGamePanel: {fileID: 124636520}
   startGamePanel: {fileID: 1910830324}
-  registerStatusText: {fileID: 0}
-  inputRegisterEmail: {fileID: 0}
-  inputRegisterPassword: {fileID: 0}
-  inputRegisterPasswordVerify: {fileID: 0}
-  inputRegisterNickname: {fileID: 0}
-  logonPanel: {fileID: 0}
-  logonStatusText: {fileID: 0}
-  inputLogonEmail: {fileID: 0}
-  inputLogonPassword: {fileID: 0}
-  aboutPanel: {fileID: 0}
-  mainPanel: {fileID: 0}
-  settingsLoginOutButton: {fileID: 0}
-  settingsSoundButton: {fileID: 0}
-  settingsPanel: {fileID: 0}
+  registerStatusText: {fileID: 242595118}
+  inputRegisterEmail: {fileID: 71495196}
+  inputRegisterPassword: {fileID: 578935126}
+  inputRegisterPasswordVerify: {fileID: 422324428}
+  inputRegisterNickname: {fileID: 210070366}
+  logonPanel: {fileID: 1408181995}
+  logonStatusText: {fileID: 2022423882}
+  inputLogonEmail: {fileID: 527460}
+  inputLogonPassword: {fileID: 1378508322}
+  aboutPanel: {fileID: 2104369226}
+  mainPanel: {fileID: 1187566051}
+  settingsLoginOutButton: {fileID: 1527377396}
+  settingsSoundButton: {fileID: 1744857546}
+  settingsPanel: {fileID: 1245153962}
   errorPanel: {fileID: 109397667}
   errorStatusText: {fileID: 1951024163}
-  errorResenEmailButton: {fileID: 0}
-  logonConfirmButton: {fileID: 0}
-  logonCloseButton: {fileID: 0}
-  logonForgotPasswrodButton: {fileID: 0}
-  registerConfirmButton: {fileID: 0}
-  registerCloseButton: {fileID: 0}
-  playerRank: {fileID: 0}
-  quitPanel: {fileID: 0}
+  errorResenEmailButton: {fileID: 1652478429}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
+  playerRank: {fileID: 191332532}
+  quitPanel: {fileID: 1282205091}
 --- !u!114 &706086240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4387,7 +4387,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050518056
 GameObject:
@@ -5368,9 +5368,9 @@ MonoBehaviour:
   errorPanel: {fileID: 109397667}
   errorStatusText: {fileID: 0}
   errorResenEmailButton: {fileID: 0}
-  logonConfirmButton: {fileID: 0}
-  logonCloseButton: {fileID: 0}
-  logonForgotPasswrodButton: {fileID: 0}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
   registerConfirmButton: {fileID: 0}
   registerCloseButton: {fileID: 0}
   playerRank: {fileID: 0}
@@ -5755,32 +5755,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerGamePanel: {fileID: 0}
-  startGamePanel: {fileID: 0}
-  registerStatusText: {fileID: 0}
-  inputRegisterEmail: {fileID: 0}
-  inputRegisterPassword: {fileID: 0}
-  inputRegisterPasswordVerify: {fileID: 0}
-  inputRegisterNickname: {fileID: 0}
-  logonPanel: {fileID: 0}
-  logonStatusText: {fileID: 0}
-  inputLogonEmail: {fileID: 0}
-  inputLogonPassword: {fileID: 0}
-  aboutPanel: {fileID: 0}
-  mainPanel: {fileID: 0}
-  settingsLoginOutButton: {fileID: 0}
-  settingsSoundButton: {fileID: 0}
-  settingsPanel: {fileID: 0}
-  errorPanel: {fileID: 0}
-  errorStatusText: {fileID: 0}
-  errorResenEmailButton: {fileID: 0}
-  logonConfirmButton: {fileID: 0}
-  logonCloseButton: {fileID: 0}
-  logonForgotPasswrodButton: {fileID: 0}
-  registerConfirmButton: {fileID: 0}
-  registerCloseButton: {fileID: 0}
-  playerRank: {fileID: 0}
-  quitPanel: {fileID: 0}
+  registerGamePanel: {fileID: 124636520}
+  startGamePanel: {fileID: 1910830324}
+  registerStatusText: {fileID: 242595118}
+  inputRegisterEmail: {fileID: 71495196}
+  inputRegisterPassword: {fileID: 578935126}
+  inputRegisterPasswordVerify: {fileID: 422324428}
+  inputRegisterNickname: {fileID: 210070366}
+  logonPanel: {fileID: 1408181995}
+  logonStatusText: {fileID: 2022423882}
+  inputLogonEmail: {fileID: 527460}
+  inputLogonPassword: {fileID: 1378508322}
+  aboutPanel: {fileID: 2104369226}
+  mainPanel: {fileID: 1187566051}
+  settingsLoginOutButton: {fileID: 1527377396}
+  settingsSoundButton: {fileID: 1744857546}
+  settingsPanel: {fileID: 1245153962}
+  errorPanel: {fileID: 109397667}
+  errorStatusText: {fileID: 1951024163}
+  errorResenEmailButton: {fileID: 1652478429}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
+  playerRank: {fileID: 191332532}
+  quitPanel: {fileID: 1282205091}
 --- !u!114 &1300706451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7172,6 +7172,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530064920}
   m_CullTransparentMesh: 0
+--- !u!1 &1537135420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1537135421}
+  - component: {fileID: 1537135422}
+  m_Layer: 0
+  m_Name: UIHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1537135421
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537135420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 490.8608, y: 372.16293, z: -1493.9614}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1537135422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537135420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4c1ae4cf1fd2774ca13c6f92559bad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainPanel: {fileID: 1187566051}
+  playerRank: {fileID: 191332532}
+  startGamePanel: {fileID: 1910830324}
+  errorPanel: {fileID: 109397667}
+  errorStatusText: {fileID: 1951024163}
+  errorResenEmailButton: {fileID: 1652478429}
+  registerGamePanel: {fileID: 124636520}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
+  logonPanel: {fileID: 1408181995}
+  logonStatusText: {fileID: 2022423882}
+  logonCloseButton: {fileID: 1504952794}
+  logonConfirmButton: {fileID: 1862147726}
+  logonForgotPasswrodButton: {fileID: 1254144818}
+  settingsPanel: {fileID: 1245153962}
+  aboutPanel: {fileID: 2104369226}
+  quitPanel: {fileID: 1282205091}
 --- !u!1 &1543239150
 GameObject:
   m_ObjectHideFlags: 0
@@ -7463,32 +7523,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerGamePanel: {fileID: 0}
+  registerGamePanel: {fileID: 124636520}
   startGamePanel: {fileID: 1910830324}
-  registerStatusText: {fileID: 0}
-  inputRegisterEmail: {fileID: 0}
-  inputRegisterPassword: {fileID: 0}
-  inputRegisterPasswordVerify: {fileID: 0}
-  inputRegisterNickname: {fileID: 0}
-  logonPanel: {fileID: 0}
-  logonStatusText: {fileID: 0}
-  inputLogonEmail: {fileID: 0}
-  inputLogonPassword: {fileID: 0}
-  aboutPanel: {fileID: 0}
-  mainPanel: {fileID: 0}
-  settingsLoginOutButton: {fileID: 0}
-  settingsSoundButton: {fileID: 0}
-  settingsPanel: {fileID: 0}
+  registerStatusText: {fileID: 242595118}
+  inputRegisterEmail: {fileID: 71495196}
+  inputRegisterPassword: {fileID: 578935126}
+  inputRegisterPasswordVerify: {fileID: 422324428}
+  inputRegisterNickname: {fileID: 210070366}
+  logonPanel: {fileID: 1408181995}
+  logonStatusText: {fileID: 2022423882}
+  inputLogonEmail: {fileID: 527460}
+  inputLogonPassword: {fileID: 1378508322}
+  aboutPanel: {fileID: 2104369226}
+  mainPanel: {fileID: 1187566051}
+  settingsLoginOutButton: {fileID: 1527377396}
+  settingsSoundButton: {fileID: 1744857546}
+  settingsPanel: {fileID: 1245153962}
   errorPanel: {fileID: 109397667}
-  errorStatusText: {fileID: 0}
-  errorResenEmailButton: {fileID: 0}
-  logonConfirmButton: {fileID: 0}
-  logonCloseButton: {fileID: 0}
-  logonForgotPasswrodButton: {fileID: 0}
-  registerConfirmButton: {fileID: 0}
-  registerCloseButton: {fileID: 0}
-  playerRank: {fileID: 0}
-  quitPanel: {fileID: 0}
+  errorStatusText: {fileID: 1951024163}
+  errorResenEmailButton: {fileID: 1652478429}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
+  registerConfirmButton: {fileID: 656969929}
+  registerCloseButton: {fileID: 1238505436}
+  playerRank: {fileID: 191332532}
+  quitPanel: {fileID: 1282205091}
 --- !u!114 &1652478429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8060,12 +8120,12 @@ MonoBehaviour:
   settingsLoginOutButton: {fileID: 0}
   settingsSoundButton: {fileID: 0}
   settingsPanel: {fileID: 0}
-  errorPanel: {fileID: 0}
-  errorStatusText: {fileID: 0}
-  errorResenEmailButton: {fileID: 0}
-  logonConfirmButton: {fileID: 0}
-  logonCloseButton: {fileID: 0}
-  logonForgotPasswrodButton: {fileID: 0}
+  errorPanel: {fileID: 109397667}
+  errorStatusText: {fileID: 1951024163}
+  errorResenEmailButton: {fileID: 1652478429}
+  logonConfirmButton: {fileID: 1862147726}
+  logonCloseButton: {fileID: 1504952794}
+  logonForgotPasswrodButton: {fileID: 1254144818}
   registerConfirmButton: {fileID: 0}
   registerCloseButton: {fileID: 0}
   playerRank: {fileID: 191332532}
@@ -8904,7 +8964,7 @@ RectTransform:
   - {fileID: 109397668}
   - {fileID: 1282205092}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -18,6 +18,10 @@ public class UIHandler : MonoBehaviour
     public GameObject registerGamePanel;
     public Button registerConfirmButton;
     public Button registerCloseButton;
+    public InputField registerNickname;
+    public InputField registerEmail;
+    public InputField registerPassword;
+    public InputField registerPasswordVerify;
 
     public GameObject logonPanel;
     public Text logonStatusText;
@@ -84,6 +88,11 @@ public class UIHandler : MonoBehaviour
 
     public IEnumerator UserRegisterCleanUp()
     {
+        registerNickname.text = "";
+        registerEmail.text = "";
+        registerPassword.text = "";
+        registerPasswordVerify.text = "";
+
         registerConfirmButton.gameObject.SetActive(true);
         registerCloseButton.gameObject.SetActive(true);
 

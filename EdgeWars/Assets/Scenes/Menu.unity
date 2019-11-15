@@ -7224,6 +7224,10 @@ MonoBehaviour:
   registerGamePanel: {fileID: 124636520}
   registerConfirmButton: {fileID: 656969929}
   registerCloseButton: {fileID: 1238505436}
+  registerNickname: {fileID: 210070366}
+  registerEmail: {fileID: 71495196}
+  registerPassword: {fileID: 578935126}
+  registerPasswordVerify: {fileID: 422324428}
   logonPanel: {fileID: 1408181995}
   logonStatusText: {fileID: 2022423882}
   logonCloseButton: {fileID: 1504952794}

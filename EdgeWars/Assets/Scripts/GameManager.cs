@@ -12,13 +12,10 @@ public class GameManager : MonoBehaviour
     public bool userAutoSignedIn = true;
     public bool isSoundsEnabled;
     public bool needToSignOutAfterShowingErrorPanel = false;
+    public bool newUserCreated = false;
 
     public static GameManager instance;
     
-
-    
-
-
     public UnityEvent OnFirebaseInitialized = new UnityEvent();
 
     private FirebaseAuth _auth;
@@ -114,26 +111,20 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Listener: Signed in " + _user.UserId);
                 _lastSignedInUser = _user;
-                                
+
                 if (userAutoSignedIn)
                 {
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        if (string.IsNullOrEmpty(_auth.CurrentUser.PhotoUrl.ToString()))
-                        {
-                            UserProfile userProfile = new UserProfile();
-                            userProfile.PhotoUrl = new Uri("1000");
-                            _auth.CurrentUser.UpdateUserProfileAsync(userProfile);
-                        }
-
                         UIHandler.instance.UserSignedIn();
-                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                     }
                     else
                     {
+                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                         needToSignOutAfterShowingErrorPanel = true;
-                        UIHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail before loggin in", Color.red, true);
+                        UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail before loggin in", Color.red, true);
                     }
 
                 }
@@ -142,20 +133,41 @@ public class GameManager : MonoBehaviour
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        if (string.IsNullOrEmpty(_auth.CurrentUser.PhotoUrl.ToString()))
-                        {
-                            UserProfile userProfile = new UserProfile();
-                            userProfile.PhotoUrl = new Uri("1000");
-                            _auth.CurrentUser.UpdateUserProfileAsync(userProfile);
-                        }
-
                         UIHandler.instance.UserSignedIn();
-                        Debug.Log("PhotoUrl " + _auth.CurrentUser.PhotoUrl + " last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                     }
                     else
                     {
-                        needToSignOutAfterShowingErrorPanel = true;
-                        UIHandler.instance.ShowErrorPanel("E-mail is not verified ! please verify your e-mail  before loggin in", Color.red, true);
+                        if (newUserCreated)
+                        {
+                            _user.SendEmailVerificationAsync().ContinueWith(nexttask =>
+                            {
+                                if (nexttask.IsCanceled)
+                                {
+                                    Debug.Log("SendEmailVerificationAsync was canceled.");
+                                }
+                                if (nexttask.IsFaulted)
+                                {
+                                    Debug.Log("SendEmailVerificationAsync encountered an error: " + nexttask.Exception);
+                                }
+                                else if (nexttask.IsCompleted)
+                                {
+                                    Debug.Log("SendEmailVerificationAsync sent successfully.");
+                                }
+                                else
+                                {
+                                    Debug.Log("SendEmailVerificationAsync ends with unknown state");
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                            needToSignOutAfterShowingErrorPanel = true;
+                            UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true);
+                        }
+
+
                     }
                 }
                 
@@ -167,6 +179,7 @@ public class GameManager : MonoBehaviour
     {
         bool userCreateSuccess = false;
         string errorText = "";
+        newUserCreated = true;
 
         _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
@@ -183,37 +196,41 @@ public class GameManager : MonoBehaviour
                     errorText = e.InnerException.Message;
                 }
             }
-            else if (task.IsCompleted)
-            {// Firebase user has been created.
+            else 
+            {
                 _user = task.Result;
                 UserProfile userProfile = new UserProfile();
                 userProfile.DisplayName = nickname;
-                userProfile.PhotoUrl = new Uri("1000");
-                _user.UpdateUserProfileAsync(userProfile);
+
+                _user.UpdateUserProfileAsync(new UserProfile()).ContinueWith(newtask =>
+                  {
+                      if (task.IsCanceled)
+                      {
+                          Debug.Log("UpdateUserProfileAsync was canceled.");
+                      }
+                      else if (task.IsFaulted)
+                      {
+                          Debug.Log("UpdateUserProfileAsync faulted with" + task.Exception);
+                      }
+                      else if (task.IsCompleted)
+                      {
+                          Debug.Log("UpdateUserProfileAsync completed");
+                      }
+                      else
+                      {
+                          Debug.Log("UpdateUserProfileAsync ends with unknown state");
+                      }
+                  });
+
                 Debug.Log("Firebase user created successfully: " + _user.DisplayName + " " + _user.UserId);
                 userCreateSuccess = true;
-                _user.SendEmailVerificationAsync().ContinueWith(nexttask =>
-                {
-                    if (nexttask.IsCanceled)
-                    {
-                        Debug.Log("SendEmailVerificationAsync was canceled.");
-                    }
-                    if (nexttask.IsFaulted)
-                    {
-                        Debug.Log("SendEmailVerificationAsync encountered an error: " + nexttask.Exception);
-                    }
-
-                    Debug.Log("Email sent successfully.");
-                });
-            }
-            else
-            {
-                errorText = "Something went wrong, please try again later";
+                newUserCreated = false;
             }
 
+            newUserCreated = false;
             UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserRegisterCleanUp());
             if (!userCreateSuccess) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
-            
+            else UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true));
         });
 
         
@@ -234,7 +251,6 @@ public class GameManager : MonoBehaviour
             else if (task.IsFaulted)
             {
                 Debug.Log("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-
                 foreach (var e in task.Exception.InnerExceptions)
                 {
                     errorText = e.InnerException.Message;
@@ -245,7 +261,6 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("SignInWithEmailAndPasswordAsync task Completed");
                 userSingInstatus = true;
-                
             }
             else
             {
@@ -346,7 +361,6 @@ public class GameManager : MonoBehaviour
                 errorText = "Something went wrong, please try again later";
             }
 
-            Debug.Log("showing password reset result");
             if (taskSuccess)
             {
                 UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserSingInCleanUp());

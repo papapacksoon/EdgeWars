@@ -121,13 +121,11 @@ public class ButtonHandler : MonoBehaviour
 
         if (string.IsNullOrEmpty(inputRegisterNickname.text))
         { 
-            Debug.Log("Nickname empty");
             registerStatusText.text = "Nickname field is empty";
             registerStatusText.color = Color.red;
         }
         else if (string.IsNullOrEmpty(inputRegisterEmail.text))
         {
-            Debug.Log("Email empty");
             registerStatusText.text = "Email field is empty";
             registerStatusText.color = Color.red;
         }
@@ -143,7 +141,7 @@ public class ButtonHandler : MonoBehaviour
         }
         else if (inputRegisterPassword.text.Length < 6)
         {
-            registerStatusText.text = "Password to short";
+            registerStatusText.text = "Password to short (must be 6 symbols minimum)";
             registerStatusText.color = Color.red;
         }
         else

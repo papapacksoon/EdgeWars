@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
                                     Debug.Log("SendEmailVerificationAsync ends with unknown state");
                                 }
                             });
+
                         }
                         else
                         {
@@ -202,7 +203,7 @@ public class GameManager : MonoBehaviour
                 UserProfile userProfile = new UserProfile();
                 userProfile.DisplayName = nickname;
 
-                _user.UpdateUserProfileAsync(new UserProfile()).ContinueWith(newtask =>
+                _user.UpdateUserProfileAsync(userProfile).ContinueWith(newtask =>
                   {
                       if (task.IsCanceled)
                       {
@@ -230,7 +231,11 @@ public class GameManager : MonoBehaviour
             newUserCreated = false;
             UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserRegisterCleanUp());
             if (!userCreateSuccess) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
-            else UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true));
+            else
+            {
+                needToSignOutAfterShowingErrorPanel = true;
+                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true));
+            }
         });
 
         

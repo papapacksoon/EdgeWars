@@ -47,7 +47,9 @@ public class UIHandler : MonoBehaviour
     public void UserSignedIn()
     {
         startGamePanel.SetActive(false);
+        logonPanel.SetActive(false);
         mainPanel.SetActive(true);
+        
         playerRank.text = GameManager.instance.Auth.CurrentUser.DisplayName;
     }
 

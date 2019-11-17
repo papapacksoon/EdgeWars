@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Unity.Editor;
 
 
 public class GameManager : MonoBehaviour
@@ -85,6 +86,17 @@ public class GameManager : MonoBehaviour
 
         _auth = FirebaseAuth.DefaultInstance;
         _auth.StateChanged += AuthStateChanged;
+      
+        // Set these values before calling into the realtime database.
+        _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
+      
+
+    }
+
+    private void Start()
+    {
+
+        
 
     }
 
@@ -374,5 +386,10 @@ public class GameManager : MonoBehaviour
             else UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateLogonStatus(errorText, Color.red));
 
         });
+    }
+
+    public void PostToDatabase()
+    {
+        //data---
     }
 }

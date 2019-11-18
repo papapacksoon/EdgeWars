@@ -8,6 +8,9 @@ using Firebase.Auth;
 
 public class PlayerManager : MonoBehaviour
 {
+    public string playerName;
+    public int playerRank;
+    
 
     public static PlayerManager instance;
     private void Awake()

@@ -50,7 +50,7 @@ public class UIHandler : MonoBehaviour
         logonPanel.SetActive(false);
         mainPanel.SetActive(true);
         
-        playerRank.text = GameManager.instance.Auth.CurrentUser.DisplayName;
+        playerRank.text = PlayerManager.instance.playerName + " rating is " + PlayerManager.instance.playerRank;
     }
 
     public void ShowErrorPanel(string errorText, Color color, bool showResendEmailButton)

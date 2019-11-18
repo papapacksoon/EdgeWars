@@ -5,6 +5,8 @@ using UnityEngine.Events;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Unity.Editor;
+using Firebase.Database;
+
 
 
 public class GameManager : MonoBehaviour
@@ -20,7 +22,10 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnFirebaseInitialized = new UnityEvent();
 
     private FirebaseAuth _auth;
-    private FirebaseUser _user, _lastSignedInUser;
+    private FirebaseUser _user;
+
+    DatabaseReference dataBaseReference;
+
     public string _displayedUserName;
 
     public FirebaseAuth Auth
@@ -89,14 +94,7 @@ public class GameManager : MonoBehaviour
       
         // Set these values before calling into the realtime database.
         _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
-      
-
-    }
-
-    private void Start()
-    {
-
-        
+        dataBaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
     }
 
@@ -122,7 +120,7 @@ public class GameManager : MonoBehaviour
             if (signedIn)
             {
                 Debug.Log("Listener: Signed in " + _user.UserId);
-                _lastSignedInUser = _user;
+               
 
                 if (userAutoSignedIn)
                 {
@@ -131,6 +129,8 @@ public class GameManager : MonoBehaviour
                         singlePlayerWithoutLogginIn = false;
                         UIHandler.instance.UserSignedIn();
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        //Retrive data from Database --------------------------------------------------------
+                        //if there is no data get it from _user
                     }
                     else
                     {
@@ -147,6 +147,9 @@ public class GameManager : MonoBehaviour
                         singlePlayerWithoutLogginIn = false;
                         UIHandler.instance.UserSignedIn();
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+
+                        //Retrive data from Database --------------------------------------------------------
+                        //if there is no data get it from _user
                     }
                     else
                     {
@@ -238,6 +241,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Firebase user created successfully: " + _user.DisplayName + " " + _user.UserId);
                 userCreateSuccess = true;
                 newUserCreated = false;
+                PlayerManager.instance.playerName = nickname;
+                PlayerManager.instance.playerRank = 1000;
+                SaveNewUserToDatabase();
+                UpdateUserDataInDatabase();
             }
 
             newUserCreated = false;
@@ -388,8 +395,72 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    public void PostToDatabase()
+    public void SaveNewUserToDatabase()
     {
-        //data---
+        if (_user != null)
+        {
+            string json = JsonUtility.ToJson(PlayerManager.instance);
+            dataBaseReference.Child("users").Child(_user.UserId).SetRawJsonValueAsync(json).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Debug.Log("SetRawJsonValueAsync was canceled.");
+              
+                }
+                else if (task.IsFaulted)
+                {
+                    Debug.Log("SetRawJsonValueAsync encountered an error: " + task.Exception);
+                }
+                else if (task.IsCompleted)
+                {
+                    Debug.Log("SetRawJsonValueAsync completed successfully.");
+                }
+                else
+                {
+                    Debug.Log("SetRawJsonValueAsync returns unhandled result");
+                }
+            });
+        }
+        else
+        {
+            Debug.Log("SaveNewUserToDatabase failed, _user is null");
+        }
+
+    }
+    public void UpdateUserDataInDatabase()
+    {
+        //
+        PlayerManager.instance.playerRank = 999;
+        //
+        if (_user != null)
+        {
+
+            dataBaseReference.Child("users").Child(_user.UserId).Child("playerRank").SetValueAsync(PlayerManager.instance.playerRank).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Debug.Log("SetValueAsync was canceled.");
+
+                }
+                else if (task.IsFaulted)
+                {
+                    Debug.Log("SetValueAsync encountered an error: " + task.Exception);
+                }
+                else if (task.IsCompleted)
+                {
+                    Debug.Log("SetValueAsync completed successfully.");
+                }
+                else
+                {
+                    Debug.Log("SetValueAsync returns unhandled result");
+                }
+            });
+        }
+        else
+        {
+            Debug.Log("SetValueAsync failed, _user is null");
+        }
+    }
+    public void RetrieveUserDataFromDatabase()
+    {
+
     }
 }

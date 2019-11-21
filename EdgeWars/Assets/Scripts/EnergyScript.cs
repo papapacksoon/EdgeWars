@@ -13,12 +13,12 @@ public class EnergyScript : MonoBehaviour
 
     public Text EnergyLabel;
     public Text nextEnergyText;
-    private const int MAXENERGY = 10;
+    public const int MAXENERGY = 10;
     public static int currentEnergy;
-    
 
-    private const int SECONDSTONEWENERGY = 8640;
-    private float energyTimer;
+
+    public const int SECONDSTONEWENERGY = 8640;
+    public float energyTimer;
 
     private void Awake()
     {
@@ -31,7 +31,6 @@ public class EnergyScript : MonoBehaviour
     }
     private void Start()
     {
-        SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;
         Application.quitting += Application_quitting;
 
         //count how much energy restored
@@ -72,18 +71,13 @@ public class EnergyScript : MonoBehaviour
         }
         else currentEnergy = MAXENERGY;
 
-        DisplayEnergy();
-        if (currentEnergy < MAXENERGY) DisplayEnergyTimer();
+        UIHandler.instance.DisplayEnergy();
+        if (currentEnergy < MAXENERGY) UIHandler.instance.DisplayEnergyTimer();
     }
 
     private void Application_quitting()
     {
-        //  Debug.Log("Quitting");
-
-        PlayerPrefs.SetInt("Energy", currentEnergy);
-        PlayerPrefs.SetFloat("EnergyTimer", energyTimer);
-        PlayerPrefs.SetString("DateTime", System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
-        PlayerPrefs.Save();
+       //SaveEnergyTimer to UserData
     }
 
     // Update is called once per frame
@@ -97,11 +91,11 @@ public class EnergyScript : MonoBehaviour
             if ((int)energyTimer > SECONDSTONEWENERGY)
             {
                 currentEnergy++;
-                DisplayEnergy();
+                UIHandler.instance.DisplayEnergy();
                 energyTimer = 0;
             }
             //display energy text
-            if (((int)energyTimer % 60) == 0) DisplayEnergyTimer();
+            if (((int)energyTimer % 60) == 0) UIHandler.instance.DisplayEnergyTimer();
         }
 
     }
@@ -121,23 +115,19 @@ public class EnergyScript : MonoBehaviour
         //last date time
     }
 
-    public void DisplayEnergy()
-    {
-        EnergyLabel.text = "ENERGY " + currentEnergy + "/10";
-        if (currentEnergy == 0) EnergyLabel.color = Color.red;
-        else EnergyLabel.color = new Color(0, 255, 244);
+ 
 
-    }
-
-    public void DisplayEnergyTimer()
+    public IEnumerator OnLogonEnergyCount(DateTime serverDateTime)
     {
-        int currentSecondsToNewEnergy = SECONDSTONEWENERGY - (int)energyTimer;
-        int hoursToNewEnergy = currentSecondsToNewEnergy / 3600;
-        int minutesToNewEnergy = (currentSecondsToNewEnergy % 3600) / 60;
-        if (currentEnergy < MAXENERGY)
-            nextEnergyText.text = "You get energy in " + hoursToNewEnergy + " hours " + minutesToNewEnergy + " minutes";
-        else
-            nextEnergyText.text = "";
+        //-----------------------
+        //we have retrieved in PlayerManager instance
+        //serverDateTime hold a server date time 
+        //need to count currentEnergy
+        //currentEnergyTimer
+        //And add (substract) user offline time 
+        Debug.Log("EnergyUpdated");
+
+        yield return null;
     }
 }
 

@@ -3902,6 +3902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnergyLabel: {fileID: 841102657}
   nextEnergyText: {fileID: 1334459305}
+  energyTimer: 0
 --- !u!1 &880761450
 GameObject:
   m_ObjectHideFlags: 0
@@ -7236,6 +7237,8 @@ MonoBehaviour:
   settingsPanel: {fileID: 1245153962}
   aboutPanel: {fileID: 2104369226}
   quitPanel: {fileID: 1282205091}
+  EnergyLabel: {fileID: 841102657}
+  nextEnergyText: {fileID: 1334459305}
 --- !u!1 &1543239150
 GameObject:
   m_ObjectHideFlags: 0

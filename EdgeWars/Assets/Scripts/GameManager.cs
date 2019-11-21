@@ -6,8 +6,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Unity.Editor;
 using Firebase.Database;
-
-
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,8 +22,9 @@ public class GameManager : MonoBehaviour
 
     private FirebaseAuth _auth;
     private FirebaseUser _user;
+    private DatabaseReference dataBaseReference;
 
-    DatabaseReference dataBaseReference;
+    private DateTime serverDateTime;
 
     public string _displayedUserName;
 
@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
         _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
         dataBaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
+        
+
     }
 
     void OnDestroy()
@@ -129,11 +131,15 @@ public class GameManager : MonoBehaviour
                         singlePlayerWithoutLogginIn = false;
                         UIHandler.instance.UserSignedIn();
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
-                        //Retrive data from Database --------------------------------------------------------
-                        //if there is no data get it from _user
+
+                        RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
                     else
                     {
+                        ///---------------------------------------testing section
+                        GetCurrentPlayerRank();
+                        OnLogonEnergyCounterUpdate();
+                        ///---------------------------------------testing section
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                         needToSignOutAfterShowingErrorPanel = true;
                         UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail before loggin in", Color.red, true);
@@ -148,8 +154,7 @@ public class GameManager : MonoBehaviour
                         UIHandler.instance.UserSignedIn();
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
 
-                        //Retrive data from Database --------------------------------------------------------
-                        //if there is no data get it from _user
+                        RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
                     else
                     {
@@ -244,7 +249,6 @@ public class GameManager : MonoBehaviour
                 PlayerManager.instance.playerName = nickname;
                 PlayerManager.instance.playerRank = 1000;
                 SaveNewUserToDatabase();
-                UpdateUserDataInDatabase();
             }
 
             newUserCreated = false;
@@ -256,9 +260,6 @@ public class GameManager : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true));
             }
         });
-
-        
-
     }
 
     public void UserSingIn(string email, string password)
@@ -279,7 +280,6 @@ public class GameManager : MonoBehaviour
                 {
                     errorText = e.InnerException.Message;
                 }
-             
             }
             else if (task.IsCompleted)
             {
@@ -359,8 +359,7 @@ public class GameManager : MonoBehaviour
         string errorText = "?";
         
         _auth.SendPasswordResetEmailAsync(email).ContinueWith(task => {
-            
-            
+
             if (task.IsCanceled)
             {
                 Debug.Log("SendPasswordResetEmailAsync was canceled.");
@@ -369,10 +368,7 @@ public class GameManager : MonoBehaviour
             else if (task.IsFaulted)
             {
                 Debug.Log("SendPasswordResetEmailAsync encountered an error: " + task.Exception);
-
-                Debug.Log(task.Exception.InnerExceptions.Count);
                 errorText = task.Exception.InnerExceptions[0].Message;
-
             }
             else if (task.IsCompleted)
             {
@@ -399,12 +395,17 @@ public class GameManager : MonoBehaviour
     {
         if (_user != null)
         {
+            PlayerManager.instance.playerEnergy = 10;
             string json = JsonUtility.ToJson(PlayerManager.instance);
+
+            Debug.Log("json = " + json);
+            Debug.Log(DateTime.Now.ToString());
+
+
             dataBaseReference.Child("users").Child(_user.UserId).SetRawJsonValueAsync(json).ContinueWith(task => {
                 if (task.IsCanceled)
                 {
                     Debug.Log("SetRawJsonValueAsync was canceled.");
-              
                 }
                 else if (task.IsFaulted)
                 {
@@ -426,11 +427,9 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    public void UpdateUserDataInDatabase()
+    public void UpdatePlayerRank()
     {
-        //
-        PlayerManager.instance.playerRank = 999;
-        //
+    
         if (_user != null)
         {
 
@@ -438,7 +437,6 @@ public class GameManager : MonoBehaviour
                 if (task.IsCanceled)
                 {
                     Debug.Log("SetValueAsync was canceled.");
-
                 }
                 else if (task.IsFaulted)
                 {
@@ -459,8 +457,154 @@ public class GameManager : MonoBehaviour
             Debug.Log("SetValueAsync failed, _user is null");
         }
     }
-    public void RetrieveUserDataFromDatabase()
+    public void RetrieveUserDataFromDatabase(string userID)
     {
+       dataBaseReference.Child("users").Child(userID).GetValueAsync().ContinueWith( task => {
+           if (task.IsCanceled)
+           {
+               Debug.Log("GetValueAsync was canceled.");
+           }
+           else if (task.IsFaulted)
+           {
+               Debug.Log("GetValueAsync encountered an error: " + task.Exception);
+           }
+           else if (task.IsCompleted)
+           {
+               Debug.Log("GetValueAsync completed successfully.");
+               DataSnapshot dataSnapshot = task.Result;
+               PlayerManager.instance.playerName = dataSnapshot.Child("playerName").Value.ToString();
+               PlayerManager.instance.playerRank = int.Parse(dataSnapshot.Child("playerRank").Value.ToString());
+               PlayerManager.instance.playerEnergy = int.Parse(dataSnapshot.Child("playerEnergy").Value.ToString());
+               PlayerManager.instance.playerEnergyTimer = int.Parse(dataSnapshot.Child("playerEnergyTimer").Value.ToString());
+
+               OnLogonEnergyCounterUpdate();
+           }
+           else
+           {
+               Debug.Log("GetValueAsync returns unhandled result");
+           }
+       });
+    }
+    public void UpdateLeaderboard()
+    {
+        if (_user != null)
+        {
+            if (_user != null)
+            {
+                dataBaseReference.Child("leaderboard").Child(_user.UserId).SetValueAsync(PlayerManager.instance.playerRank).ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Debug.Log("UpdateLeaderboard was canceled.");
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        Debug.Log("UpdateLeaderboard encountered an error: " + task.Exception);
+                    }
+                    else if (task.IsCompleted)
+                    {
+                        Debug.Log("UpdateLeaderboard completed successfully.");
+                    }
+                    else
+                    {
+                        Debug.Log("UpdateLeaderboard returns unhandled result");
+                    }
+                });
+            }
+            else
+            {
+                Debug.Log("UpdateLeaderboard failed, _user is null");
+            }
+        }
 
     }
+
+    public void GetCurrentPlayerRank()
+    {
+        if (_user == null)
+        {
+            Debug.Log("GetCurrentPlayerRank aborted, CurrentUser is null");
+            return;
+        }
+
+        int playerRank = 1;
+        FirebaseDatabase.DefaultInstance.GetReference("leaderboard").OrderByValue().GetValueAsync().ContinueWith( task => 
+        { 
+            if (task.IsCanceled)
+            {
+                Debug.Log("GetCurrentPlayerRank was canceled.");
+            }
+            else if (task.IsFaulted)
+            {
+                Debug.Log("GetCurrentPlayerRank encountered an error: " + task.Exception);
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("GetCurrentPlayerRank completed successfully.");
+                DataSnapshot dataSnapshot = task.Result;
+                playerRank = (int)dataSnapshot.ChildrenCount;
+
+                if (!dataSnapshot.HasChild(_user.UserId.ToString()) && _user.IsEmailVerified)
+                {
+                       UpdateLeaderboard();
+                       GetCurrentPlayerRank();
+                }
+                else
+                {
+                    foreach (var data in dataSnapshot.Children)
+                    {
+                        if (_user.UserId == data.Key) PlayerManager.instance.playerRank = playerRank;
+                        playerRank --;
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("GetCurrentPlayerRank returns unhandled result");
+            }
+        });
+    }
+
+    public void OnLogonEnergyCounterUpdate()
+    {
+        DateTime serverDateTime = DateTime.Now;
+
+        FirebaseDatabase.DefaultInstance.GetReference("/.info/serverTimeOffset").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.Log("GetDatabaseServerTimeStamp was canceled.");
+            }
+            else if (task.IsFaulted)
+            {
+                Debug.Log("GetDatabaseServerTimeStamp encountered an error: " + task.Exception);
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("GetDatabaseServerTimeStamp completed successfully.");
+
+                double serverTimeOffset = double.Parse(task.Result.Value.ToString());
+                serverDateTime = DateTime.Now.AddMilliseconds(serverTimeOffset);
+
+                UnityMainThreadDispatcher.Instance().Enqueue(EnergyScript.instance.OnLogonEnergyCount(serverDateTime));
+            }
+            else
+            {
+                Debug.Log("GetDatabaseServerTimeStamp returns unhandled result");
+            }
+        });
+    }
+
+    public void EnergyDataUpdate(int energy, int timer)
+    {
+        if (_user == null)
+        {
+            Debug.Log("EnergyDataUpdate aborted, CurrentUser is null");
+            return;
+        }
+
+        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergy").SetValueAsync(energy);
+        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyTimer").SetValueAsync(timer);
+        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyDateTime").SetValueAsync(DateTime.Now);
+    }
 }
+

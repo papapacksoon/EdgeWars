@@ -33,6 +33,9 @@ public class UIHandler : MonoBehaviour
     public GameObject aboutPanel;
     public GameObject quitPanel;
 
+    public Text EnergyLabel;
+    public Text nextEnergyText;
+
     public static UIHandler instance;
     private void Awake()
     {
@@ -49,8 +52,8 @@ public class UIHandler : MonoBehaviour
         startGamePanel.SetActive(false);
         logonPanel.SetActive(false);
         mainPanel.SetActive(true);
-        
-        playerRank.text = PlayerManager.instance.playerName + " rating is " + PlayerManager.instance.playerRank;
+
+        UpdatePlayerRankUI();
     }
 
     public void ShowErrorPanel(string errorText, Color color, bool showResendEmailButton)
@@ -138,5 +141,29 @@ public class UIHandler : MonoBehaviour
 
         yield return null;
 
+    }
+
+    public void UpdatePlayerRankUI()
+    {
+        playerRank.text = PlayerManager.instance.playerName + " rating is " + PlayerManager.instance.playerRank;
+    }
+    public void DisplayEnergy()
+    {
+        
+        EnergyLabel.text = "ENERGY " + EnergyScript.currentEnergy + "/10";
+        if (EnergyScript.currentEnergy == 0) EnergyLabel.color = Color.red;
+        else EnergyLabel.color = new Color(0, 255, 244);
+
+    }
+
+    public void DisplayEnergyTimer()
+    {
+        int currentSecondsToNewEnergy = EnergyScript.SECONDSTONEWENERGY - (int)EnergyScript.instance.energyTimer;
+        int hoursToNewEnergy = currentSecondsToNewEnergy / 3600;
+        int minutesToNewEnergy = (currentSecondsToNewEnergy % 3600) / 60;
+        if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY)
+            nextEnergyText.text = "You get energy in " + hoursToNewEnergy + " hours " + minutesToNewEnergy + " minutes";
+        else
+            nextEnergyText.text = "";
     }
 }

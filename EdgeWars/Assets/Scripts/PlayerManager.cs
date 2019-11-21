@@ -10,7 +10,10 @@ public class PlayerManager : MonoBehaviour
 {
     public string playerName;
     public int playerRank;
-    
+    public int playerEnergy = 0;
+    public int playerEnergyTimer = 0;
+    public string playerLogoutDateTime = DateTime.Now.ToString();
+
 
     public static PlayerManager instance;
     private void Awake()

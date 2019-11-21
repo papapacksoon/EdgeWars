@@ -81,7 +81,7 @@ public class ButtonHandler : MonoBehaviour
         }
         else if (EnergyScript.currentEnergy > 0)
         {
-            EnergyScript.instance.DisplayEnergy();
+            UIHandler.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
                         
@@ -103,7 +103,7 @@ public class ButtonHandler : MonoBehaviour
         }
         else if (EnergyScript.currentEnergy > 0)
         {
-            EnergyScript.instance.DisplayEnergy();
+            UIHandler.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }

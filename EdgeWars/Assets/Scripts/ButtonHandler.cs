@@ -165,8 +165,9 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.needToSignOutAfterShowingErrorPanel)
         {
+            Debug.Log("signing out after close errorpanel");
             GameManager.instance.needToSignOutAfterShowingErrorPanel = false;
-            GameManager.instance.UserLogout();
+            GameManager.instance.UserLogout(false);
         }
         errorStatusText.text = "";
         errorPanel.SetActive(false);
@@ -323,7 +324,7 @@ public class ButtonHandler : MonoBehaviour
 
     public void SettingsLogout()   //------------------------------------------------------------------------------------------------
     {
-        GameManager.instance.UserLogout();
+        GameManager.instance.UserLogout(true);
         _fromMain = false;
         BackFromSettings();
 

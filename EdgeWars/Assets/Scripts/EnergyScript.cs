@@ -22,7 +22,7 @@ public class EnergyScript : MonoBehaviour
 
     private void Awake()
     {
-        //DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);
 
         if (instance == null)
         {
@@ -34,50 +34,11 @@ public class EnergyScript : MonoBehaviour
         Application.quitting += Application_quitting;
 
         //count how much energy restored
-        if (PlayerPrefs.HasKey("Energy") == true)
-        {
-
-            currentEnergy = PlayerPrefs.GetInt("Energy");
-
-            if (PlayerPrefs.HasKey("EnergyTimer") == true)
-            {
-                energyTimer = PlayerPrefs.GetFloat("EnergyTimer");
-
-                if (currentEnergy == MAXENERGY) energyTimer = 0;
-
-            }
-            else energyTimer = 0;
-
-            if (currentEnergy < MAXENERGY)
-            {
-                if (PlayerPrefs.HasKey("DateTime"))
-                {
-
-                    currentEnergy += (int)(System.DateTime.Now.Subtract(Convert.ToDateTime(PlayerPrefs.GetString("DateTime")))).TotalSeconds / SECONDSTONEWENERGY; ;
-                    energyTimer += (int)(System.DateTime.Now.Subtract(Convert.ToDateTime(PlayerPrefs.GetString("DateTime")))).TotalSeconds % SECONDSTONEWENERGY;
-                    if (energyTimer > SECONDSTONEWENERGY)
-                    {
-                        currentEnergy++;
-                        energyTimer -= SECONDSTONEWENERGY;
-                    }
-                    
-                    if (currentEnergy > MAXENERGY)
-                    {
-                        currentEnergy = MAXENERGY;
-                        energyTimer = 0;
-                    }
-                }
-            }
-        }
-        else currentEnergy = MAXENERGY;
-
-        UIHandler.instance.DisplayEnergy();
-        if (currentEnergy < MAXENERGY) UIHandler.instance.DisplayEnergyTimer();
     }
 
     private void Application_quitting()
     {
-       //SaveEnergyTimer to UserData
+        GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
     }
 
     // Update is called once per frame
@@ -85,48 +46,42 @@ public class EnergyScript : MonoBehaviour
     {
         //display current energy
 
-        if (currentEnergy < MAXENERGY)
+        if (currentEnergy < MAXENERGY && !GameManager.instance.singlePlayerWithoutLogginIn)
         {
             energyTimer += Time.deltaTime;
             if ((int)energyTimer > SECONDSTONEWENERGY)
             {
                 currentEnergy++;
-                UIHandler.instance.DisplayEnergy();
+                if (SceneManager.GetActiveScene().name == "Menu") UIHandler.instance.DisplayEnergy();
                 energyTimer = 0;
             }
             //display energy text
-            if (((int)energyTimer % 60) == 0) UIHandler.instance.DisplayEnergyTimer();
+            if (((int)energyTimer % 60) == 0 && SceneManager.GetActiveScene().name == "Menu") UIHandler.instance.DisplayEnergyTimer();
         }
-
     }
-
-    private void SceneManager_sceneUnloaded(Scene arg0)
-    {
-        //save data (ENERGY)
-        //  Debug.Log("Scene Unloaded " + arg0.name);
-        if (arg0.name == "Menu")
-        {
-            PlayerPrefs.SetInt("Energy", currentEnergy);
-            PlayerPrefs.SetFloat("EnergyTimer", energyTimer);
-            PlayerPrefs.SetString("DateTime", System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
-            PlayerPrefs.Save();
-        }
-
-        //last date time
-    }
-
- 
 
     public IEnumerator OnLogonEnergyCount(DateTime serverDateTime)
     {
-        //-----------------------
-        //we have retrieved in PlayerManager instance
-        //serverDateTime hold a server date time 
-        //need to count currentEnergy
-        //currentEnergyTimer
-        //And add (substract) user offline time 
-        Debug.Log("EnergyUpdated");
+        //count current energy 
+        currentEnergy = PlayerManager.instance.playerEnergy;
+        if (currentEnergy >= MAXENERGY) energyTimer = 0;
+        else
+        {
+            currentEnergy += (int)serverDateTime.Subtract(Convert.ToDateTime(PlayerManager.instance.playerLogoutDateTime)).TotalSeconds / SECONDSTONEWENERGY; ;
+            energyTimer += (int)DateTime.Now.Subtract(Convert.ToDateTime(PlayerManager.instance.playerLogoutDateTime)).TotalSeconds % SECONDSTONEWENERGY;
 
+            Debug.Log("current energy = " + currentEnergy);
+            Debug.Log(" current timer = " + energyTimer);
+
+            if (currentEnergy >= MAXENERGY)
+            {
+                currentEnergy = MAXENERGY;
+                energyTimer = 0;
+            }
+        }
+
+        UIHandler.instance.DisplayEnergy();
+        UIHandler.instance.DisplayEnergyTimer();
         yield return null;
     }
 }

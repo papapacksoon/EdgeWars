@@ -92,7 +92,6 @@ public class GameManager : MonoBehaviour
         _auth = FirebaseAuth.DefaultInstance;
         _auth.StateChanged += AuthStateChanged;
       
-        // Set these values before calling into the realtime database.
         _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
         dataBaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
@@ -126,21 +125,18 @@ public class GameManager : MonoBehaviour
 
                 if (userAutoSignedIn)
                 {
+                    Debug.Log("user auto sign in = true");
+
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        UIHandler.instance.UserSignedIn();
-                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
+                        UIHandler.instance.UserSignedInShowMainPanel();
+                        Debug.Log(" last autosigned in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
 
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
                     else
                     {
-                        ///---------------------------------------testing section
-                        GetCurrentPlayerRank();
-                        OnLogonEnergyCounterUpdate();
-                        ///---------------------------------------testing section
-                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                         needToSignOutAfterShowingErrorPanel = true;
                         UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail before loggin in", Color.red, true);
                     }
@@ -148,10 +144,12 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("user auto sign in = false");
+
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
-                        UIHandler.instance.UserSignedIn();
+                        UIHandler.instance.UserSignedInShowMainPanel();
                         Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
 
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
@@ -183,7 +181,6 @@ public class GameManager : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
                             needToSignOutAfterShowingErrorPanel = true;
                             UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true);
                         }
@@ -293,13 +290,18 @@ public class GameManager : MonoBehaviour
             }
 
             UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserSingInCleanUp());
-            if (!userSingInstatus) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateLogonStatus(errorText, Color.red));
+            
+            if (userSingInstatus) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserSignedInShowMainPanelIEnumerator());
+            else UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdateLogonStatus(errorText, Color.red));
+
+
         });
     }
 
-    public void UserLogout()
+    public void UserLogout(bool saveEnergyData)
     {
-        _auth.SignOut();
+        if (saveEnergyData) EnergyDataUpdate(EnergyScript.currentEnergy, (int)EnergyScript.instance.energyTimer, true);
+        else _auth.SignOut();
         singlePlayerWithoutLogginIn = true;
         userAutoSignedIn = false;
     }
@@ -477,6 +479,7 @@ public class GameManager : MonoBehaviour
                PlayerManager.instance.playerEnergy = int.Parse(dataSnapshot.Child("playerEnergy").Value.ToString());
                PlayerManager.instance.playerEnergyTimer = int.Parse(dataSnapshot.Child("playerEnergyTimer").Value.ToString());
 
+               GetCurrentPlayerPlaceInLeaderboard();
                OnLogonEnergyCounterUpdate();
            }
            else
@@ -518,7 +521,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void GetCurrentPlayerRank()
+    public void GetCurrentPlayerPlaceInLeaderboard()
     {
         if (_user == null)
         {
@@ -546,16 +549,18 @@ public class GameManager : MonoBehaviour
                 if (!dataSnapshot.HasChild(_user.UserId.ToString()) && _user.IsEmailVerified)
                 {
                        UpdateLeaderboard();
-                       GetCurrentPlayerRank();
+                       GetCurrentPlayerPlaceInLeaderboard();
                 }
                 else
                 {
                     foreach (var data in dataSnapshot.Children)
                     {
-                        if (_user.UserId == data.Key) PlayerManager.instance.playerRank = playerRank;
+                        if (_user.UserId == data.Key) return;
                         playerRank --;
                     }
                 }
+
+                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdatePlayerRankUI(playerRank));
             }
             else
             {
@@ -594,7 +599,7 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    public void EnergyDataUpdate(int energy, int timer)
+    public void EnergyDataUpdate(int energy, int timer, bool singOut)
     {
         if (_user == null)
         {
@@ -602,9 +607,28 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergy").SetValueAsync(energy);
-        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyTimer").SetValueAsync(timer);
-        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyDateTime").SetValueAsync(DateTime.Now);
+        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergy").SetValueAsync(energy).ContinueWith( task => {
+            if (task.IsCompleted)
+            {
+                dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyTimer").SetValueAsync(timer).ContinueWith( task2 =>
+                {
+                    if (task2.IsCompleted)
+                        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyDateTime").SetValueAsync(DateTime.Now).ContinueWith( task3 => {
+                            if (singOut)
+                            {
+                                _auth.SignOut();
+                                Debug.Log(" Energy data updated and user signed out");
+                            }
+                            else Debug.Log("Energy Data updated");
+                        });
+                });
+            }
+        });
+        
+        
+
+               
+
     }
 }
 

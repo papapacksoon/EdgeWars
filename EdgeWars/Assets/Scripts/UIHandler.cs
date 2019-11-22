@@ -47,13 +47,11 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    public void UserSignedIn()
+    public void UserSignedInShowMainPanel()
     {
         startGamePanel.SetActive(false);
         logonPanel.SetActive(false);
         mainPanel.SetActive(true);
-
-        UpdatePlayerRankUI();
     }
 
     public void ShowErrorPanel(string errorText, Color color, bool showResendEmailButton)
@@ -143,10 +141,13 @@ public class UIHandler : MonoBehaviour
 
     }
 
-    public void UpdatePlayerRankUI()
+    public IEnumerator UpdatePlayerRankUI(int currentPlace)
     {
-        playerRank.text = PlayerManager.instance.playerName + " rating is " + PlayerManager.instance.playerRank;
+        playerRank.text = PlayerManager.instance.playerName + " rating is " + currentPlace;
+
+        yield return null;
     }
+
     public void DisplayEnergy()
     {
         
@@ -165,5 +166,14 @@ public class UIHandler : MonoBehaviour
             nextEnergyText.text = "You get energy in " + hoursToNewEnergy + " hours " + minutesToNewEnergy + " minutes";
         else
             nextEnergyText.text = "";
+    }
+
+    public IEnumerator UserSignedInShowMainPanelIEnumerator()
+    {
+        startGamePanel.SetActive(false);
+        logonPanel.SetActive(false);
+        mainPanel.SetActive(true);
+
+        yield return null;
     }
 }

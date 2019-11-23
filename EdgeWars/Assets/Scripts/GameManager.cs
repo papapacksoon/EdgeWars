@@ -7,6 +7,7 @@ using Firebase.Auth;
 using Firebase.Unity.Editor;
 using Firebase.Database;
 using System.Collections.Generic;
+using System.Globalization;
 
 public class GameManager : MonoBehaviour
 {
@@ -121,7 +122,8 @@ public class GameManager : MonoBehaviour
             if (signedIn)
             {
                 Debug.Log("Listener: Signed in " + _user.UserId);
-               
+                Debug.Log(" name = " + _auth.CurrentUser.DisplayName);
+                Debug.Log(" email verified = " + _auth.CurrentUser.IsEmailVerified);
 
                 if (userAutoSignedIn)
                 {
@@ -478,6 +480,8 @@ public class GameManager : MonoBehaviour
                PlayerManager.instance.playerRank = int.Parse(dataSnapshot.Child("playerRank").Value.ToString());
                PlayerManager.instance.playerEnergy = int.Parse(dataSnapshot.Child("playerEnergy").Value.ToString());
                PlayerManager.instance.playerEnergyTimer = int.Parse(dataSnapshot.Child("playerEnergyTimer").Value.ToString());
+               PlayerManager.instance.playerLogoutDateTime = dataSnapshot.Child("playerLogoutDateTime").Value.ToString();
+               
 
                GetCurrentPlayerPlaceInLeaderboard();
                OnLogonEnergyCounterUpdate();
@@ -546,7 +550,7 @@ public class GameManager : MonoBehaviour
                 DataSnapshot dataSnapshot = task.Result;
                 playerRank = (int)dataSnapshot.ChildrenCount;
 
-                if (!dataSnapshot.HasChild(_user.UserId.ToString()) && _user.IsEmailVerified)
+                if (!dataSnapshot.HasChild(_auth.CurrentUser.UserId.ToString()) && _auth.CurrentUser.IsEmailVerified)
                 {
                        UpdateLeaderboard();
                        GetCurrentPlayerPlaceInLeaderboard();
@@ -555,12 +559,13 @@ public class GameManager : MonoBehaviour
                 {
                     foreach (var data in dataSnapshot.Children)
                     {
-                        if (_user.UserId == data.Key) return;
+                        if (_user.UserId == data.Key) break;
                         playerRank --;
                     }
-                }
 
-                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdatePlayerRankUI(playerRank));
+                    UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UpdatePlayerRankUI(playerRank, (int)dataSnapshot.ChildrenCount));
+                }
+                
             }
             else
             {
@@ -607,20 +612,27 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergy").SetValueAsync(energy).ContinueWith( task => {
+        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergy").SetValueAsync(energy).ContinueWith( task => 
+        {
             if (task.IsCompleted)
             {
                 dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyTimer").SetValueAsync(timer).ContinueWith( task2 =>
                 {
                     if (task2.IsCompleted)
-                        dataBaseReference.Child("users").Child(_user.UserId).Child("playerEnergyDateTime").SetValueAsync(DateTime.Now).ContinueWith( task3 => {
-                            if (singOut)
+                    {
+                        if (singOut)
+                        {
+                            dataBaseReference.Child("users").Child(_user.UserId).Child("playerLogoutDateTime").SetValueAsync(DateTime.Now.ToString("g", DateTimeFormatInfo.InvariantInfo)).ContinueWith(task3 =>
                             {
-                                _auth.SignOut();
-                                Debug.Log(" Energy data updated and user signed out");
-                            }
-                            else Debug.Log("Energy Data updated");
-                        });
+                                if (task3.IsCompleted)
+                                {
+                                    _auth.SignOut();
+                                    Debug.Log(" Energy data updated and user signed out");
+                                }
+                            });
+                        }
+                        else Debug.Log("Energy Data updated");
+                    }
                 });
             }
         });

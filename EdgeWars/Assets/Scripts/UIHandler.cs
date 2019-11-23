@@ -141,9 +141,10 @@ public class UIHandler : MonoBehaviour
 
     }
 
-    public IEnumerator UpdatePlayerRankUI(int currentPlace)
+    public IEnumerator UpdatePlayerRankUI(int currentPlace, int leaderboardPlayersCount)
     {
-        playerRank.text = PlayerManager.instance.playerName + " rating is " + currentPlace;
+        Debug.Log(" Update player rank" + PlayerManager.instance.playerName + " rating is " + currentPlace) ;
+        playerRank.text = PlayerManager.instance.playerName + " rating is " + currentPlace + " of " + leaderboardPlayersCount;
 
         yield return null;
     }

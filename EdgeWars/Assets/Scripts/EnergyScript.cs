@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using System.Globalization;
 
 
 public class EnergyScript : MonoBehaviour
@@ -38,7 +39,7 @@ public class EnergyScript : MonoBehaviour
 
     private void Application_quitting()
     {
-        GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
+       GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
     }
 
     // Update is called once per frame
@@ -54,6 +55,7 @@ public class EnergyScript : MonoBehaviour
                 currentEnergy++;
                 if (SceneManager.GetActiveScene().name == "Menu") UIHandler.instance.DisplayEnergy();
                 energyTimer = 0;
+                GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
             }
             //display energy text
             if (((int)energyTimer % 60) == 0 && SceneManager.GetActiveScene().name == "Menu") UIHandler.instance.DisplayEnergyTimer();
@@ -64,11 +66,20 @@ public class EnergyScript : MonoBehaviour
     {
         //count current energy 
         currentEnergy = PlayerManager.instance.playerEnergy;
+        energyTimer = PlayerManager.instance.playerEnergyTimer;
+
+
+
         if (currentEnergy >= MAXENERGY) energyTimer = 0;
         else
         {
-            currentEnergy += (int)serverDateTime.Subtract(Convert.ToDateTime(PlayerManager.instance.playerLogoutDateTime)).TotalSeconds / SECONDSTONEWENERGY; ;
-            energyTimer += (int)DateTime.Now.Subtract(Convert.ToDateTime(PlayerManager.instance.playerLogoutDateTime)).TotalSeconds % SECONDSTONEWENERGY;
+            Debug.Log(" server date time =  " + serverDateTime);
+            Debug.Log(" logout time is  =  " + PlayerManager.instance.playerLogoutDateTime);
+
+            DateTime newDate = Convert.ToDateTime(PlayerManager.instance.playerLogoutDateTime, DateTimeFormatInfo.InvariantInfo);
+
+            currentEnergy += (int)serverDateTime.Subtract(newDate).TotalSeconds / SECONDSTONEWENERGY; ;
+            energyTimer += (int)DateTime.Now.Subtract(newDate).TotalSeconds % SECONDSTONEWENERGY;
 
             Debug.Log("current energy = " + currentEnergy);
             Debug.Log(" current timer = " + energyTimer);

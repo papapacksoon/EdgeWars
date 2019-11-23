@@ -3819,7 +3819,6 @@ GameObject:
   - component: {fileID: 841102656}
   - component: {fileID: 841102658}
   - component: {fileID: 841102657}
-  - component: {fileID: 841102659}
   m_Layer: 5
   m_Name: Energy
   m_TagString: Untagged
@@ -3879,7 +3878,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ENERGY 10/10
+  m_Text: 'ENERGY '
 --- !u!222 &841102658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3888,21 +3887,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841102655}
   m_CullTransparentMesh: 0
---- !u!114 &841102659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 841102655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 348ad2d3decfca8449740806fe307cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnergyLabel: {fileID: 841102657}
-  nextEnergyText: {fileID: 1334459305}
-  energyTimer: 0
 --- !u!1 &880761450
 GameObject:
   m_ObjectHideFlags: 0

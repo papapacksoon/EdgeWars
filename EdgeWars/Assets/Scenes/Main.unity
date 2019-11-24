@@ -511,6 +511,7 @@ MonoBehaviour:
   ScoreText: {fileID: 1197182470}
   ScoreText2: {fileID: 268732905}
   TurnText: {fileID: 650276580}
+  EnergyText: {fileID: 409903351}
   buttonMainMenu: {fileID: 1760531826}
   buttonRestart: {fileID: 1077213726}
 --- !u!20 &519420031
@@ -540,7 +541,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.2
+  orthographic size: 3
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -796,6 +797,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  registerGamePanel: {fileID: 0}
+  startGamePanel: {fileID: 0}
+  registerStatusText: {fileID: 0}
+  inputRegisterEmail: {fileID: 0}
+  inputRegisterPassword: {fileID: 0}
+  inputRegisterPasswordVerify: {fileID: 0}
+  inputRegisterNickname: {fileID: 0}
+  logonPanel: {fileID: 0}
+  logonStatusText: {fileID: 0}
+  inputLogonEmail: {fileID: 0}
+  inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  mainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
+  errorPanel: {fileID: 0}
+  errorStatusText: {fileID: 0}
+  errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
+  playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}
 --- !u!114 &1077213726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1258,3 +1285,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7b537d2c151704883cea48f201b029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  registerGamePanel: {fileID: 0}
+  startGamePanel: {fileID: 0}
+  registerStatusText: {fileID: 0}
+  inputRegisterEmail: {fileID: 0}
+  inputRegisterPassword: {fileID: 0}
+  inputRegisterPasswordVerify: {fileID: 0}
+  inputRegisterNickname: {fileID: 0}
+  logonPanel: {fileID: 0}
+  logonStatusText: {fileID: 0}
+  inputLogonEmail: {fileID: 0}
+  inputLogonPassword: {fileID: 0}
+  aboutPanel: {fileID: 0}
+  mainPanel: {fileID: 0}
+  settingsLoginOutButton: {fileID: 0}
+  settingsSoundButton: {fileID: 0}
+  settingsPanel: {fileID: 0}
+  errorPanel: {fileID: 0}
+  errorStatusText: {fileID: 0}
+  errorResenEmailButton: {fileID: 0}
+  logonConfirmButton: {fileID: 0}
+  logonCloseButton: {fileID: 0}
+  logonForgotPasswrodButton: {fileID: 0}
+  registerConfirmButton: {fileID: 0}
+  registerCloseButton: {fileID: 0}
+  playerRank: {fileID: 0}
+  quitPanel: {fileID: 0}

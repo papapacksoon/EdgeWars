@@ -18,6 +18,7 @@ public class PlayGround : MonoBehaviour
     public Text ScoreText;                                          //Score text Player1
     public Text ScoreText2;                                         //Score text Player1
     public Text TurnText;                                           //Score text For turn and timer;
+    public Text EnergyText;                                           //Score text For turn and timer;
 
     public Button buttonMainMenu;
     public Button buttonRestart;
@@ -140,6 +141,7 @@ public class PlayGround : MonoBehaviour
 
         TurnText.color = Color.white;
         TurnText.text = "It's your turn ! 30 seconds left";
+        EnergyText.text = "Energy "+ EnergyScript.currentEnergy +"/10";
     }
 
     // Update is called once per frame 

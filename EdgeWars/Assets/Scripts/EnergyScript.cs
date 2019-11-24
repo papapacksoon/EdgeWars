@@ -18,7 +18,7 @@ public class EnergyScript : MonoBehaviour
     public static int currentEnergy;
 
 
-    public const int SECONDSTONEWENERGY = 8640;
+    public const int SECONDSTONEWENERGY = 4320; //1 free energy in 72 minutes
     public float energyTimer;
 
     private void Awake()

@@ -33,8 +33,14 @@ public class UIHandler : MonoBehaviour
     public GameObject aboutPanel;
     public GameObject quitPanel;
 
+    
+
     public Text EnergyLabel;
     public Text nextEnergyText;
+
+    public GameObject gamePanel;
+
+    public GameObject loadingPanel;
 
     public static UIHandler instance;
     private void Awake()
@@ -192,6 +198,12 @@ public class UIHandler : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
         EnergyLabel.color = Color.red;
         yield return new WaitForSeconds(0.15f);
+    }
+
+    public void HideLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
+        GameManager.instance.gameIsLoading = false;
     }
 
 

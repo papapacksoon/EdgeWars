@@ -56,17 +56,15 @@ public class ButtonHandler : MonoBehaviour
     public void MainMenuClick()   //------------------------------------------------------------------------------------------------
     {
         SceneManager.UnloadSceneAsync("Main");
-        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            //showadd
-            startGamePanel.SetActive(true);
+            GameManager.instance.showMenuPanel = GameManager.Panels.Start;
         }
         else
         {
-            mainPanel.SetActive(true);
+            GameManager.instance.showMenuPanel = GameManager.Panels.Main;
         }
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 
     public void RestartClick()   //------------------------------------------------------------------------------------------------
@@ -74,9 +72,8 @@ public class ButtonHandler : MonoBehaviour
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
             SceneManager.UnloadSceneAsync("Main");
+            GameManager.instance.showMenuPanel = GameManager.Panels.Start;
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-            //showadd
-            startGamePanel.SetActive(true);
         }
         else if (EnergyScript.currentEnergy > 0)
         {
@@ -87,9 +84,8 @@ public class ButtonHandler : MonoBehaviour
         else
         {
             SceneManager.UnloadSceneAsync("Main");
+            GameManager.instance.showMenuPanel = GameManager.Panels.Main;
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-            UIHandler.instance.DisplayEnergy();
-            mainPanel.SetActive(true);
         }
     }
 
@@ -97,16 +93,18 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            SceneManager.UnloadSceneAsync("Menu");
+            // SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
-            UIHandler.instance.DisplayEnergy();
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main"));
+            
         }
         else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.currentEnergy--;
             UIHandler.instance.DisplayEnergy();
-            SceneManager.UnloadSceneAsync("Menu");
+            //SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
+         //   SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main"));
         }
         else
         {

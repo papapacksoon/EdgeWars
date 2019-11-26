@@ -12,13 +12,12 @@ using Photon.Realtime;
 
 public class PlayGround : MonoBehaviour
 {
-    [SerializeField]
     public List<Sprite> mySprites = new List<Sprite>();             //sprites for playground items
     public GameObject playGroundItem;                               //prefab for palyground item
     public Text ScoreText;                                          //Score text Player1
     public Text ScoreText2;                                         //Score text Player1
     public Text TurnText;                                           //Score text For turn and timer;
-    public Text EnergyText;                                           //Score text For turn and timer;
+    public Text EnergyText;                                         
 
     public Button buttonMainMenu;
     public Button buttonRestart;
@@ -26,7 +25,15 @@ public class PlayGround : MonoBehaviour
     const int PLAYERTURNTIME = 30;
     const float ENEMYTURNTIME = 2.0f;
 
-    
+    public static PlayGround instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     public enum FieldOwner { PlayerOne, PlayerTwo, None };
 
@@ -37,11 +44,7 @@ public class PlayGround : MonoBehaviour
     private int displayedPlayerTimer = PLAYERTURNTIME;
     private float displayedEnemyTimer = ENEMYTURNTIME;
 
-
-    
-
-    private bool isGameOver = false;
-
+    private bool isGameOver = true;
 
     private List<Color> myColors = new List<Color>(); //
 
@@ -65,15 +68,15 @@ public class PlayGround : MonoBehaviour
     private int playerOneScore = 1;
     private int playerTwoScore = 1;
 
-
     public List<PlayGroundFieldItem> _playGroundItems = new List<PlayGroundFieldItem>();
-
-
-    // Start is called before the first frame update
-    void Start()
+    
+    public void InitailizePlayGround()
     {
-        
-        //initializing colors
+        turn = FieldOwner.PlayerOne;
+        timer = 30.0f;
+        isGameOver = false;
+
+    //initializing colors
         myColors.Add(Color.yellow);
         myColors.Add(Color.red);
         myColors.Add(Color.cyan);
@@ -81,7 +84,7 @@ public class PlayGround : MonoBehaviour
         myColors.Add(Color.green);
         myColors.Add(Color.magenta);
 
-        
+
 
         //initializing Playground
         for (int x = 0; x < _width; x++)
@@ -115,7 +118,7 @@ public class PlayGround : MonoBehaviour
             }
 
         }
-    
+
         foreach (var item in _playGroundItems)
         {
 
@@ -141,7 +144,13 @@ public class PlayGround : MonoBehaviour
 
         TurnText.color = Color.white;
         TurnText.text = "It's your turn ! 30 seconds left";
-        EnergyText.text = "Energy "+ EnergyScript.currentEnergy +"/10";
+        EnergyText.text = "Energy " + EnergyScript.currentEnergy + "/10";
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+                
     }
 
     // Update is called once per frame 

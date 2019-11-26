@@ -11,11 +11,16 @@ using System.Globalization;
 
 public class GameManager : MonoBehaviour
 {
+    public enum Panels {Main , Start, Null}
+
+    public Panels showMenuPanel = Panels.Null;
+
     public bool singlePlayerWithoutLogginIn = true;
     public bool userAutoSignedIn = true;
     public bool isSoundsEnabled;
     public bool needToSignOutAfterShowingErrorPanel = false;
     public bool newUserCreated = false;
+    public bool gameIsLoading = true;
 
     public static GameManager instance;
     
@@ -94,6 +99,7 @@ public class GameManager : MonoBehaviour
         _auth.StateChanged += AuthStateChanged;
         _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
         dataBaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
     }
 
     void OnDestroy()
@@ -128,12 +134,19 @@ public class GameManager : MonoBehaviour
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
+
+                        //load all stuff and then show main panel and then hide game loading panel
+
                         UIHandler.instance.UserSignedInShowMainPanel();
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
+
                     }
                     else
                     {
                         needToSignOutAfterShowingErrorPanel = true;
+
+                        //hide loading panel show error panel
+                        UIHandler.instance.HideLoadingPanel();
                         UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail before loggin in", Color.red, true);
                     }
 
@@ -145,6 +158,9 @@ public class GameManager : MonoBehaviour
                     if (_auth.CurrentUser.IsEmailVerified)
                     {
                         singlePlayerWithoutLogginIn = false;
+
+                        //load all stuff and then show main panel and then hide game loading panel
+
                         UIHandler.instance.UserSignedInShowMainPanel();
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
@@ -178,8 +194,6 @@ public class GameManager : MonoBehaviour
                             needToSignOutAfterShowingErrorPanel = true;
                             UIHandler.instance.ShowErrorPanel("E-mail " + _auth.CurrentUser.Email + " is not verified ! please verify your e-mail  before loggin in", Color.red, true);
                         }
-
-
                     }
                 }
                 

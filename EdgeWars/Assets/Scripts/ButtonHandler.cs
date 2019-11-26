@@ -73,7 +73,6 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
             //showadd
@@ -81,15 +80,15 @@ public class ButtonHandler : MonoBehaviour
         }
         else if (EnergyScript.currentEnergy > 0)
         {
-            UIHandler.instance.DisplayEnergy();
+            EnergyScript.currentEnergy--;
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
-                        
         }
         else
         {
             SceneManager.UnloadSceneAsync("Main");
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+            UIHandler.instance.DisplayEnergy();
             mainPanel.SetActive(true);
         }
     }
@@ -100,14 +99,21 @@ public class ButtonHandler : MonoBehaviour
         {
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
+            UIHandler.instance.DisplayEnergy();
         }
         else if (EnergyScript.currentEnergy > 0)
         {
+            EnergyScript.currentEnergy--;
             UIHandler.instance.DisplayEnergy();
             SceneManager.UnloadSceneAsync("Menu");
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
-        //else message get more energy; 
+        else
+        {
+            //not enough energy
+            UIHandler.instance.DisplayEnergy();
+            StartCoroutine(UIHandler.instance.BlinkEnergyText2sec());
+        }
     }
 
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------

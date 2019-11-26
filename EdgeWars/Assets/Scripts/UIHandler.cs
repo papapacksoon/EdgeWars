@@ -143,7 +143,7 @@ public class UIHandler : MonoBehaviour
 
     public IEnumerator UpdatePlayerRankUI(int currentPlace, int leaderboardPlayersCount)
     {
-        Debug.Log(" Update player rank" + PlayerManager.instance.playerName + " rating is " + currentPlace) ;
+        Debug.Log(" Update player rank" + PlayerManager.instance.playerName + " rating is " + currentPlace);
         playerRank.text = PlayerManager.instance.playerName + " rating is " + currentPlace + " of " + leaderboardPlayersCount;
 
         yield return null;
@@ -151,7 +151,7 @@ public class UIHandler : MonoBehaviour
 
     public void DisplayEnergy()
     {
-        
+
         EnergyLabel.text = "ENERGY " + EnergyScript.currentEnergy + "/10";
         if (EnergyScript.currentEnergy == 0) EnergyLabel.color = Color.red;
         else EnergyLabel.color = new Color(0, 255, 244);
@@ -177,4 +177,22 @@ public class UIHandler : MonoBehaviour
 
         yield return null;
     }
+ 
+    public IEnumerator BlinkEnergyText2sec()
+    {
+        EnergyLabel.color = Color.white;
+        yield return new WaitForSeconds(0.15f);
+        EnergyLabel.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+        EnergyLabel.color = Color.white;
+        yield return new WaitForSeconds(0.15f);
+        EnergyLabel.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+        EnergyLabel.color = Color.white;
+        yield return new WaitForSeconds(0.15f);
+        EnergyLabel.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+    }
+
+
 }

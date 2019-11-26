@@ -92,12 +92,8 @@ public class GameManager : MonoBehaviour
 
         _auth = FirebaseAuth.DefaultInstance;
         _auth.StateChanged += AuthStateChanged;
-      
         _app.SetEditorDatabaseUrl("https://edge-wars.firebaseio.com/");
         dataBaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-
-        
-
     }
 
     void OnDestroy()
@@ -133,8 +129,6 @@ public class GameManager : MonoBehaviour
                     {
                         singlePlayerWithoutLogginIn = false;
                         UIHandler.instance.UserSignedInShowMainPanel();
-                        Debug.Log(" last autosigned in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
-
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
                     else
@@ -152,8 +146,6 @@ public class GameManager : MonoBehaviour
                     {
                         singlePlayerWithoutLogginIn = false;
                         UIHandler.instance.UserSignedInShowMainPanel();
-                        Debug.Log(" last signed in " + _auth.CurrentUser.Metadata.LastSignInTimestamp);
-
                         RetrieveUserDataFromDatabase(_auth.CurrentUser.UserId);
                     }
                     else

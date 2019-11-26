@@ -3878,7 +3878,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'ENERGY '
+  m_Text: 
 --- !u!222 &841102658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4433,7 +4433,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
-    m_FontSize: 50
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -4444,15 +4444,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'application vesrion: 1.0
-
-    design/development
-
-    Pavel perevozchikov
-
-    from cold siberia with love :)
-
-'
+  m_Text: "How to play:\n\nyou play white color and ai opponent play black color\n\ntap
+    diamonds next to your field to flip all of same color to white. \n\ntake control
+    of the map, player who will have a larger field wins \n\napplication vesrion:
+    1.0\ndesign/development by\nPavel perevozchikov\nfrom cold siberia with love :)\n"
 --- !u!222 &1050518059
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8391,7 +8386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1910830325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9267,7 +9262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2104369227
 RectTransform:
   m_ObjectHideFlags: 0

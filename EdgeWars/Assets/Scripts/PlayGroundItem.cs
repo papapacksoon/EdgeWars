@@ -5,13 +5,11 @@ using UnityEngine;
 
 public class PlayGroundItem : MonoBehaviour
 {
-    GameObject playGroundController;
-    PlayGround playGround;
+    
     // Start is called before the first frame update
     void Start()
     {
-        playGroundController = GameObject.Find("Main Camera");
-        playGround = playGroundController.GetComponent<PlayGround>();
+    
     }
 
     // Update is called once per frame
@@ -22,6 +20,6 @@ public class PlayGroundItem : MonoBehaviour
 
     private void OnMouseDown()
     {
-        playGround.onItemMouseClick(this.gameObject);
+        PlayGround.instance.onItemMouseClick(this.gameObject);
     }
 }

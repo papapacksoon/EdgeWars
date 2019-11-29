@@ -40,7 +40,7 @@ public class ButtonHandler : MonoBehaviour
 
     public GameObject quitPanel;
 
-    private bool _fromMain;
+    
 
     public static ButtonHandler instance;
     private void Awake()
@@ -55,60 +55,70 @@ public class ButtonHandler : MonoBehaviour
 
     public void MainMenuClick()   //------------------------------------------------------------------------------------------------
     {
-        SceneManager.UnloadSceneAsync("Main");
+        PlayGround.instance.ClearPlayground();
+        UIHandler.instance.gamePanel.SetActive(false);
+
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            GameManager.instance.showMenuPanel = GameManager.Panels.Start;
+            UIHandler.instance.startGamePanel.SetActive(true);
         }
         else
         {
-            GameManager.instance.showMenuPanel = GameManager.Panels.Main;
+            GameManager.instance.GetCurrentPlayerPlaceInLeaderboard();
+            UIHandler.instance.DisplayEnergy();
+            UIHandler.instance.DisplayEnergyTimer();
+            UIHandler.instance.mainPanel.SetActive(true);
         }
-        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+
+
     }
 
     public void RestartClick()   //------------------------------------------------------------------------------------------------
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            SceneManager.UnloadSceneAsync("Main");
-            GameManager.instance.showMenuPanel = GameManager.Panels.Start;
-            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+            AdManager.instance.ShowAd(true);
+            PlayGround.instance.InitializePlayGround();
         }
         else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.currentEnergy--;
-            SceneManager.UnloadSceneAsync("Main");
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+            GameManager.instance.EnergyDataUpdate(EnergyScript.currentEnergy, (int)EnergyScript.instance.energyTimer, false);
+            PlayGround.instance.InitializePlayGround();
         }
         else
         {
-            SceneManager.UnloadSceneAsync("Main");
-            GameManager.instance.showMenuPanel = GameManager.Panels.Main;
-            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+            PlayGround.instance.ClearPlayground();
+            UIHandler.instance.gamePanel.SetActive(false);
+            GameManager.instance.GetCurrentPlayerPlaceInLeaderboard();
+            UIHandler.instance.DisplayEnergy();
+            UIHandler.instance.DisplayEnergyTimer();
+            UIHandler.instance.mainPanel.SetActive(true);
         }
     }
 
     public void NewGame()  //------------------------------------------------------------------------------------------------
     {
+
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            // SceneManager.UnloadSceneAsync("Menu");
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main"));
-            
+            AdManager.instance.ShowAd(true);
+            UIHandler.instance.startGamePanel.SetActive(false);
+            UIHandler.instance.startGamePanel.SetActive(false);
+            UIHandler.instance.gamePanel.SetActive(true);
+            PlayGround.instance.InitializePlayGround();
         }
         else if (EnergyScript.currentEnergy > 0)
         {
             EnergyScript.currentEnergy--;
             UIHandler.instance.DisplayEnergy();
-            //SceneManager.UnloadSceneAsync("Menu");
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
-         //   SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main"));
+            GameManager.instance.EnergyDataUpdate(EnergyScript.currentEnergy, (int)EnergyScript.instance.energyTimer, false);
+            UIHandler.instance.mainPanel.SetActive(false);
+            UIHandler.instance.gamePanel.SetActive(true);
+            PlayGround.instance.InitializePlayGround();
         }
         else
         {
-            //not enough energy
             UIHandler.instance.DisplayEnergy();
             StartCoroutine(UIHandler.instance.BlinkEnergyText2sec());
         }
@@ -116,8 +126,11 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
-        AdManager.instance.ShowAd();
+      AdManager.instance.ShowAd(false);
         //show Ad and get new energy 
+
+        //test banner view
+    //    AdManager.instance.RequestBanner();
     }
 
     public void ConfirmRegistration()    //------------------------------------------------------------------------------------------------
@@ -242,8 +255,10 @@ public class ButtonHandler : MonoBehaviour
 
     public void GotoAboutPanel(bool fromMain) //  //------------------------------------------------------------------------------------------------
     {
-        _fromMain = fromMain;
-        startGamePanel.SetActive(false);
+        GameManager.instance._fromMain = fromMain;
+        if (fromMain)   mainPanel.SetActive(false);
+        else    startGamePanel.SetActive(false);
+        
         aboutPanel.SetActive(true);
     }
 
@@ -251,7 +266,7 @@ public class ButtonHandler : MonoBehaviour
     {
         aboutPanel.SetActive(false);
 
-        if (_fromMain)
+        if (GameManager.instance._fromMain)
         {
             mainPanel.SetActive(true);
         }
@@ -259,13 +274,12 @@ public class ButtonHandler : MonoBehaviour
         {
             startGamePanel.SetActive(true);
         }
-        
     }
 
     public void GotoSettingsPanel(bool fromMain)   //------------------------------------------------------------------------------------------------
     {
-        _fromMain = fromMain;
-        if (_fromMain)
+        GameManager.instance._fromMain = fromMain;
+        if (fromMain)
             mainPanel.SetActive(false);
         else
             startGamePanel.SetActive(false);
@@ -300,7 +314,7 @@ public class ButtonHandler : MonoBehaviour
         
         settingsPanel.SetActive(false);
 
-        if (_fromMain)
+        if (GameManager.instance._fromMain)
         {
             mainPanel.SetActive(true);
         }
@@ -329,9 +343,8 @@ public class ButtonHandler : MonoBehaviour
     public void SettingsLogout()   //------------------------------------------------------------------------------------------------
     {
         GameManager.instance.UserLogout(true);
-        _fromMain = false;
+        GameManager.instance._fromMain = false;
         BackFromSettings();
-
     }
 
     public void ResendVerificationMail()   //------------------------------------------------------------------------------------------------

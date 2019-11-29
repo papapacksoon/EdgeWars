@@ -27,11 +27,18 @@ public class LoadingScipt : MonoBehaviour
         {
             loadingtext.color = new Color(255 ,255 ,255 , (Mathf.Sin(Time.time * 5) + 1.0f) / 2.0f);
         }
+
+        if (GameManager.instance.taskCounter >= 2 && GameManager.instance.gameIsLoading)
+        {
+            UIHandler.instance.loadingPanel.SetActive(false);
+            GameManager.instance.gameIsLoading = false;
+            UIHandler.instance.mainPanel.SetActive(true);
+        }
     }
 
     public IEnumerator ShowStartGamePanelAfterLoad()
     {
-        yield return new WaitForSeconds(7.0f);
+        yield return new WaitForSeconds(3.0f);
         UIHandler.instance.loadingPanel.SetActive(false);
         GameManager.instance.gameIsLoading = false;
         UIHandler.instance.startGamePanel.SetActive(true);

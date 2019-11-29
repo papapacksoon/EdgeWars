@@ -22,7 +22,6 @@ public class AudioManager : MonoBehaviour
             PlayerPrefs.Save();
 
             isSoundOn = value;
-            
 
         }
 

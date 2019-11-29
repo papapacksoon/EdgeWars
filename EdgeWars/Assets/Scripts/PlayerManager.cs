@@ -13,7 +13,6 @@ public class PlayerManager : MonoBehaviour
     public int playerEnergyTimer;
     public string playerLogoutDateTime = DateTime.Now.ToString("g",DateTimeFormatInfo.InvariantInfo);
 
-
     public static PlayerManager instance;
     private void Awake()
     {

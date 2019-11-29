@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.UI;
-using Photon.Pun;
-using Photon.Realtime;
 
 
 
@@ -14,10 +12,13 @@ public class PlayGround : MonoBehaviour
 {
     public List<Sprite> mySprites = new List<Sprite>();             //sprites for playground items
     public GameObject playGroundItem;                               //prefab for palyground item
+    public GameObject playGroundItem_ar_2;                               //prefab for palyground item
+    public GameObject playGroundItem_ar_3;                               //prefab for palyground item
     public Text ScoreText;                                          //Score text Player1
     public Text ScoreText2;                                         //Score text Player1
     public Text TurnText;                                           //Score text For turn and timer;
-    public Text EnergyText;                                         
+    public Text EnergyText;
+    public GameObject board;
 
     public Button buttonMainMenu;
     public Button buttonRestart;
@@ -25,14 +26,23 @@ public class PlayGround : MonoBehaviour
     const int PLAYERTURNTIME = 30;
     const float ENEMYTURNTIME = 2.0f;
 
+
+
     public static PlayGround instance;
+
+    private enum AspectRatios {ar_1_7, ar_2, ar_2_05};
+    private float localScaleFactor = 0;
 
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         if (instance == null)
         {
             instance = this;
         }
+
+        Debug.Log(" Playground = " + instance);
     }
 
     public enum FieldOwner { PlayerOne, PlayerTwo, None };
@@ -44,7 +54,8 @@ public class PlayGround : MonoBehaviour
     private int displayedPlayerTimer = PLAYERTURNTIME;
     private float displayedEnemyTimer = ENEMYTURNTIME;
 
-    private bool isGameOver = true;
+
+    public int enemyRank = 1000;
 
     private List<Color> myColors = new List<Color>(); //
 
@@ -59,9 +70,11 @@ public class PlayGround : MonoBehaviour
         public PlayGroundFieldItem(GameObject fieldItem, int x, int y, FieldOwner owner = FieldOwner.None)
         {
             this.fieldItem = fieldItem;
+        //    UnityEditor.GameObjectUtility.SetParentAndAlign(this.fieldItem, PlayGround.instance.board);
             this.x = x;
             this.y = y;
             this.owner = owner;
+            
         }
     }
 
@@ -70,13 +83,48 @@ public class PlayGround : MonoBehaviour
 
     public List<PlayGroundFieldItem> _playGroundItems = new List<PlayGroundFieldItem>();
     
-    public void InitailizePlayGround()
+    public void InitializePlayGround()
     {
         turn = FieldOwner.PlayerOne;
         timer = 30.0f;
-        isGameOver = false;
 
-    //initializing colors
+        Debug.Log(" width = " + Screen.width + " height = " + Screen.height);
+        float aspectRatio = Screen.height / (float)Screen.width;
+        AspectRatios currentAspectRatio;
+
+        if (aspectRatio < 1.9166666667f)
+        {
+            localScaleFactor = 0.7f;
+            currentAspectRatio = AspectRatios.ar_1_7;
+        }
+        else if (aspectRatio < 2.0276f)
+        {
+            localScaleFactor = 0.65f;
+            currentAspectRatio = AspectRatios.ar_2;
+        }
+        else
+        {
+            localScaleFactor = 0.6f;
+            currentAspectRatio = AspectRatios.ar_2_05;
+            _height += 2;
+        }
+
+        Debug.Log(currentAspectRatio);
+        Debug.Log(aspectRatio);
+
+        if (myColors.Count > 0) myColors.Clear();
+        if (_playGroundItems.Count > 0)
+        {
+            foreach (var item in _playGroundItems)
+            {
+                Destroy(item.fieldItem);
+            }
+
+            _playGroundItems.Clear();
+        }
+
+        //initializing colors
+
         myColors.Add(Color.yellow);
         myColors.Add(Color.red);
         myColors.Add(Color.cyan);
@@ -85,38 +133,88 @@ public class PlayGround : MonoBehaviour
         myColors.Add(Color.magenta);
 
 
+        // AspectRatio 
 
         //initializing Playground
         for (int x = 0; x < _width; x++)
         {
+
             int myHeight;
             float myY;
             float myX;
             int rowNumber;
+            float zRotation = -0.026182f;
 
             if (x % 2 == 0)
             {
-                myHeight = _height / 2 + 1;
-                myY = -1.19f;
-                myX = -0.04f + 0.89f * (x / 2);
+                myY = 0;
+                myX = 0;
                 rowNumber = 0;
+                myHeight = _height / 2 + 1;
+
+                switch (currentAspectRatio)
+                {
+                    case AspectRatios.ar_1_7:
+                        myY = -2.53f;
+                        myX = -1.195f + 0.8f * (x / 2);
+                        break;
+
+                    case AspectRatios.ar_2:
+                        myY = -2.3f;
+                        myX = -1.14f + 0.75f * (x / 2);
+                        break;
+
+                    case AspectRatios.ar_2_05:
+                        myY = -2.5f;
+                        myX = -1.065f + 0.7f * (x / 2);
+                        break;
+                }
+       
             }
             else
             {
-                myHeight = _height / 2;
-                myY = -0.75f;
-                myX = 0.4f + 0.89f * ((x - 1) / 2);
+                
+                myY = 0;
+                myX = 0;
                 rowNumber = 1;
+                myHeight = _height / 2;
+
+                switch (currentAspectRatio)
+                {
+                    case AspectRatios.ar_1_7:
+                        myY = -2.12f;
+                        myX = -0.785f + 0.8f * (x / 2);
+                        break;
+
+                    case AspectRatios.ar_2:
+                        myY = -1.93f;
+                        myX = -0.76f + 0.75f * (x / 2);
+                        break;
+
+                    case AspectRatios.ar_2_05:
+                        myY = -2.15f;
+                        myX = -0.715f + 0.7f * (x / 2);
+                        break;
+                }
             }
 
             for (int y = 0; y < myHeight; y++)
             {
-
-                _playGroundItems.Add(new PlayGroundFieldItem(Instantiate(playGroundItem, new Vector3(myX, myY + 0.89f * y), Quaternion.identity), x, rowNumber));
-
+                if (currentAspectRatio == AspectRatios.ar_1_7)
+                {
+                    _playGroundItems.Add(new PlayGroundFieldItem(Instantiate(playGroundItem, new Vector3(myX, myY + 0.83f * y), new Quaternion(0, 0, zRotation, 1)), x, rowNumber));
+                }
+                else if (currentAspectRatio == AspectRatios.ar_2)
+                {
+                    _playGroundItems.Add(new PlayGroundFieldItem(Instantiate(playGroundItem_ar_2, new Vector3(myX, myY + 0.75f * y), new Quaternion(0, 0, zRotation, 1)), x, rowNumber));
+                }
+                else
+                {
+                    _playGroundItems.Add(new PlayGroundFieldItem(Instantiate(playGroundItem_ar_3, new Vector3(myX, myY + 0.7f * y), new Quaternion(0, 0, zRotation, 1)), x, rowNumber));
+                }
+                    
                 rowNumber += 2;
             }
-
         }
 
         foreach (var item in _playGroundItems)
@@ -144,7 +242,12 @@ public class PlayGround : MonoBehaviour
 
         TurnText.color = Color.white;
         TurnText.text = "It's your turn ! 30 seconds left";
-        EnergyText.text = "Energy " + EnergyScript.currentEnergy + "/10";
+        if (GameManager.instance.singlePlayerWithoutLogginIn) EnergyText.text = "";
+        else EnergyText.text = "Energy " + EnergyScript.currentEnergy + "/10";
+
+        ScoreText.text = "   You : 1";
+        ScoreText2.text = "Enemy : 1   ";
+        GameManager.instance.isGameOver = false;
     }
 
     // Start is called before the first frame update
@@ -157,7 +260,7 @@ public class PlayGround : MonoBehaviour
     void Update()
     {
         
-        if (isGameOver == false)
+        if (GameManager.instance.isGameOver == false)
         {
 
             timer -= Time.deltaTime;
@@ -224,6 +327,8 @@ public class PlayGround : MonoBehaviour
             var result = _playGroundItems.Where(p => p.owner == FieldOwner.None && isColliderNearPlayerGround(p, FieldOwner.PlayerOne));
             var result2 = _playGroundItems.Where(p => p.owner == FieldOwner.None && isColliderNearPlayerGround(p, FieldOwner.PlayerTwo));
 
+            
+
             if (result.Count() == 0 && result2.Count() == 0) //game over there are no moves for any player
             {
                 if (playerOneScore >= playerTwoScore)
@@ -237,15 +342,17 @@ public class PlayGround : MonoBehaviour
                     {
                         TurnText.text = "Game over! you win";
                         TurnText.color = Color.green;
+                        CountPlayerRank(true);
                     }
                 }
                 else
                 {
                     TurnText.text = "Game over! Enemy wins";
                     TurnText.color = Color.red;
+                    CountPlayerRank(false);
                 }
-                
-                isGameOver = true;
+
+                GameManager.instance.isGameOver = true;
                 return;
             }
 
@@ -464,7 +571,7 @@ public class PlayGround : MonoBehaviour
     }
 
     //borders recoloring
-    public void BordersRecolor()
+    /*public void BordersRecolor()
     {
         Component[] borderSprites;
         var result = _playGroundItems.Where(p => p.owner == FieldOwner.PlayerOne).OrderBy(p => p.x).ThenByDescending(p => p.y);
@@ -493,22 +600,22 @@ public class PlayGround : MonoBehaviour
             }
             
         }
-    }
+    }*/
 
     IEnumerator ChangeSpriteAnimationToZero(GameObject obj)
     {
-        for (float i = 0.75f; i>=0; i -= 0.05f)
+        for (float i = localScaleFactor; i>=0; i -= 0.05f)
         {
-            obj.transform.localScale = new Vector3(0.75f, i, 0.5f);
+            obj.transform.localScale = new Vector3(localScaleFactor, i, 0.5f);
             yield return new WaitForSeconds(0.01f);
         }
     }
 
     IEnumerator ChangeSpriteAnimationGetBig(GameObject obj)
     {
-        for (float i = 0; i <= 0.75f; i += 0.05f)
+        for (float i = 0; i <= localScaleFactor+0.001f; i += 0.05f)
         {
-            obj.transform.localScale = new Vector3(0.75f, i, 0.5f);
+            obj.transform.localScale = new Vector3(localScaleFactor, i, 0.5f);
             yield return new WaitForSeconds(0.01f);
         }
     }
@@ -524,11 +631,44 @@ public class PlayGround : MonoBehaviour
         StartCoroutine(ChangeSpriteAnimationGetBig(obj));
     }
 
+    public void CountPlayerRank(bool playerWin = false)
+    {
+        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        {
+            Debug.Log("Player doesn`t log in => rank is not calculated");
+            return;
+        }
+        
+        int randomElement = UnityEngine.Random.Range(0, 10); //rank between 920 and 1080
+        int gameEnd = 0; //lose
 
+        if (playerWin) gameEnd = 1; //win
 
+        if (randomElement < 5) enemyRank -= randomElement * 20;
+        else enemyRank += (randomElement - 5) * 20;
 
+        Debug.Log("Player rank = " + PlayerManager.instance.playerRank);
+        Debug.Log("Enemy rank = " + enemyRank);
 
+        double expectedPlayerPoints = 1f / (1f + Math.Pow(10f, (enemyRank - PlayerManager.instance.playerRank) / 400f));
 
+        PlayerManager.instance.playerRank += (int)(16 * (gameEnd - expectedPlayerPoints));
+        Debug.Log("Claculated Player rank = " + PlayerManager.instance.playerRank);
+
+        GameManager.instance.UpdateLeaderboard();
+        GameManager.instance.UpdatePlayerRank();
+    }
+
+    public void ClearPlayground()
+    {
+        if (_playGroundItems.Count > 0)
+        {
+            foreach (var item in _playGroundItems)
+            {
+                Destroy(item.fieldItem);
+            }
+        }
+    }
 }
 
 

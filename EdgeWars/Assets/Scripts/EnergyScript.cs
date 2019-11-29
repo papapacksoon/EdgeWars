@@ -33,20 +33,21 @@ public class EnergyScript : MonoBehaviour
     private void Start()
     {
         Application.quitting += Application_quitting;
-
-        //count how much energy restored
     }
 
     private void Application_quitting()
     {
-       GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
+        //update player data on quit
+        //if game is on - autoloose
+        // 
+        GameManager.instance.ApplicationQuitDataUpdate(currentEnergy, (int)energyTimer, GameManager.instance.isGameOver, GameManager.instance.isFirebaseLoaded);  //prod
+
+        //GameManager.instance.ApplicationQuitDataUpdate(currentEnergy, (int)energyTimer, false, GameManager.instance.isFirebaseLoaded); //test
     }
 
     // Update is called once per frame
     void Update()
     {
-        //display current energy
-
         if (currentEnergy < MAXENERGY && !GameManager.instance.singlePlayerWithoutLogginIn)
         {
             energyTimer += Time.deltaTime;
@@ -57,18 +58,14 @@ public class EnergyScript : MonoBehaviour
                 energyTimer = 0;
                 GameManager.instance.EnergyDataUpdate(currentEnergy, (int)energyTimer, false);
             }
-            //display energy text
             if (((int)energyTimer % 60) == 0 && SceneManager.GetActiveScene().name == "Menu") UIHandler.instance.DisplayEnergyTimer();
         }
     }
 
     public IEnumerator OnLogonEnergyCount(DateTime serverDateTime)
     {
-        //count current energy 
         currentEnergy = PlayerManager.instance.playerEnergy;
         energyTimer = PlayerManager.instance.playerEnergyTimer;
-
-
 
         if (currentEnergy >= MAXENERGY) energyTimer = 0;
         else
@@ -93,6 +90,7 @@ public class EnergyScript : MonoBehaviour
 
         UIHandler.instance.DisplayEnergy();
         UIHandler.instance.DisplayEnergyTimer();
+        GameManager.instance.taskCounter++;
         yield return null;
     }
 }

@@ -95,9 +95,9 @@ public class AdManager : MonoBehaviour
 
         loadGameAfterAD = loadGame;
 
-        
+        StartGame();
 
-        LoadRewardBasedAd();
+        //LoadRewardBasedAd(); --- test mode
 
 
     }

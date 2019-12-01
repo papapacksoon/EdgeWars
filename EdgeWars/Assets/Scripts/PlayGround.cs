@@ -26,7 +26,7 @@ public class PlayGround : MonoBehaviour
     const int PLAYERTURNTIME = 30;
     const float ENEMYTURNTIME = 2.0f;
 
-
+    
 
     public static PlayGround instance;
 
@@ -70,11 +70,26 @@ public class PlayGround : MonoBehaviour
         public PlayGroundFieldItem(GameObject fieldItem, int x, int y, FieldOwner owner = FieldOwner.None)
         {
             this.fieldItem = fieldItem;
-        //    UnityEditor.GameObjectUtility.SetParentAndAlign(this.fieldItem, PlayGround.instance.board);
             this.x = x;
             this.y = y;
             this.owner = owner;
             
+        }
+    }
+
+    public class CountItems
+    {
+        public Color color;
+        public int count;
+        public int colorFlip;
+        public List<PlayGroundFieldItem> fieldItem = new List<PlayGroundFieldItem>();
+
+        public CountItems(Color color, int count, int colorFlip, PlayGroundFieldItem fieldItem)
+        {
+            this.color = color;
+            this.count = count;
+            this.colorFlip = colorFlip;
+            this.fieldItem.Add(fieldItem);
         }
     }
 
@@ -519,69 +534,59 @@ public class PlayGround : MonoBehaviour
         else
         {
 
-            //check all colors
-            /*
+            //check all colors------------------------------
 
-            List<Color> nextMove = new List<Color>();
-            List<int> countFlips = new List<int>();
+            Debug.Log("Ai turn started");
 
-            Debug.Log(" Near color count " + nextMove.Count + " all colors sorted");
+            List<CountItems> countItems = new List<CountItems>();
 
             foreach (var item in result)
             {
-                nextMove.Add(item.color);
                 Debug.Log(item.color);
-                Debug.Log("Color flip count = " + CountColorFlip(item));
-            }
 
-            //count next move = get all color count + max of color count flip if the same take first
-
-            */
-                
-            //----------------------
-
-            //choosing next move = pick the most color near;
-            int max = 0;
-            int current = 0;
-            Color currentColor = result.ElementAt(0).color;
-            pickedColor = currentColor;
-            var res = result.ElementAt(0);
-            var previtem = result.ElementAt(0);
-
-            //---------------------------------------------------
-
-
-            foreach (var item in result)
-            {
-
-
-                if (currentColor == item.color) current++;
-                else
+                bool hasItem = false;
+                foreach (var cItem in countItems)
                 {
-                    if (current >= max)
+                    if (cItem.color == item.color)
                     {
-                        max = current;
-                        pickedColor = currentColor;
-                        res = previtem;
-                    }
-
-                    currentColor = item.color;
-                    current = 1;
-                    previtem = item;
+                        hasItem = true;
+                        cItem.count++;
+                        cItem.fieldItem.Add(item);
+                    } 
                 }
 
+                if (!hasItem) countItems.Add(new CountItems(item.color, 1, 0, item));
             }
 
-            if (current >= max)
+            Debug.Log(" Near color count " + countItems.Count + " all colors sorted");
+
+            int max = countItems[0].count;
+            var res = countItems[0].fieldItem[0];
+            pickedColor = countItems[0].color;
+
+            foreach (var item in countItems)
             {
-                pickedColor = currentColor;
-                res = previtem;
+                item.colorFlip = 0;
+
+                foreach (var fItem in item.fieldItem)
+                {
+                    item.colorFlip += CountColorFlip(fItem);
+                }
+                
+
+                if (item.count + item.colorFlip > max)
+                {
+                    max = item.count + item.colorFlip;
+                    res = item.fieldItem[0];
+                    pickedColor = item.color;
+                }
+                Debug.Log(" Color = " + item.color + " count " + item.count + "  flips " + item.colorFlip);
             }
 
-            Debug.Log(" Max count : " + current);
 
+            Debug.Log(" res color = " + res.color + " x = " + res.x + " y = " + res.y);
 
-            //res is picked item
+           
 
             res.owner = FieldOwner.PlayerTwo;
             StartCoroutine(ChangeSprite(res.fieldItem, mySprites[7]));
@@ -695,46 +700,54 @@ public class PlayGround : MonoBehaviour
 
     public int CountColorFlip(PlayGroundFieldItem fieldItem)
     {
+        int iteration = 1;
         Color startColor = fieldItem.color;
         List<PlayGroundFieldItem> currentFieldList = new List<PlayGroundFieldItem>();
+        List<PlayGroundFieldItem> foundFieldList = new List<PlayGroundFieldItem>();
 
         currentFieldList.Add(fieldItem);
 
-        bool noMathesFound = false;
-        
-        //count next flip 
-        var result = _playGroundItems.Where(p => Math.Abs(p.x - fieldItem.x) == 1 && Math.Abs(p.y - fieldItem.y) == 1 && p.owner == FieldOwner.None && p.color == fieldItem.color);
+        bool match = false;
 
 
-        Debug.Log(" First search result count = " + result.Count());
-
-        foreach (var item in result)
+        for (int i = 0; i < 10; i++)
         {
-            currentFieldList.Add(item);
-        }
 
-        while (!noMathesFound)
-        {
-            noMathesFound = true;
+            foundFieldList.Clear();
 
-            foreach (var item in currentFieldList)
-            { 
+            // foreach item in current fild list add all matched colors
 
-                result = _playGroundItems.Where(p => Math.Abs(p.x - item.x) == 1 && Math.Abs(p.y - item.y) == 1 && p.owner == FieldOwner.None && p.color == item.color);
-                Debug.Log("Search result count = " + result.Count());
+            foreach (var fieldListItem in currentFieldList)
+            {
+                var result = _playGroundItems.Where(p => Math.Abs(p.x - fieldListItem.x) == 1 && Math.Abs(p.y - fieldListItem.y) == 1 && p.owner == FieldOwner.None && p.color == fieldListItem.color);
 
                 foreach (var r in result)
                 {
-                    if (!currentFieldList.Any(p => p == r))
-                    {
-                        noMathesFound = false;
-                        currentFieldList.Add(r);
-                    }
+                    foundFieldList.Add(r);
+
                 }
             }
+
+            // foreach item in list search currentItemList for match if not found add
+
+            foreach (var f in foundFieldList)
+            {
+                match = false;
+
+                for (int j = 0; j < currentFieldList.Count; j++)
+                {
+                    if (currentFieldList[j] == f) match = true;
+                }
+
+                if (match == false) currentFieldList.Add(f); //if no match found add new item
+                
+            }
+             
+
         }
-        
-        return currentFieldList.Count;
+
+          
+        return currentFieldList.Count - 1;
     }
 }
 

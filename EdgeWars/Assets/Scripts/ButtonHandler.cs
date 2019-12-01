@@ -78,7 +78,7 @@ public class ButtonHandler : MonoBehaviour
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
             AdManager.instance.ShowAd(true);
-            PlayGround.instance.InitializePlayGround();
+            //PlayGround.instance.InitializePlayGround();
         }
         else if (EnergyScript.currentEnergy > 0)
         {
@@ -103,10 +103,6 @@ public class ButtonHandler : MonoBehaviour
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
             AdManager.instance.ShowAd(true);
-            UIHandler.instance.startGamePanel.SetActive(false);
-            UIHandler.instance.startGamePanel.SetActive(false);
-            UIHandler.instance.gamePanel.SetActive(true);
-            PlayGround.instance.InitializePlayGround();
         }
         else if (EnergyScript.currentEnergy > 0)
         {

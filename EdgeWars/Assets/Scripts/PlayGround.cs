@@ -87,8 +87,10 @@ public class PlayGround : MonoBehaviour
     {
         turn = FieldOwner.PlayerOne;
         timer = 30.0f;
+        playerOneScore = 1;
+        playerTwoScore = 1;
 
-        Debug.Log(" width = " + Screen.width + " height = " + Screen.height);
+    Debug.Log(" width = " + Screen.width + " height = " + Screen.height);
         float aspectRatio = Screen.height / (float)Screen.width;
         AspectRatios currentAspectRatio;
 
@@ -267,30 +269,45 @@ public class PlayGround : MonoBehaviour
 
             if (timer < 0)
             {
+                //if time is out 
+
                 displayedEnemyTimer = ENEMYTURNTIME;
                 displayedPlayerTimer = PLAYERTURNTIME;
 
                 if (turn == FieldOwner.PlayerOne)
                 {
+
                     var res = _playGroundItems.Where(p => p.owner == FieldOwner.None && isColliderNearPlayerGround(p, FieldOwner.PlayerTwo));
 
                     if (res.Count() == 0)
                     {
-                        //autoturn needed
-                        timer = 30;
+                        //if time is run out autocomplete Player 1 
+
+                        var res2 = _playGroundItems.Where(p => p.owner == FieldOwner.None);
+                        foreach (var item in res2)
+                        {
+                            item.owner = FieldOwner.PlayerOne;
+                            StartCoroutine(ChangeSprite(item.fieldItem, mySprites[6]));
+                            PlayerOneHit();
+                        }
+
+                        timer = PLAYERTURNTIME;
 
                     }
+
                     else
                     {
                         turn = FieldOwner.PlayerTwo;
-                        timer = 2;
+                        timer = ENEMYTURNTIME;
                         StartCoroutine(BlockPlayerInput());
                         StartCoroutine(AIturn());
                     }
-                    
+
                 }
                 else
-                    timer = 30;
+                {
+                    timer = PLAYERTURNTIME;
+                }
 
 
             }
@@ -358,12 +375,22 @@ public class PlayGround : MonoBehaviour
 
             if (result.Count() == 0 && turn == FieldOwner.PlayerOne) //if player one has no moves - enemy takes a turn;
             {
+                //auto turn player2 complete
+                var res2 = _playGroundItems.Where(p => p.owner == FieldOwner.None);
+                foreach (var item in res2)
+                {
+                    item.owner = FieldOwner.PlayerTwo;
+                    StartCoroutine(ChangeSprite(item.fieldItem, mySprites[7]));
+                    PlayerTwoHit();
+                }
+
+                /*
                     turn = FieldOwner.PlayerTwo;
                     displayedEnemyTimer = ENEMYTURNTIME;
                     displayedPlayerTimer = PLAYERTURNTIME;
                     timer = 2;
                     StartCoroutine(BlockPlayerInput());
-                    StartCoroutine(AIturn());
+                    StartCoroutine(AIturn());*/
             }
             
         }
@@ -491,6 +518,28 @@ public class PlayGround : MonoBehaviour
         if (result.Count() == 0) yield break;
         else
         {
+
+            //check all colors
+            /*
+
+            List<Color> nextMove = new List<Color>();
+            List<int> countFlips = new List<int>();
+
+            Debug.Log(" Near color count " + nextMove.Count + " all colors sorted");
+
+            foreach (var item in result)
+            {
+                nextMove.Add(item.color);
+                Debug.Log(item.color);
+                Debug.Log("Color flip count = " + CountColorFlip(item));
+            }
+
+            //count next move = get all color count + max of color count flip if the same take first
+
+            */
+                
+            //----------------------
+
             //choosing next move = pick the most color near;
             int max = 0;
             int current = 0;
@@ -498,6 +547,8 @@ public class PlayGround : MonoBehaviour
             pickedColor = currentColor;
             var res = result.ElementAt(0);
             var previtem = result.ElementAt(0);
+
+            //---------------------------------------------------
 
 
             foreach (var item in result)
@@ -527,10 +578,13 @@ public class PlayGround : MonoBehaviour
                 res = previtem;
             }
 
+            Debug.Log(" Max count : " + current);
+
+
+            //res is picked item
 
             res.owner = FieldOwner.PlayerTwo;
             StartCoroutine(ChangeSprite(res.fieldItem, mySprites[7]));
-
             PlayerTwoHit();
 
             var res2 = _playGroundItems.Where(p => p.owner == FieldOwner.PlayerTwo);
@@ -565,42 +619,11 @@ public class PlayGround : MonoBehaviour
 
     IEnumerator BlockPlayerInput()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(ENEMYTURNTIME);
         turn = FieldOwner.PlayerOne;
-        timer = 30;
+        timer = PLAYERTURNTIME;
     }
 
-    //borders recoloring
-    /*public void BordersRecolor()
-    {
-        Component[] borderSprites;
-        var result = _playGroundItems.Where(p => p.owner == FieldOwner.PlayerOne).OrderBy(p => p.x).ThenByDescending(p => p.y);
-        
-        foreach (var item in result)
-        {
-            borderSprites = item.fieldItem.GetComponentsInChildren<SpriteRenderer>();
-            for (int i = 1; i < borderSprites.Count(); i++)
-            {
-                borderSprites[i].GetComponent<SpriteRenderer>().color = Color.green;
-                borderSprites[i].GetComponent<SpriteRenderer>().sortingOrder = 5;
-            }
-
-            
-        }
-
-        result = _playGroundItems.Where(p => p.owner == FieldOwner.PlayerTwo).OrderBy(p => p.x).ThenByDescending(p => p.y);
-
-        foreach (var item in result)
-        {
-            borderSprites = item.fieldItem.GetComponentsInChildren<SpriteRenderer>();
-            for (int i = 1; i < borderSprites.Count(); i++)
-            {
-                borderSprites[i].GetComponent<SpriteRenderer>().color = Color.red;
-                borderSprites[i].GetComponent<SpriteRenderer>().sortingOrder = 4;
-            }
-            
-        }
-    }*/
 
     IEnumerator ChangeSpriteAnimationToZero(GameObject obj)
     {
@@ -624,7 +647,7 @@ public class PlayGround : MonoBehaviour
     {
         StartCoroutine(ChangeSpriteAnimationToZero(obj));
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.23f);
 
         obj.GetComponent<SpriteRenderer>().sprite = sprite;
 
@@ -668,6 +691,50 @@ public class PlayGround : MonoBehaviour
                 Destroy(item.fieldItem);
             }
         }
+    }
+
+    public int CountColorFlip(PlayGroundFieldItem fieldItem)
+    {
+        Color startColor = fieldItem.color;
+        List<PlayGroundFieldItem> currentFieldList = new List<PlayGroundFieldItem>();
+
+        currentFieldList.Add(fieldItem);
+
+        bool noMathesFound = false;
+        
+        //count next flip 
+        var result = _playGroundItems.Where(p => Math.Abs(p.x - fieldItem.x) == 1 && Math.Abs(p.y - fieldItem.y) == 1 && p.owner == FieldOwner.None && p.color == fieldItem.color);
+
+
+        Debug.Log(" First search result count = " + result.Count());
+
+        foreach (var item in result)
+        {
+            currentFieldList.Add(item);
+        }
+
+        while (!noMathesFound)
+        {
+            noMathesFound = true;
+
+            foreach (var item in currentFieldList)
+            { 
+
+                result = _playGroundItems.Where(p => Math.Abs(p.x - item.x) == 1 && Math.Abs(p.y - item.y) == 1 && p.owner == FieldOwner.None && p.color == item.color);
+                Debug.Log("Search result count = " + result.Count());
+
+                foreach (var r in result)
+                {
+                    if (!currentFieldList.Any(p => p == r))
+                    {
+                        noMathesFound = false;
+                        currentFieldList.Add(r);
+                    }
+                }
+            }
+        }
+        
+        return currentFieldList.Count;
     }
 }
 

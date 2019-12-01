@@ -12,6 +12,8 @@ public class AdManager : MonoBehaviour
 
     private bool loadGameAfterAD = false;
 
+    private bool testMode = true;
+
 
 #if UNITY_ANDROID
     string appId = "ca-app-pub-9898645005884031~3330841357";
@@ -49,7 +51,11 @@ public class AdManager : MonoBehaviour
     void Start()
     {
         //test
-        appId = "ca-app-pub-3940256099942544~3347511713";
+        if (testMode) 
+        {
+            appId = "ca-app-pub-3940256099942544~3347511713";
+            adUnitId = "ca-app-pub-3940256099942544/5224354917";
+        }
         //
 
         MobileAds.SetiOSAppPauseOnBackground(true);
@@ -64,12 +70,12 @@ public class AdManager : MonoBehaviour
 
     }
 
-    
+
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void ShowAd(bool loadGame)
@@ -84,7 +90,13 @@ public class AdManager : MonoBehaviour
         }
         else Debug.Log("Ad is not loaded");
         */
-        adUnitId = "ca-app-pub-3940256099942544/5224354917";
+
+        //test rewarded app
+
+        loadGameAfterAD = loadGame;
+
+        
+
         LoadRewardBasedAd();
 
 
@@ -93,60 +105,100 @@ public class AdManager : MonoBehaviour
     private void LoadRewardBasedAd()
     {
         //test device
-        
-        rewardBasedVideoAd.LoadAd(new AdRequest.Builder().AddTestDevice("921BB65A29EBB28F").Build(), adUnitId);
-        //rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
+        if (testMode)
+        {
+            Debug.Log("Loading ad test mode");
+            rewardBasedVideoAd.LoadAd(new AdRequest.Builder().AddTestDevice("921BB65A29EBB28F").Build(), adUnitId);
+        }
+        else
+        {
+            Debug.Log("Loading ad");
+            rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
+        }
+
     }
 
-   public void HandleOnAdStarted(object sender, EventArgs args)
+    public void HandleOnAdStarted(object sender, EventArgs args)
     {
-
         Debug.Log("AdStarted");
-
     }
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         //try to reload
-        Debug.Log("Failed to load, invoke reload sequnce");
-
+        if (testMode)
+        {
+            Debug.Log("Failed to load, invoke reload sequnce ! TEST MODE !");
+        }
+        else
+        {
+            Debug.Log("Failed to load, invoke reload sequnce");
+            if (loadGameAfterAD)
+            {
+                StartGame();
+            }
+        }
+        
         //rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
 
     public void HandleOnAdRewarded(object sender, Reward args)
     {
         //reward user
-        Debug.Log("Rewarded " + args.Amount + " of type " + args.Type);
+        if (testMode)
+        {
+            Debug.Log("Test Mode rewards added");
+        }
+        else
+        {
+            Debug.Log("Rewarded " + args.Amount + " of type " + args.Type);
+            if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
+        }
+        
     }
 
     public void HandleOnAdClosed(object sender, EventArgs args)
     {
-        Debug.Log("AdClosed");
+        if (testMode)
+        {
+            Debug.Log("AdClosed test mode");
+
+        }
+        {
+            Debug.Log("AdClosed");
+            if (loadGameAfterAD)
+            {
+                StartGame();
+            }
+            else
+            {
+                if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
+            }
+        }
     }
 
     private void HandleOnAdLoaded(object sender, EventArgs e)
     {
-        Debug.Log("Ad Loaded");
-        rewardBasedVideoAd.Show();
+        if (testMode)
+        {
+            Debug.Log("Ad Loaded test mode");
+            rewardBasedVideoAd.Show();
+        }
+        else
+        {
+            Debug.Log("Ad Loaded");
+            rewardBasedVideoAd.Show();
+        }
+        
     }
 
-    public void RequestBanner()
-    {
-#if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/6300978111";
-#elif UNITY_IPHONE
-      string adUnitId = "ca-app-pub-3940256099942544/2934735716";
-#else
-      string adUnitId = "unexpected_platform";
-#endif
 
-        // Create a 320x50 banner at the top of the screen.
-        var bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
-        // Create an empty ad request.
-        AdRequest request = new AdRequest.Builder().Build();
-        // Load the banner with the request.
-        bannerView.LoadAd(request);
-        
+    public void StartGame()
+    {
+        UIHandler.instance.startGamePanel.SetActive(false);
+        UIHandler.instance.startGamePanel.SetActive(false);
+        UIHandler.instance.gamePanel.SetActive(true);
+        PlayGround.instance.InitializePlayGround();
     }
 
 

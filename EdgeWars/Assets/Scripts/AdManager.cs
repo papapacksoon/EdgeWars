@@ -13,6 +13,8 @@ public class AdManager : MonoBehaviour
     private bool loadGameAfterAD = false;
 
     private bool testMode = true;
+    private bool testOnDevice = true;
+    private bool RewardsAdded = false;
 
 
 #if UNITY_ANDROID
@@ -71,34 +73,22 @@ public class AdManager : MonoBehaviour
     }
 
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void ShowAd(bool loadGame)
     {
-
-        // RequestBanner();
-        /*
-        this.LoadRewardBasedAd();
-        if (rewardBasedVideoAd.IsLoaded())
-        {
-            rewardBasedVideoAd.Show();
-        }
-        else Debug.Log("Ad is not loaded");
-        */
-
-        //test rewarded app
+        if (testMode && !testOnDevice) UIHandler.instance.loadingPanel.SetActive(false);
 
         loadGameAfterAD = loadGame;
-
-        StartGame();
-
-        //LoadRewardBasedAd(); --- test mode
-
+        RewardsAdded = false;
+        if (testMode)
+        {
+            if (testOnDevice) LoadRewardBasedAd();
+            else StartGame();
+        }
+        else
+        {
+            LoadRewardBasedAd();
+        }
+            
 
     }
 
@@ -107,7 +97,6 @@ public class AdManager : MonoBehaviour
         //test device
         if (testMode)
         {
-            Debug.Log("Loading ad test mode");
             rewardBasedVideoAd.LoadAd(new AdRequest.Builder().AddTestDevice("921BB65A29EBB28F").Build(), adUnitId);
         }
         else
@@ -118,67 +107,9 @@ public class AdManager : MonoBehaviour
 
     }
 
-    public void HandleOnAdStarted(object sender, EventArgs args)
-    {
-        Debug.Log("AdStarted");
-    }
-
-    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
-        //try to reload
-        if (testMode)
-        {
-            Debug.Log("Failed to load, invoke reload sequnce ! TEST MODE !");
-        }
-        else
-        {
-            Debug.Log("Failed to load, invoke reload sequnce");
-            if (loadGameAfterAD)
-            {
-                StartGame();
-            }
-        }
-        
-        //rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
-    }
-
-    public void HandleOnAdRewarded(object sender, Reward args)
-    {
-        //reward user
-        if (testMode)
-        {
-            Debug.Log("Test Mode rewards added");
-        }
-        else
-        {
-            Debug.Log("Rewarded " + args.Amount + " of type " + args.Type);
-            if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
-        }
-        
-    }
-
-    public void HandleOnAdClosed(object sender, EventArgs args)
-    {
-        if (testMode)
-        {
-            Debug.Log("AdClosed test mode");
-
-        }
-        {
-            Debug.Log("AdClosed");
-            if (loadGameAfterAD)
-            {
-                StartGame();
-            }
-            else
-            {
-                if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
-            }
-        }
-    }
-
     private void HandleOnAdLoaded(object sender, EventArgs e)
     {
+        UIHandler.instance.loadingPanel.SetActive(false);
         if (testMode)
         {
             Debug.Log("Ad Loaded test mode");
@@ -189,9 +120,77 @@ public class AdManager : MonoBehaviour
             Debug.Log("Ad Loaded");
             rewardBasedVideoAd.Show();
         }
+    }
+
+
+    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    {
+        //try to reload
+        if (testMode)
+        {
+            Debug.Log("Failed to load, TEST MODE !");
+        }
+        else
+        {
+            Debug.Log("Failed to load Ad");
+
+            if (loadGameAfterAD)
+            {
+                StartGame();
+            }
+        }
+    }
+
+    public void HandleOnAdRewarded(object sender, Reward args)
+    {
+        RewardsAdded = true;
+        //reward user
+        if (testMode)
+        {
+            Debug.Log("Test Mode rewards added");
+        }
+        else
+        {
+            Debug.Log("Ad Rewarded");
+        }
         
     }
 
+    public void HandleOnAdClosed(object sender, EventArgs args)
+    {
+
+        if (testMode)
+        {
+            Debug.Log("AdClosed test mode");
+            if (!RewardsAdded)
+            {
+                Debug.Log("Test mode rewards not added");
+                return;
+            }
+            if (loadGameAfterAD) StartGame();
+        }
+        else
+        {
+
+            Debug.Log("AdClosed");
+            if (RewardsAdded)
+            {
+                if (loadGameAfterAD)
+                {
+                    StartGame();
+                }
+                else
+                {
+                    if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
+                }
+            }
+            else
+            {
+                Debug.Log("Rewards not added");
+            }
+            
+        }
+    }
 
     public void StartGame()
     {
@@ -200,6 +199,9 @@ public class AdManager : MonoBehaviour
         UIHandler.instance.gamePanel.SetActive(true);
         PlayGround.instance.InitializePlayGround();
     }
-
+    public void HandleOnAdStarted(object sender, EventArgs args)
+    {
+        Debug.Log("AdStarted");
+    }
 
 }

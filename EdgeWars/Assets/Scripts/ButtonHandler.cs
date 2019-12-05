@@ -77,6 +77,7 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
+            UIHandler.instance.loadingPanel.SetActive(true);
             AdManager.instance.ShowAd(true);
             //PlayGround.instance.InitializePlayGround();
         }
@@ -102,6 +103,8 @@ public class ButtonHandler : MonoBehaviour
 
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
+            //training game
+            UIHandler.instance.loadingPanel.SetActive(true);
             AdManager.instance.ShowAd(true);
         }
         else if (EnergyScript.currentEnergy > 0)
@@ -122,11 +125,8 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
-      AdManager.instance.ShowAd(false);
-        //show Ad and get new energy 
-
-        //test banner view
-    //    AdManager.instance.RequestBanner();
+        UIHandler.instance.loadingPanel.SetActive(true);
+        AdManager.instance.ShowAd(false);
     }
 
     public void ConfirmRegistration()    //------------------------------------------------------------------------------------------------

@@ -42,7 +42,6 @@ public class PlayGround : MonoBehaviour
             instance = this;
         }
 
-        Debug.Log(" Playground = " + instance);
     }
 
     public enum FieldOwner { PlayerOne, PlayerTwo, None };
@@ -105,7 +104,6 @@ public class PlayGround : MonoBehaviour
         playerOneScore = 1;
         playerTwoScore = 1;
 
-    Debug.Log(" width = " + Screen.width + " height = " + Screen.height);
         float aspectRatio = Screen.height / (float)Screen.width;
         AspectRatios currentAspectRatio;
 
@@ -125,9 +123,6 @@ public class PlayGround : MonoBehaviour
             currentAspectRatio = AspectRatios.ar_2_05;
             _height += 2;
         }
-
-        Debug.Log(currentAspectRatio);
-        Debug.Log(aspectRatio);
 
         if (myColors.Count > 0) myColors.Clear();
         if (_playGroundItems.Count > 0)
@@ -536,13 +531,13 @@ public class PlayGround : MonoBehaviour
 
             //check all colors------------------------------
 
-            Debug.Log("Ai turn started");
+            //Debug.Log("Ai turn started");
 
             List<CountItems> countItems = new List<CountItems>();
 
             foreach (var item in result)
             {
-                Debug.Log(item.color);
+              //  Debug.Log(item.color);
 
                 bool hasItem = false;
                 foreach (var cItem in countItems)
@@ -558,7 +553,7 @@ public class PlayGround : MonoBehaviour
                 if (!hasItem) countItems.Add(new CountItems(item.color, 1, 0, item));
             }
 
-            Debug.Log(" Near color count " + countItems.Count + " all colors sorted");
+            //Debug.Log(" Near color count " + countItems.Count + " all colors sorted");
 
             int max = countItems[0].count;
             var res = countItems[0].fieldItem[0];
@@ -580,14 +575,9 @@ public class PlayGround : MonoBehaviour
                     res = item.fieldItem[0];
                     pickedColor = item.color;
                 }
-                Debug.Log(" Color = " + item.color + " count " + item.count + "  flips " + item.colorFlip);
+                //Debug.Log(" Color = " + item.color + " count " + item.count + "  flips " + item.colorFlip);
             }
-
-
-            Debug.Log(" res color = " + res.color + " x = " + res.x + " y = " + res.y);
-
-           
-
+            //Debug.Log(" res color = " + res.color + " x = " + res.x + " y = " + res.y);
             res.owner = FieldOwner.PlayerTwo;
             StartCoroutine(ChangeSprite(res.fieldItem, mySprites[7]));
             PlayerTwoHit();
@@ -675,13 +665,13 @@ public class PlayGround : MonoBehaviour
         if (randomElement < 5) enemyRank -= randomElement * 20;
         else enemyRank += (randomElement - 5) * 20;
 
-        Debug.Log("Player rank = " + PlayerManager.instance.playerRank);
-        Debug.Log("Enemy rank = " + enemyRank);
+     //   Debug.Log("Player rank = " + PlayerManager.instance.playerRank);
+     //   Debug.Log("Enemy rank = " + enemyRank);
 
         double expectedPlayerPoints = 1f / (1f + Math.Pow(10f, (enemyRank - PlayerManager.instance.playerRank) / 400f));
 
         PlayerManager.instance.playerRank += (int)(16 * (gameEnd - expectedPlayerPoints));
-        Debug.Log("Claculated Player rank = " + PlayerManager.instance.playerRank);
+     //   Debug.Log("Claculated Player rank = " + PlayerManager.instance.playerRank);
 
         GameManager.instance.UpdateLeaderboard();
         GameManager.instance.UpdatePlayerRank();
@@ -700,7 +690,6 @@ public class PlayGround : MonoBehaviour
 
     public int CountColorFlip(PlayGroundFieldItem fieldItem)
     {
-        int iteration = 1;
         Color startColor = fieldItem.color;
         List<PlayGroundFieldItem> currentFieldList = new List<PlayGroundFieldItem>();
         List<PlayGroundFieldItem> foundFieldList = new List<PlayGroundFieldItem>();

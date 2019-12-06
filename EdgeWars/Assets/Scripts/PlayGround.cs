@@ -125,6 +125,7 @@ public class PlayGround : MonoBehaviour
         }
 
         if (myColors.Count > 0) myColors.Clear();
+
         if (_playGroundItems.Count > 0)
         {
             foreach (var item in _playGroundItems)
@@ -738,6 +739,20 @@ public class PlayGround : MonoBehaviour
           
         return currentFieldList.Count - 1;
     }
+
+    public void ShowHidePlayegroundFieldObjects(bool showItems)
+    {
+        if (_playGroundItems.Count > 0)
+        {
+            foreach (var item in _playGroundItems)
+            {
+                item.fieldItem.SetActive(showItems);
+            }
+
+            _playGroundItems.Clear();
+        }
+    }
+
 }
 
 

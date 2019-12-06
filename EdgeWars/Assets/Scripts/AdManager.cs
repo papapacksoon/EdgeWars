@@ -12,10 +12,25 @@ public class AdManager : MonoBehaviour
 
     private bool loadGameAfterAD = false;
 
-    private bool testMode = true;
-    private bool testOnDevice = true;
+    private bool testMode = false;
+    private bool testOnDevice = false;
     private bool RewardsAdded = false;
 
+/*    //TESTING AD
+    BannerView bannerView;
+    AdRequest request;
+       //TESTING AD
+       */
+
+
+    public enum Panels
+    {
+        Start,
+        Game,
+        Main
+    }
+
+    Panels returnPanel;
 
 #if UNITY_ANDROID
     string appId = "ca-app-pub-9898645005884031~3330841357";
@@ -69,16 +84,53 @@ public class AdManager : MonoBehaviour
         rewardBasedVideoAd.OnAdStarted += HandleOnAdStarted;
         rewardBasedVideoAd.OnAdRewarded += HandleOnAdRewarded;
         rewardBasedVideoAd.OnAdLoaded += HandleOnAdLoaded;
+        rewardBasedVideoAd.OnAdLeavingApplication += HandleOnAdLeavingApp;
 
+/*        //testing AD
+        adUnitId = "ca-app-pub-9898645005884031/2134052986";
+        request = new AdRequest.Builder().Build();
+        AdSize adSize = new AdSize(250, 250);
+        bannerView = new BannerView(adUnitId, adSize, AdPosition.Center);
+        bannerView.OnAdLoaded += TestBannerLoad;
+        bannerView.OnAdFailedToLoad += TestBannerFailedToLoad;
+        //testing ad 
+        */
     }
 
-
-    public void ShowAd(bool loadGame)
+    /*//-----------------------------------TESTING AD
+    public void ShowTestBanner()
     {
+        Debug.Log("Test banner LOAD AD started");
+        bannerView.LoadAd(request);
+        
+    }
+
+    private void TestBannerLoad(object sender, EventArgs e)
+    {
+        Debug.Log("Test banner loaded");
+        bannerView.Show();
+    }
+
+    private void TestBannerFailedToLoad(object sender, EventArgs e)
+    {
+        Debug.Log("Test banner Failed to loaded. Reloading ...");
+        ShowTestBanner();
+    }
+
+    //-----------------------------------TESTING AD
+    */
+    public void ShowAd(bool loadGame, Panels panel)
+    {
+        Debug.Log("Start method show ad");
+
         if (testMode && !testOnDevice) UIHandler.instance.loadingPanel.SetActive(false);
 
+        returnPanel = panel;
         loadGameAfterAD = loadGame;
         RewardsAdded = false;
+
+        Debug.Log("Before Load ad");
+
         if (testMode)
         {
             if (testOnDevice) LoadRewardBasedAd();
@@ -91,6 +143,7 @@ public class AdManager : MonoBehaviour
             
 
     }
+
 
     private void LoadRewardBasedAd()
     {
@@ -134,11 +187,14 @@ public class AdManager : MonoBehaviour
         {
             Debug.Log("Failed to load Ad");
 
-            if (loadGameAfterAD)
+            /*if (loadGameAfterAD)
             {
                 StartGame();
-            }
+            }*/
         }
+
+        Debug.Log("try to load again");
+        rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
 
     public void HandleOnAdRewarded(object sender, Reward args)
@@ -164,6 +220,22 @@ public class AdManager : MonoBehaviour
             Debug.Log("AdClosed test mode");
             if (!RewardsAdded)
             {
+                switch (returnPanel)
+                {
+                    case Panels.Game:
+                        PlayGround.instance.ShowHidePlayegroundFieldObjects(true);
+                        UIHandler.instance.gamePanel.SetActive(true);
+                        break;
+
+                    case Panels.Main:
+                        UIHandler.instance.mainPanel.SetActive(true);
+                        break;
+
+                    case Panels.Start:
+                        UIHandler.instance.startGamePanel.SetActive(true);
+                        break;
+                }
+
                 Debug.Log("Test mode rewards not added");
                 return;
             }
@@ -171,7 +243,6 @@ public class AdManager : MonoBehaviour
         }
         else
         {
-
             Debug.Log("AdClosed");
             if (RewardsAdded)
             {
@@ -186,6 +257,22 @@ public class AdManager : MonoBehaviour
             }
             else
             {
+                switch (returnPanel)
+                {
+                    case Panels.Game:
+                        PlayGround.instance.ShowHidePlayegroundFieldObjects(true);
+                        UIHandler.instance.gamePanel.SetActive(true);
+                        break;
+
+                    case Panels.Main:
+                        UIHandler.instance.mainPanel.SetActive(true);
+                        break;
+
+                    case Panels.Start:
+                        UIHandler.instance.startGamePanel.SetActive(true);
+                        break;
+                }
+
                 Debug.Log("Rewards not added");
             }
             
@@ -203,5 +290,11 @@ public class AdManager : MonoBehaviour
     {
         Debug.Log("AdStarted");
     }
+
+    public void HandleOnAdLeavingApp(object sender, EventArgs args)
+    {
+        Debug.Log("Ad Leaving Application");
+    }
+    
 
 }

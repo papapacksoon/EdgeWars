@@ -30,6 +30,7 @@ public class LoadingScipt : MonoBehaviour
 
         if (GameManager.instance.taskCounter >= 2 && GameManager.instance.gameIsLoading)
         {
+            
             UIHandler.instance.loadingPanel.SetActive(false);
             GameManager.instance.gameIsLoading = false;
             UIHandler.instance.mainPanel.SetActive(true);
@@ -39,6 +40,7 @@ public class LoadingScipt : MonoBehaviour
     public IEnumerator ShowStartGamePanelAfterLoad()
     {
         yield return new WaitForSeconds(3.0f);
+        loadingtext.color = new Color(255, 255, 255, 1f);
         UIHandler.instance.loadingPanel.SetActive(false);
         GameManager.instance.gameIsLoading = false;
         UIHandler.instance.startGamePanel.SetActive(true);

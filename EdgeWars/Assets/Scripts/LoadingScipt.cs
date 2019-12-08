@@ -9,9 +9,17 @@ public class LoadingScipt : MonoBehaviour
     public Text loadingtext;
     private bool gotoStart = false;
 
-        void Start()
+    public static LoadingScipt instance;
+
+    void Awake()
     {
-        
+        DontDestroyOnLoad(this.gameObject);
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+
     }
 
     // Update is called once per frame
@@ -45,5 +53,34 @@ public class LoadingScipt : MonoBehaviour
         GameManager.instance.gameIsLoading = false;
         UIHandler.instance.startGamePanel.SetActive(true);
     }
-    
+
+    public IEnumerator ShowFailedToLoadAdMessage(AdManager.Panels panel)
+    {
+        Debug.Log("Display fail to load message");
+        loadingtext.color = new Color(255, 0, 0, 1f);
+        loadingtext.text = "Failed to load";
+        yield return new WaitForSeconds(3.0f);
+
+        Debug.Log("Returning to panel");
+        loadingtext.color = new Color(255, 255, 255, 1f);
+        UIHandler.instance.loadingPanel.SetActive(false);
+
+        switch (panel)
+        {
+            case AdManager.Panels.Game:
+                PlayGround.instance.ShowHidePlayegroundFieldObjects(true);
+                UIHandler.instance.gamePanel.SetActive(true);
+                break;
+
+            case AdManager.Panels.Main:
+                UIHandler.instance.mainPanel.SetActive(true);
+                break;
+
+            case AdManager.Panels.Start:
+                UIHandler.instance.startGamePanel.SetActive(true);
+                break;
+        }
+
+    }
+
 }

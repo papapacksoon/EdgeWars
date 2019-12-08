@@ -16,12 +16,7 @@ public class AdManager : MonoBehaviour
     private bool testOnDevice = false;
     private bool RewardsAdded = false;
 
-/*    //TESTING AD
-    BannerView bannerView;
-    AdRequest request;
-       //TESTING AD
-       */
-
+    private int tryCounter = 0;
 
     public enum Panels
     {
@@ -64,18 +59,14 @@ public class AdManager : MonoBehaviour
         Debug.Log("adUnitId = " + adUnitId);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        //test
         if (testMode) 
         {
             appId = "ca-app-pub-3940256099942544~3347511713";
             adUnitId = "ca-app-pub-3940256099942544/5224354917";
         }
-        //
 
-        MobileAds.SetiOSAppPauseOnBackground(true);
         MobileAds.Initialize(appId);
 
         rewardBasedVideoAd = RewardBasedVideoAd.Instance;
@@ -86,50 +77,19 @@ public class AdManager : MonoBehaviour
         rewardBasedVideoAd.OnAdLoaded += HandleOnAdLoaded;
         rewardBasedVideoAd.OnAdLeavingApplication += HandleOnAdLeavingApp;
 
-/*        //testing AD
-        adUnitId = "ca-app-pub-9898645005884031/2134052986";
-        request = new AdRequest.Builder().Build();
-        AdSize adSize = new AdSize(250, 250);
-        bannerView = new BannerView(adUnitId, adSize, AdPosition.Center);
-        bannerView.OnAdLoaded += TestBannerLoad;
-        bannerView.OnAdFailedToLoad += TestBannerFailedToLoad;
-        //testing ad 
-        */
     }
 
-    /*//-----------------------------------TESTING AD
-    public void ShowTestBanner()
-    {
-        Debug.Log("Test banner LOAD AD started");
-        bannerView.LoadAd(request);
-        
-    }
-
-    private void TestBannerLoad(object sender, EventArgs e)
-    {
-        Debug.Log("Test banner loaded");
-        bannerView.Show();
-    }
-
-    private void TestBannerFailedToLoad(object sender, EventArgs e)
-    {
-        Debug.Log("Test banner Failed to loaded. Reloading ...");
-        ShowTestBanner();
-    }
-
-    //-----------------------------------TESTING AD
-    */
     public void ShowAd(bool loadGame, Panels panel)
     {
         Debug.Log("Start method show ad");
 
+        tryCounter = 0;
         if (testMode && !testOnDevice) UIHandler.instance.loadingPanel.SetActive(false);
 
         returnPanel = panel;
         loadGameAfterAD = loadGame;
         RewardsAdded = false;
 
-        Debug.Log("Before Load ad");
 
         if (testMode)
         {
@@ -162,6 +122,8 @@ public class AdManager : MonoBehaviour
 
     private void HandleOnAdLoaded(object sender, EventArgs e)
     {
+        if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 0f;
+
         UIHandler.instance.loadingPanel.SetActive(false);
         if (testMode)
         {
@@ -178,6 +140,13 @@ public class AdManager : MonoBehaviour
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
+        tryCounter++;
+        if (tryCounter > 5)
+        {
+            Debug.Log("Counter is above 5");
+            StartCoroutine(LoadingScipt.instance.ShowFailedToLoadAdMessage(returnPanel));
+            return;
+        }
         //try to reload
         if (testMode)
         {
@@ -186,11 +155,6 @@ public class AdManager : MonoBehaviour
         else
         {
             Debug.Log("Failed to load Ad");
-
-            /*if (loadGameAfterAD)
-            {
-                StartGame();
-            }*/
         }
 
         Debug.Log("try to load again");
@@ -214,6 +178,7 @@ public class AdManager : MonoBehaviour
 
     public void HandleOnAdClosed(object sender, EventArgs args)
     {
+        if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 1.0f;
 
         if (testMode)
         {
@@ -293,7 +258,7 @@ public class AdManager : MonoBehaviour
 
     public void HandleOnAdLeavingApp(object sender, EventArgs args)
     {
-        Debug.Log("Ad Leaving Application");
+        if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 1.0f;
     }
     
 

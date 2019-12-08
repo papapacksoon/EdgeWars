@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager instance;
 
+    public AudioSource m_MyAudioSource;
+
     private bool isSoundOn = true;
 
     public bool IsSoundOn
@@ -17,8 +19,16 @@ public class AudioManager : MonoBehaviour
 
         set {
 
-            if (value) PlayerPrefs.SetInt("Sound", 1);
-            else PlayerPrefs.SetInt("Sound", 0);
+            if (value)
+            {
+                m_MyAudioSource.Play();
+                PlayerPrefs.SetInt("Sound", 1);
+            }
+            else
+            {
+                m_MyAudioSource.Stop();
+                PlayerPrefs.SetInt("Sound", 0);
+            }
             PlayerPrefs.Save();
 
             isSoundOn = value;
@@ -29,6 +39,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        m_MyAudioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(this.gameObject);
 
         if (instance == null)
@@ -41,12 +52,21 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Sound"))
         {
-            if (PlayerPrefs.GetInt("Sound") == 1) IsSoundOn = true;
-            else IsSoundOn = false;
+            if (PlayerPrefs.GetInt("Sound") == 1)
+            {
+                m_MyAudioSource.Play();
+                IsSoundOn = true;
+            }
+            else
+            {
+                m_MyAudioSource.Stop();
+                IsSoundOn = false;
+            }
             
         }
         else
         {
+            m_MyAudioSource.Play();
             IsSoundOn = true;
             PlayerPrefs.SetInt("Sound", 1);
             PlayerPrefs.Save();

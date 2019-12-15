@@ -123,10 +123,14 @@ PlayerSettings:
     16:9: 1
     Others: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
   bundleVersion: 1.2
 =======
   bundleVersion: 1.0
 >>>>>>> parent of 26627fa... PUBLISHED
+=======
+  bundleVersion: 1.4
+>>>>>>> master
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -175,10 +179,14 @@ PlayerSettings:
     iPhone: com.Packsoon.EdgeWars.ios
   buildNumber: {}
 <<<<<<< HEAD
+<<<<<<< HEAD
   AndroidBundleVersionCode: 3
 =======
   AndroidBundleVersionCode: 1
 >>>>>>> parent of 26627fa... PUBLISHED
+=======
+  AndroidBundleVersionCode: 4
+>>>>>>> master
   AndroidMinSdkVersion: 21
   AndroidTargetSdkVersion: 28
   AndroidPreferredInstallLocation: 1

@@ -42,8 +42,12 @@ public class UIHandler : MonoBehaviour
 
     public GameObject loadingPanel;
     public Text loadingPanelText;
+<<<<<<< HEAD
     public Text loadingPanelAboutText;
     public Button loadingPanelButton;
+=======
+
+>>>>>>> master
 
     public static UIHandler instance;
     private void Awake()

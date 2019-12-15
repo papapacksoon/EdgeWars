@@ -5183,7 +5183,7 @@ MonoBehaviour:
   m_Text: "How to play:\n\nyou play white color and ai opponent play black color\n\ntap
     diamonds next to your field to flip all of same color to white. \n\ntake control
     of the map, player who will have a larger field wins \n\napplication vesrion:
-    1.0\ndesign/development by\nPavel perevozchikov\nfrom cold siberia with love :)\n"
+    1.4\ndesign/development by\nPavel perevozchikov\nfrom cold siberia with love :)\n"
 --- !u!222 &1050518059
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6558,7 +6558,7 @@ MonoBehaviour:
   m_Text: "How to play:\n\nyou play white color and ai opponent play black color\n\ntap
     diamonds next to your field to flip all of same color to white. \n\ntake control
     of the map, player who will have a larger field wins \n\napplication vesrion:
-    1.0\ndesign/development by\nPavel perevozchikov\nfrom cold siberia with love :)\n"
+    1.4\ndesign/development by\nPavel perevozchikov\nfrom cold siberia with love :)\n"
 --- !u!222 &1275546806
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8416,6 +8416,7 @@ MonoBehaviour:
   nextEnergyText: {fileID: 1334459305}
   gamePanel: {fileID: 210882591}
   loadingPanel: {fileID: 138254514}
+  loadingPanelText: {fileID: 1275546805}
 --- !u!1 &1543239150
 GameObject:
   m_ObjectHideFlags: 0

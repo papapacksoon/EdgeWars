@@ -42,6 +42,8 @@ public class ButtonHandler : MonoBehaviour
 
     
 
+    
+
     public static ButtonHandler instance;
     private void Awake()
     {
@@ -80,6 +82,7 @@ public class ButtonHandler : MonoBehaviour
             
             UIHandler.instance.gamePanel.SetActive(false);
             PlayGround.instance.ShowHidePlayegroundFieldObjects(false);
+            UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before each game, please register and log in";
             UIHandler.instance.loadingPanel.SetActive(true);
             AdManager.instance.ShowAd(true, AdManager.Panels.Game);
             //PlayGround.instance.InitializePlayGround();
@@ -113,6 +116,7 @@ public class ButtonHandler : MonoBehaviour
             
             ///TEST AD*/
             UIHandler.instance.startGamePanel.SetActive(false);
+            UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before each game, please register and log in";
             UIHandler.instance.loadingPanel.SetActive(true);
             AdManager.instance.ShowAd(true, AdManager.Panels.Start);
         }
@@ -135,6 +139,7 @@ public class ButtonHandler : MonoBehaviour
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
         mainPanel.SetActive(false);
+        UIHandler.instance.loadingPanelText.text = "If you want to get energy, you should watch this ads";
         UIHandler.instance.loadingPanel.SetActive(true);
         AdManager.instance.ShowAd(false, AdManager.Panels.Main);
     }

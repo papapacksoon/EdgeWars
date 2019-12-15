@@ -47,7 +47,7 @@ public class LoadingScipt : MonoBehaviour
 
     public IEnumerator ShowStartGamePanelAfterLoad()
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(10.0f);
         loadingtext.color = new Color(255, 255, 255, 1f);
         UIHandler.instance.loadingPanel.SetActive(false);
         GameManager.instance.gameIsLoading = false;

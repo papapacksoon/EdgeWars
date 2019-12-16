@@ -138,7 +138,8 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
-        mainPanel.SetActive(false);
+        //mainPanel.SetActive(false);
+        UIHandler.instance.mainPanel.SetActive(false);
         UIHandler.instance.loadingPanelText.text = "If you want to get energy, you should watch this ads";
         UIHandler.instance.loadingPanel.SetActive(true);
         AdManager.instance.ShowAd(false, AdManager.Panels.Main);

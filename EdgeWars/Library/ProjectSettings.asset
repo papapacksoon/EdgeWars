@@ -122,7 +122,19 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
+<<<<<<< HEAD
   bundleVersion: 1.5
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  bundleVersion: 1.2
+=======
+  bundleVersion: 1.0
+>>>>>>> parent of 26627fa... PUBLISHED
+=======
+  bundleVersion: 1.4
+>>>>>>> master
+>>>>>>> f6bd7604096b6551ad087e8c9d15de0abbc8d3b9
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -170,7 +182,19 @@ PlayerSettings:
     Standalone: com.Company.ProductName
     iPhone: com.Packsoon.EdgeWars.ios
   buildNumber: {}
+<<<<<<< HEAD
   AndroidBundleVersionCode: 5
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  AndroidBundleVersionCode: 3
+=======
+  AndroidBundleVersionCode: 1
+>>>>>>> parent of 26627fa... PUBLISHED
+=======
+  AndroidBundleVersionCode: 4
+>>>>>>> master
+>>>>>>> f6bd7604096b6551ad087e8c9d15de0abbc8d3b9
   AndroidMinSdkVersion: 21
   AndroidTargetSdkVersion: 28
   AndroidPreferredInstallLocation: 1
@@ -260,18 +284,18 @@ PlayerSettings:
   clonedFromGUID: 5f34be1353de5cf4398729fda238591b
   templatePackageId: com.unity.template.2d@2.3.1
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  AndroidTargetArchitectures: 3
+  AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/ppa/Desktop/PPA/EdgeWars/ewAndroid.keystore
-  AndroidKeyaliasName: ewandroid
+  AndroidKeystoreName: C:/Users/Admin/Documents/Keystore/test.keystore
+  AndroidKeyaliasName: edgewars
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
-  androidUseCustomKeystore: 1
+  androidUseCustomKeystore: 0
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -645,8 +669,7 @@ PlayerSettings:
     27: PHOTON_UNITY_NETWORKING;PUN_2_0_OR_NEWER;PUN_2_OR_NEWER
     28: PHOTON_UNITY_NETWORKING;PUN_2_0_OR_NEWER;PUN_2_OR_NEWER
   platformArchitecture: {}
-  scriptingBackend:
-    Android: 1
+  scriptingBackend: {}
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}

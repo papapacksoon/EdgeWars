@@ -71,21 +71,21 @@ public class ButtonHandler : MonoBehaviour
             UIHandler.instance.DisplayEnergyTimer();
             UIHandler.instance.mainPanel.SetActive(true);
         }
-
-
     }
 
     public void RestartClick()   //------------------------------------------------------------------------------------------------
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            
             UIHandler.instance.gamePanel.SetActive(false);
             PlayGround.instance.ShowHidePlayegroundFieldObjects(false);
+<<<<<<< HEAD
+            UIHandler.instance.BeforeShowingAdSplash(false);
+=======
             UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before each game, please register and log in";
             UIHandler.instance.loadingPanel.SetActive(true);
+>>>>>>> master
             AdManager.instance.ShowAd(true, AdManager.Panels.Game);
-            //PlayGround.instance.InitializePlayGround();
         }
         else if (EnergyScript.currentEnergy > 0)
         {
@@ -109,15 +109,13 @@ public class ButtonHandler : MonoBehaviour
 
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            //training game
-           /* ///TESTING AD
-
-            AdManager.instance.ShowTestBanner();
-            
-            ///TEST AD*/
             UIHandler.instance.startGamePanel.SetActive(false);
+<<<<<<< HEAD
+            UIHandler.instance.BeforeShowingAdSplash(false);
+=======
             UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before each game, please register and log in";
             UIHandler.instance.loadingPanel.SetActive(true);
+>>>>>>> master
             AdManager.instance.ShowAd(true, AdManager.Panels.Start);
         }
         else if (EnergyScript.currentEnergy > 0)
@@ -138,10 +136,18 @@ public class ButtonHandler : MonoBehaviour
 
     public void GetEnergy()  //  //------------------------------------------------------------------------------------------------
     {
+<<<<<<< HEAD
         //mainPanel.SetActive(false);
         UIHandler.instance.mainPanel.SetActive(false);
+=======
+        mainPanel.SetActive(false);
+<<<<<<< HEAD
+        UIHandler.instance.BeforeShowingAdSplash(true);
+=======
+>>>>>>> f6bd7604096b6551ad087e8c9d15de0abbc8d3b9
         UIHandler.instance.loadingPanelText.text = "If you want to get energy, you should watch this ads";
         UIHandler.instance.loadingPanel.SetActive(true);
+>>>>>>> master
         AdManager.instance.ShowAd(false, AdManager.Panels.Main);
     }
 

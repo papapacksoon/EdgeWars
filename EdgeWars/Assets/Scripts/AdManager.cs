@@ -4,9 +4,11 @@ using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using System;
+using UnityEngine.UI;
 
 public class AdManager : MonoBehaviour
 {
+
 
     public static AdManager instance;
 
@@ -61,12 +63,6 @@ public class AdManager : MonoBehaviour
 
     void Start()
     {
-        if (testMode) 
-        {
-            appId = "ca-app-pub-3940256099942544~3347511713";
-            adUnitId = "ca-app-pub-3940256099942544/5224354917";
-        }
-
         MobileAds.Initialize(appId);
 
         rewardBasedVideoAd = RewardBasedVideoAd.Instance;
@@ -81,60 +77,29 @@ public class AdManager : MonoBehaviour
 
     public void ShowAd(bool loadGame, Panels panel)
     {
-        Debug.Log("Start method show ad");
-
         tryCounter = 0;
-        if (testMode && !testOnDevice) UIHandler.instance.loadingPanel.SetActive(false);
-
         returnPanel = panel;
         loadGameAfterAD = loadGame;
         RewardsAdded = false;
 
-
-        if (testMode)
-        {
-            if (testOnDevice) LoadRewardBasedAd();
-            else StartGame();
-        }
-        else
-        {
-            LoadRewardBasedAd();
-        }
-            
-
+        LoadRewardBasedAd();
     }
 
 
     private void LoadRewardBasedAd()
     {
-        //test device
-        if (testMode)
-        {
-            rewardBasedVideoAd.LoadAd(new AdRequest.Builder().AddTestDevice("921BB65A29EBB28F").Build(), adUnitId);
-        }
-        else
-        {
-            Debug.Log("Loading ad");
-            rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
-        }
-
+        Debug.Log("Loading ad");
+        rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
 
     private void HandleOnAdLoaded(object sender, EventArgs e)
     {
+        Debug.Log("Ad Loaded");
+
         if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 0f;
 
-        UIHandler.instance.loadingPanel.SetActive(false);
-        if (testMode)
-        {
-            Debug.Log("Ad Loaded test mode");
-            rewardBasedVideoAd.Show();
-        }
-        else
-        {
-            Debug.Log("Ad Loaded");
-            rewardBasedVideoAd.Show();
-        }
+        UIHandler.instance.loadingPanelText.color = new Color(255, 255, 255, 0f);
+        UIHandler.instance.loadingPanelButton.gameObject.SetActive(true);
     }
 
 
@@ -148,16 +113,9 @@ public class AdManager : MonoBehaviour
             return;
         }
         //try to reload
-        if (testMode)
-        {
-            Debug.Log("Failed to load, TEST MODE !");
-        }
-        else
-        {
-            Debug.Log("Failed to load Ad");
-        }
-
+        Debug.Log("Failed to load Ad");
         Debug.Log("try to load again");
+
         rewardBasedVideoAd.LoadAd(new AdRequest.Builder().Build(), adUnitId);
     }
 
@@ -173,42 +131,16 @@ public class AdManager : MonoBehaviour
         {
             Debug.Log("Ad Rewarded");
         }
-        
+
     }
 
     public void HandleOnAdClosed(object sender, EventArgs args)
     {
         if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 1.0f;
 
-        if (testMode)
-        {
-            Debug.Log("AdClosed test mode");
-            if (!RewardsAdded)
-            {
-                switch (returnPanel)
-                {
-                    case Panels.Game:
-                        PlayGround.instance.ShowHidePlayegroundFieldObjects(true);
-                        UIHandler.instance.gamePanel.SetActive(true);
-                        break;
-
-                    case Panels.Main:
-                        UIHandler.instance.mainPanel.SetActive(true);
-                        break;
-
-                    case Panels.Start:
-                        UIHandler.instance.startGamePanel.SetActive(true);
-                        break;
-                }
-
-                Debug.Log("Test mode rewards not added");
-                return;
-            }
-            if (loadGameAfterAD) StartGame();
-        }
-        else
-        {
             Debug.Log("AdClosed");
+            Debug.Log("Rewards = " + RewardsAdded);
+
             if (RewardsAdded)
             {
                 if (loadGameAfterAD)
@@ -240,8 +172,6 @@ public class AdManager : MonoBehaviour
 
                 Debug.Log("Rewards not added");
             }
-            
-        }
     }
 
     public void StartGame()
@@ -259,6 +189,14 @@ public class AdManager : MonoBehaviour
     public void HandleOnAdLeavingApp(object sender, EventArgs args)
     {
         if (AudioManager.instance.IsSoundOn) AudioManager.instance.m_MyAudioSource.volume = 1.0f;
+    }
+
+    public void ButtonSplashShow()
+    {
+        UIHandler.instance.loadingPanelText.color = new Color(255, 255, 255, 1f);
+        UIHandler.instance.loadingPanelButton.gameObject.SetActive(false);
+        UIHandler.instance.loadingPanel.SetActive(false);
+        rewardBasedVideoAd.Show();
     }
     
 

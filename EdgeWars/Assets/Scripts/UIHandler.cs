@@ -42,7 +42,12 @@ public class UIHandler : MonoBehaviour
 
     public GameObject loadingPanel;
     public Text loadingPanelText;
+<<<<<<< HEAD
+    public Text loadingPanelAboutText;
+    public Button loadingPanelButton;
+=======
 
+>>>>>>> master
 
     public static UIHandler instance;
     private void Awake()
@@ -206,6 +211,13 @@ public class UIHandler : MonoBehaviour
     {
         loadingPanel.SetActive(false);
         GameManager.instance.gameIsLoading = false;
+    }
+
+    public void BeforeShowingAdSplash(bool GetEnergy)
+    {
+        loadingPanel.SetActive(true);
+        if (GetEnergy) loadingPanelAboutText.text = "In order to get energy you should watch this ad";
+        else loadingPanelAboutText.text = "If you don`t want to see ads before each game, please register and log in";
     }
 
 

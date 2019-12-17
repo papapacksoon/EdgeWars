@@ -38,20 +38,34 @@ public class LoadingScipt : MonoBehaviour
 
         if (GameManager.instance.taskCounter >= 2 && GameManager.instance.gameIsLoading)
         {
-            
-            UIHandler.instance.loadingPanel.SetActive(false);
-            GameManager.instance.gameIsLoading = false;
-            UIHandler.instance.mainPanel.SetActive(true);
+            if (GameManager.instance.isFirebaseLoaded)
+            {
+                UIHandler.instance.loadingPanel.SetActive(false);
+                GameManager.instance.gameIsLoading = false;
+                UIHandler.instance.mainPanel.SetActive(true);
+            }
+            else
+            {
+                UIHandler.instance.ShowQuitPanel();
+            }
         }
     }
 
     public IEnumerator ShowStartGamePanelAfterLoad()
     {
-        yield return new WaitForSeconds(10.0f);
-        loadingtext.color = new Color(255, 255, 255, 1f);
-        UIHandler.instance.loadingPanel.SetActive(false);
-        GameManager.instance.gameIsLoading = false;
-        UIHandler.instance.startGamePanel.SetActive(true);
+        yield return new WaitForSeconds(20.0f);
+        if (GameManager.instance.isFirebaseLoaded)
+        {
+            loadingtext.color = new Color(255, 255, 255, 1f);
+            UIHandler.instance.loadingPanel.SetActive(false);
+            GameManager.instance.gameIsLoading = false;
+            UIHandler.instance.startGamePanel.SetActive(true);
+        }
+        else
+        {
+            UIHandler.instance.ShowQuitPanel();
+        }
+        
     }
 
     public IEnumerator ShowFailedToLoadAdMessage(AdManager.Panels panel)

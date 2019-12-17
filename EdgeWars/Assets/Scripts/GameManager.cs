@@ -73,7 +73,9 @@ public class GameManager : MonoBehaviour
         if (FirebaseApp.CheckDependencies() != DependencyStatus.Available)
         {
             isFirebaseLoaded = false;
-            UIHandler.instance.ShowQuitPanel();
+            //UIHandler.instance.ShowQuitPanel();
+            taskCounter = 2;
+
             throw new Exception($"Firebase not available with {FirebaseApp.CheckDependencies()}");
         }
         else
@@ -106,8 +108,9 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log(" Failed to initalize Firebase with " + dependencyResult);
-            UIHandler.instance.ShowQuitPanel();
+            //UIHandler.instance.ShowQuitPanel();
             isFirebaseLoaded = false;
+            taskCounter = 2;
         }
 
        
@@ -276,7 +279,10 @@ public class GameManager : MonoBehaviour
 
             newUserCreated = false;
             UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.UserRegisterCleanUp());
-            if (!userCreateSuccess) UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
+            if (!userCreateSuccess)
+            {
+                UnityMainThreadDispatcher.Instance().Enqueue(UIHandler.instance.ShowErrorPanelIEnumrator(errorText, Color.red, false));
+            }
             else
             {
                 needToSignOutAfterShowingErrorPanel = true;

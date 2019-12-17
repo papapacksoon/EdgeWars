@@ -141,7 +141,7 @@ public class AdManager : MonoBehaviour
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         tryCounter++;
-        if (tryCounter > 5)
+        if (tryCounter > 3)
         {
             Debug.Log("Counter is above 5");
             StartCoroutine(LoadingScipt.instance.ShowFailedToLoadAdMessage(returnPanel));
@@ -218,6 +218,7 @@ public class AdManager : MonoBehaviour
                 else
                 {
                     if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
+                    UIHandler.instance.mainPanel.SetActive(true);
                 }
             }
             else

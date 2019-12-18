@@ -218,7 +218,10 @@ public class AdManager : MonoBehaviour
                 else
                 {
                     if (EnergyScript.currentEnergy < EnergyScript.MAXENERGY) EnergyScript.currentEnergy++;
+                    if (EnergyScript.currentEnergy == EnergyScript.MAXENERGY) EnergyScript.instance.energyTimer = 0;
                     UIHandler.instance.mainPanel.SetActive(true);
+                    UIHandler.instance.DisplayEnergy();
+                    UIHandler.instance.DisplayEnergyTimer();
                 }
             }
             else

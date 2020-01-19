@@ -103,6 +103,8 @@ public class PlayGround : MonoBehaviour
         timer = 30.0f;
         playerOneScore = 1;
         playerTwoScore = 1;
+        _width = 7;
+        _height = 11;
 
         float aspectRatio = Screen.height / (float)Screen.width;
         AspectRatios currentAspectRatio;

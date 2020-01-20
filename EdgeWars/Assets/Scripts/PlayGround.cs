@@ -48,7 +48,7 @@ public class PlayGround : MonoBehaviour
 
     private FieldOwner turn = FieldOwner.PlayerOne;
     private static int _width = 7;
-    private static int _height = 11;
+    private static int _height = 9;
     private float timer = 30.0f;
     private int displayedPlayerTimer = PLAYERTURNTIME;
     private float displayedEnemyTimer = ENEMYTURNTIME;
@@ -104,7 +104,7 @@ public class PlayGround : MonoBehaviour
         playerOneScore = 1;
         playerTwoScore = 1;
         _width = 7;
-        _height = 11;
+        _height = 9;
 
         float aspectRatio = Screen.height / (float)Screen.width;
         AspectRatios currentAspectRatio;
@@ -170,17 +170,17 @@ public class PlayGround : MonoBehaviour
                 switch (currentAspectRatio)
                 {
                     case AspectRatios.ar_1_7:
-                        myY = -2.53f;
+                        myY = -1.7f;//-2.53f;
                         myX = -1.195f + 0.8f * (x / 2);
                         break;
 
                     case AspectRatios.ar_2:
-                        myY = -2.3f;
+                        myY = -1.55f;// -2.3f;
                         myX = -1.14f + 0.75f * (x / 2);
                         break;
 
                     case AspectRatios.ar_2_05:
-                        myY = -2.5f;
+                        myY = -1.8f;// -2.5f;
                         myX = -1.065f + 0.7f * (x / 2);
                         break;
                 }
@@ -197,17 +197,17 @@ public class PlayGround : MonoBehaviour
                 switch (currentAspectRatio)
                 {
                     case AspectRatios.ar_1_7:
-                        myY = -2.12f;
+                        myY = -1.29f; //-2.12f;
                         myX = -0.785f + 0.8f * (x / 2);
                         break;
 
                     case AspectRatios.ar_2:
-                        myY = -1.93f;
+                        myY = -1.18f;//-1.93f;
                         myX = -0.76f + 0.75f * (x / 2);
                         break;
 
                     case AspectRatios.ar_2_05:
-                        myY = -2.15f;
+                        myY = -1.45f;// -2.15f;
                         myX = -0.715f + 0.7f * (x / 2);
                         break;
                 }
@@ -337,6 +337,30 @@ public class PlayGround : MonoBehaviour
                         displayedPlayerTimer = (int)timer;
                         TurnText.color = Color.white;
                         TurnText.text = "It's your turn ! " + displayedPlayerTimer + " seconds left";
+
+                        //Start scale coroutine
+
+                        if ((displayedPlayerTimer % 5) == 0 && displayedPlayerTimer <30)
+                        {
+
+                            var popoutresult = _playGroundItems.Where(p => p.owner == FieldOwner.None && isColliderNearPlayerGround(p, FieldOwner.PlayerOne)).OrderBy(p => p.color.ToString());
+                            int count = 0;
+                            int randomItem = UnityEngine.Random.Range(0, popoutresult.Count());
+                            
+                            foreach (var item in popoutresult)
+                            {
+                                if (count == randomItem)
+                                {
+                                    StartCoroutine(PopOutSprite(item.fieldItem));
+                                    break;
+                                }
+                                count++;
+                            }
+                        }
+
+                        //end of pop coroutine;
+
+
                     }
 
                 }
@@ -652,9 +676,52 @@ public class PlayGround : MonoBehaviour
         StartCoroutine(ChangeSpriteAnimationGetBig(obj));
     }
 
+    IEnumerator PopOutSprite(GameObject obj)
+    {
+        Vector3 currentScale = obj.transform.localScale;
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        obj.transform.localScale = currentScale;
+    }
+
     public void CountPlayerRank(bool playerWin = false)
     {
-        if (GameManager.instance.singlePlayerWithoutLogginIn)
+        if (GameManager.instance.singlePlayerWithoutLogginIn )
         {
             Debug.Log("Player doesn`t log in => rank is not calculated");
             return;

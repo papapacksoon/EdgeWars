@@ -43,6 +43,8 @@ public class LoadingScipt : MonoBehaviour
                 UIHandler.instance.loadingPanel.SetActive(false);
                 GameManager.instance.gameIsLoading = false;
                 UIHandler.instance.mainPanel.SetActive(true);
+                //banner Ad show
+                AdManager.instance.ShowBannerAd();
             }
             else
             {
@@ -60,6 +62,8 @@ public class LoadingScipt : MonoBehaviour
             UIHandler.instance.loadingPanel.SetActive(false);
             GameManager.instance.gameIsLoading = false;
             UIHandler.instance.startGamePanel.SetActive(true);
+            //banner Ad show
+            AdManager.instance.ShowBannerAd();
         }
         else
         {

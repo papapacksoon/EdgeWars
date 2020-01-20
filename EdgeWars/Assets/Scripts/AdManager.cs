@@ -12,11 +12,15 @@ public class AdManager : MonoBehaviour
 
     private bool loadGameAfterAD = false;
 
-    private bool testMode = false;
+    private bool testMode = true;
     private bool testOnDevice = false;
     private bool RewardsAdded = false;
+    public bool ShowAdvertiseBeforeGame = false;
+    public int ShowAdvertiseBeforeGameCounter = 0;
 
     private int tryCounter = 0;
+
+    private BannerView bannerView;
 
     public enum Panels
     {
@@ -61,13 +65,19 @@ public class AdManager : MonoBehaviour
 
     void Start()
     {
+        string adBannerUnitId = "ca-app-pub-9898645005884031/4608164317";
+
         if (testMode) 
         {
             appId = "ca-app-pub-3940256099942544~3347511713";
             adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            adBannerUnitId = "ca-app-pub-3940256099942544/6300978111";
         }
 
+
         MobileAds.Initialize(appId);
+
+        bannerView = new BannerView(adBannerUnitId, AdSize.SmartBanner, AdPosition.Bottom);
 
         rewardBasedVideoAd = RewardBasedVideoAd.Instance;
         rewardBasedVideoAd.OnAdClosed += HandleOnAdClosed;
@@ -77,6 +87,13 @@ public class AdManager : MonoBehaviour
         rewardBasedVideoAd.OnAdLoaded += HandleOnAdLoaded;
         rewardBasedVideoAd.OnAdLeavingApplication += HandleOnAdLeavingApp;
 
+        //start banner here
+    }
+
+    public void ShowBannerAd()
+    {
+        AdRequest bannerRequest = new AdRequest.Builder().Build();
+        bannerView.LoadAd(bannerRequest);
     }
 
     public void ShowAd(bool loadGame, Panels panel)
@@ -250,6 +267,8 @@ public class AdManager : MonoBehaviour
 
     public void StartGame()
     {
+        ShowAdvertiseBeforeGame = false;
+        ShowAdvertiseBeforeGameCounter = 0;
         UIHandler.instance.startGamePanel.SetActive(false);
         UIHandler.instance.startGamePanel.SetActive(false);
         UIHandler.instance.gamePanel.SetActive(true);

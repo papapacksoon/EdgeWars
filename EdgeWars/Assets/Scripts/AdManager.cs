@@ -15,6 +15,7 @@ public class AdManager : MonoBehaviour
     private bool testMode = false;
     private bool testOnDevice = false;
     private bool RewardsAdded = false;
+    public bool ShowAdvertiseBeforeGame = false;
 
     private int tryCounter = 0;
 
@@ -77,6 +78,7 @@ public class AdManager : MonoBehaviour
         rewardBasedVideoAd.OnAdLoaded += HandleOnAdLoaded;
         rewardBasedVideoAd.OnAdLeavingApplication += HandleOnAdLeavingApp;
 
+        //start banner here
     }
 
     public void ShowAd(bool loadGame, Panels panel)
@@ -250,6 +252,7 @@ public class AdManager : MonoBehaviour
 
     public void StartGame()
     {
+        ShowAdvertiseBeforeGame = false;
         UIHandler.instance.startGamePanel.SetActive(false);
         UIHandler.instance.startGamePanel.SetActive(false);
         UIHandler.instance.gamePanel.SetActive(true);

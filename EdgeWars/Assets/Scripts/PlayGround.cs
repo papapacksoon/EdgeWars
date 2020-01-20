@@ -337,6 +337,30 @@ public class PlayGround : MonoBehaviour
                         displayedPlayerTimer = (int)timer;
                         TurnText.color = Color.white;
                         TurnText.text = "It's your turn ! " + displayedPlayerTimer + " seconds left";
+
+                        //Start scale coroutine
+
+                        if ((displayedPlayerTimer % 5) == 0 && displayedPlayerTimer <30)
+                        {
+
+                            var popoutresult = _playGroundItems.Where(p => p.owner == FieldOwner.None && isColliderNearPlayerGround(p, FieldOwner.PlayerOne)).OrderBy(p => p.color.ToString());
+                            int count = 0;
+                            int randomItem = UnityEngine.Random.Range(0, popoutresult.Count());
+                            
+                            foreach (var item in popoutresult)
+                            {
+                                if (count == randomItem)
+                                {
+                                    StartCoroutine(PopOutSprite(item.fieldItem));
+                                    break;
+                                }
+                                count++;
+                            }
+                        }
+
+                        //end of pop coroutine;
+
+
                     }
 
                 }
@@ -650,6 +674,49 @@ public class PlayGround : MonoBehaviour
         obj.GetComponent<SpriteRenderer>().sprite = sprite;
 
         StartCoroutine(ChangeSpriteAnimationGetBig(obj));
+    }
+
+    IEnumerator PopOutSprite(GameObject obj)
+    {
+        Vector3 currentScale = obj.transform.localScale;
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor; i <= localScaleFactor + 0.05f; i += 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        for (float i = localScaleFactor + 0.05f; i >= localScaleFactor; i -= 0.01f)
+        {
+            obj.transform.localScale = new Vector3(i, i, 0.5f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        obj.transform.localScale = currentScale;
     }
 
     public void CountPlayerRank(bool playerWin = false)

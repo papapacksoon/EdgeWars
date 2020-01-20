@@ -79,8 +79,16 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            if (Random.Range(0, 10) == 7 || AdManager.instance.ShowAdvertiseBeforeGame)
+            if (Random.Range(0, 5) == 3 || AdManager.instance.ShowAdvertiseBeforeGame)
             {
+                AdManager.instance.ShowAdvertiseBeforeGame = true;
+                AdManager.instance.ShowAdvertiseBeforeGameCounter++;
+                if (AdManager.instance.ShowAdvertiseBeforeGameCounter >= 3)
+                {
+                    AdManager.instance.ShowAdvertiseBeforeGame = false;
+                    AdManager.instance.ShowAdvertiseBeforeGameCounter = 0;
+                }
+
                 UIHandler.instance.gamePanel.SetActive(false);
                 PlayGround.instance.ShowHidePlayegroundFieldObjects(false);
                 UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before the game, please register and log in";
@@ -122,8 +130,17 @@ public class ButtonHandler : MonoBehaviour
 
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            if (Random.Range(0, 10) == 7 || AdManager.instance.ShowAdvertiseBeforeGame)
+            if (Random.Range(0, 5) == 3 || AdManager.instance.ShowAdvertiseBeforeGame)
             {
+                AdManager.instance.ShowAdvertiseBeforeGame = true;
+                AdManager.instance.ShowAdvertiseBeforeGameCounter++;
+                if (AdManager.instance.ShowAdvertiseBeforeGameCounter >= 3)
+                {
+                    AdManager.instance.ShowAdvertiseBeforeGame = false;
+                    AdManager.instance.ShowAdvertiseBeforeGameCounter = 0;
+                }
+                
+
                 UIHandler.instance.startGamePanel.SetActive(false);
                 UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before the game, please register and log in";
                 UIHandler.instance.loadingPanel.SetActive(true);

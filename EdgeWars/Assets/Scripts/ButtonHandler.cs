@@ -53,7 +53,16 @@ public class ButtonHandler : MonoBehaviour
         }
     }
 
-
+    void Update()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (startGamePanel.activeInHierarchy || mainPanel.activeInHierarchy) Application.Quit();
+            }
+        }
+    }
 
     public void MainMenuClick()   //------------------------------------------------------------------------------------------------
     {
@@ -79,7 +88,7 @@ public class ButtonHandler : MonoBehaviour
     {
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            if (Random.Range(0, 5) == 3 || AdManager.instance.ShowAdvertiseBeforeGame)
+            if (Random.Range(0, 3) == 1 || AdManager.instance.ShowAdvertiseBeforeGame)
             {
                 AdManager.instance.ShowAdvertiseBeforeGame = true;
                 AdManager.instance.ShowAdvertiseBeforeGameCounter++;
@@ -99,14 +108,7 @@ public class ButtonHandler : MonoBehaviour
             {
                 PlayGround.instance.InitializePlayGround();
             }
-            /* version 1.8
-            UIHandler.instance.gamePanel.SetActive(false);
-            PlayGround.instance.ShowHidePlayegroundFieldObjects(false);
-            UIHandler.instance.loadingPanelText.text = "If you don`t want to watch ads before the game, please register and log in";
-            UIHandler.instance.loadingPanel.SetActive(true);
-            AdManager.instance.ShowAd(true, AdManager.Panels.Game);
-            //PlayGround.instance.InitializePlayGround();
-            */
+
         }
         else if (EnergyScript.currentEnergy > 0)
         {
@@ -130,7 +132,7 @@ public class ButtonHandler : MonoBehaviour
 
         if (GameManager.instance.singlePlayerWithoutLogginIn)
         {
-            if (Random.Range(0, 5) == 3 || AdManager.instance.ShowAdvertiseBeforeGame)
+            if (Random.Range(0, 3) == 1 || AdManager.instance.ShowAdvertiseBeforeGame)
             {
                 AdManager.instance.ShowAdvertiseBeforeGame = true;
                 AdManager.instance.ShowAdvertiseBeforeGameCounter++;

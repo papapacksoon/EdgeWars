@@ -12,7 +12,7 @@ public class AdManager : MonoBehaviour
 
     private bool loadGameAfterAD = false;
 
-    private bool testMode = true;
+    private bool testMode = false;
     private bool testOnDevice = false;
     private bool RewardsAdded = false;
     public bool ShowAdvertiseBeforeGame = false;

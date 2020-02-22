@@ -55,7 +55,7 @@ public class LoadingScipt : MonoBehaviour
 
     public IEnumerator ShowStartGamePanelAfterLoad()
     {
-        yield return new WaitForSeconds(20.0f);
+        yield return new WaitForSeconds(5.5f);
         if (GameManager.instance.isFirebaseLoaded)
         {
             loadingtext.color = new Color(255, 255, 255, 1f);
